@@ -73,7 +73,7 @@
         <div id="indices-container" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
       </div>
 
-      <!-- 🗺️ 🔥 Finviz 실시간 주가 히트맵 섹션 추가 -->
+      <!-- 🗺️ Finviz S&P 500 히트맵 차트 (보안 차단 해제 적용) -->
       <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
         <div class="flex justify-between items-center mb-3">
           <h3 class="text-sm font-bold text-gray-800 flex items-center gap-1.5">
@@ -84,12 +84,17 @@
           </a>
         </div>
         <div class="overflow-hidden rounded-lg border border-gray-200 bg-gray-900">
-          <img id="finviz-map-img" src="https://finviz.com/map.ashx?t=sec" alt="Finviz S&P 500 Heatmap" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="window.open('https://finviz.com/map.ashx?t=sec', '_blank')">
+          <img id="finviz-map-img" 
+               src="https://finviz.com/map.ashx?t=sec" 
+               referrerpolicy="no-referrer"
+               alt="Finviz S&P 500 Heatmap" 
+               class="w-full h-auto object-cover hover:scale-105 transition-transform duration-300 cursor-pointer" 
+               onclick="window.open('https://finviz.com/map.ashx?t=sec', '_blank')">
         </div>
         <p class="text-xs text-gray-400 mt-2 text-right">* 이미지를 클릭하시면 고해상도 원본 맵 창이 열립니다.</p>
       </div>
 
-      <!-- 국채 금리 추이 -->
+      <!-- 국채 금리 추이 (2Y / 10Y / 30Y) -->
       <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
         <h3 class="text-sm font-bold text-gray-700 mb-3 flex items-center gap-1.5">
           <i class="fa-solid fa-landmark text-blue-500"></i> 미국 국채 금리 동향
@@ -232,48 +237,59 @@
 
     async function loadUSMarketData() {
       try {
-        // 핀비즈 맵 이미지 캐시 방지 업데이트
         document.getElementById('finviz-map-img').src = 'https://finviz.com/map.ashx?t=sec&v=' + new Date().getTime();
 
         const response = await fetch('us_market.json?v=' + new Date().getTime());
         const data = await response.json();
 
         // 1. 환율/VIX/유가
-        document.getElementById('macro-container').innerHTML = data.macro_indicators.map(m => `
-          <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center">
-            <div>
-              <div class="text-xs font-bold text-gray-500">${m.name}</div>
-              <div class="text-xl font-black text-gray-900 mt-1">${m.value}</div>
+        document.getElementById('macro-container').innerHTML = data.macro_indicators.map(m => {
+          const isDown = m.change.startsWith('-');
+          const colorClass = isDown ? 'text-blue-600' : 'text-red-600';
+          return `
+            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center">
+              <div>
+                <div class="text-xs font-bold text-gray-500">${m.name}</div>
+                <div class="text-xl font-black text-gray-900 mt-1">${m.value}</div>
+              </div>
+              <div class="text-right">
+                <div class="text-xs font-bold ${colorClass}">${m.change}</div>
+                <div class="text-xs text-gray-400 mt-1">${m.status}</div>
+              </div>
             </div>
-            <div class="text-right">
-              <div class="text-xs font-bold ${m.change.startsWith('-') ? 'text-blue-600' : 'text-red-600'}">${m.change}</div>
-              <div class="text-xs text-gray-400 mt-1">${m.status}</div>
-            </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
 
         // 2. 5대 지수
-        document.getElementById('indices-container').innerHTML = data.indices.map(idx => `
-          <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 text-center">
-            <div class="text-xs font-bold text-gray-500">${idx.name}</div>
-            <div class="text-base font-black text-gray-900 mt-0.5">${idx.value}</div>
-            <div class="text-xs font-bold ${idx.change.startsWith('-') ? 'text-blue-600' : 'text-red-600'}">${idx.change}</div>
-          </div>
-        `).join('');
+        document.getElementById('indices-container').innerHTML = data.indices.map(idx => {
+          const isDown = idx.change.startsWith('-');
+          const colorClass = isDown ? 'text-blue-600' : 'text-red-600';
+          return `
+            <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 text-center">
+              <div class="text-xs font-bold text-gray-500">${idx.name}</div>
+              <div class="text-base font-black text-gray-900 mt-0.5">${idx.value}</div>
+              <div class="text-xs font-bold ${colorClass}">${idx.change}</div>
+            </div>
+          `;
+        }).join('');
 
         // 3. 국채 금리
-        document.getElementById('bonds-container').innerHTML = data.treasury_yields.map(b => `
-          <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 flex justify-between items-center">
-            <div>
-              <div class="text-xs font-bold text-gray-500">${b.tenor}</div>
-              <div class="text-base font-black text-gray-900">${b.yield_rate}</div>
+        document.getElementById('bonds-container').innerHTML = data.treasury_yields.map(b => {
+          const isDown = b.change.startsWith('-');
+          const colorClass = isDown ? 'text-blue-600' : 'text-red-600';
+          return `
+            <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 flex justify-between items-center">
+              <div>
+                <div class="text-xs font-bold text-gray-500">${b.tenor}</div>
+                <div class="text-base font-black text-gray-900">${b.yield_rate}</div>
+              </div>
+              <div class="text-right">
+                <div class="text-xs font-bold ${colorClass}">${b.change}</div>
+                <div class="text-xs text-gray-400">${b.status}</div>
+              </div>
             </div>
-            <div class="text-right">
-              <div class="text-xs font-bold ${b.change.startsWith('-') ? 'text-blue-600' : 'text-red-600'}">${b.change}</div>
-              <div class="text-xs text-gray-400">${b.status}</div>
-            </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
 
         document.getElementById('strong-sectors').innerHTML = data.strong_sectors_analysis;
         document.getElementById('weak-sectors').innerHTML = data.weak_sectors_analysis;
