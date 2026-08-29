@@ -1,9 +1,7 @@
 import os
 import json
 import urllib.request
-import urllib.parse
 
-# Gemini API 설정
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 def ask_gemini(prompt):
@@ -29,9 +27,9 @@ def ask_gemini(prompt):
 def generate_stock_data():
     prompt = """
     당신은 최고 수준의 주식 시장 분석가입니다.
-    다가오는 이번 주 및 다음 주의 [한국 증시]와 [미국 증시] 주요 일정을 분석해 주세요.
+    다가오는 이번 주 및 다음 주의 한국 증시와 미국 증시 주요 일정을 분석해 주세요.
     
-    반드시 아래와 같은 JSON 배열 형식으로만 응답해 주세요 (다른 설명글 금지):
+    반드시 아래와 같은 JSON 배열 형식으로만 응답해 주세요 (다른 설명글 절대 금지):
     [
       {
         "date": "8월 31일",
