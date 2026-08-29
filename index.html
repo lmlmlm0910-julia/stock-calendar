@@ -31,7 +31,7 @@
         🗓️ 한국/미국 증시 주요 일정
       </button>
       <button id="tab-btn-us" onclick="switchTab('us')" class="flex-1 py-3 text-center text-gray-400 hover:text-white">
-        📊 미장 마감 시황 & 매크로 (환율/VIX/금리)
+        📊 미장 마감 시황 & 핀비즈 맵
       </button>
     </div>
   </header>
@@ -54,11 +54,11 @@
       </div>
     </div>
 
-    <!-- 탭 2: 미장 마감 시황 세션 (환율/VIX/유가/금리/지수) -->
+    <!-- 탭 2: 미장 마감 시황 & 핀비즈 맵 세션 -->
     <div id="tab-content-us" class="space-y-6 hidden">
       <div class="bg-gray-900 rounded-2xl p-6 text-white shadow-xl border border-gray-800">
         <div class="text-xs font-bold text-red-400 tracking-widest mb-1">RED BULL US MARKET DAILY WRAP-UP</div>
-        <h2 class="text-2xl font-bold mb-2">🇺🇸 미국장 마감 종합 시황 & 매크로 분석</h2>
+        <h2 class="text-2xl font-bold mb-2">🇺🇸 미국장 마감 종합 시황 & 핀비즈 맵</h2>
         <p class="text-gray-400 text-sm" id="us-update-time">미국 5대 지수, 국채 금리, 환율, VIX, 원유 및 연준 발언 요약 리포트</p>
       </div>
 
@@ -71,6 +71,22 @@
           <i class="fa-solid fa-chart-line text-red-500"></i> 미국 5대 주요 지수 동향
         </h3>
         <div id="indices-container" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
+      </div>
+
+      <!-- 🗺️ 🔥 Finviz 실시간 주가 히트맵 섹션 추가 -->
+      <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="text-sm font-bold text-gray-800 flex items-center gap-1.5">
+            <i class="fa-solid fa-border-all text-red-500"></i> Finviz S&P 500 실시간 주가 히트맵
+          </h3>
+          <a href="https://finviz.com/map.ashx?t=sec" target="_blank" class="text-xs text-blue-600 font-semibold hover:underline flex items-center gap-1">
+            Finviz 원본 맵 크게 보기 <i class="fa-solid fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
+        <div class="overflow-hidden rounded-lg border border-gray-200 bg-gray-900">
+          <img id="finviz-map-img" src="https://finviz.com/map.ashx?t=sec" alt="Finviz S&P 500 Heatmap" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-300 cursor-pointer" onclick="window.open('https://finviz.com/map.ashx?t=sec', '_blank')">
+        </div>
+        <p class="text-xs text-gray-400 mt-2 text-right">* 이미지를 클릭하시면 고해상도 원본 맵 창이 열립니다.</p>
       </div>
 
       <!-- 국채 금리 추이 -->
@@ -216,6 +232,9 @@
 
     async function loadUSMarketData() {
       try {
+        // 핀비즈 맵 이미지 캐시 방지 업데이트
+        document.getElementById('finviz-map-img').src = 'https://finviz.com/map.ashx?t=sec&v=' + new Date().getTime();
+
         const response = await fetch('us_market.json?v=' + new Date().getTime());
         const data = await response.json();
 
