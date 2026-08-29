@@ -1,50 +1,50 @@
 {
-  "updated_at": "2026년 08월 29일 미국장 마감 직후",
+  "updated_at": "2026년 08월 28일(금) 미국장 마감 시황",
   "macro_indicators": [
     {
       "name": "원/달러 환율",
-      "value": "1,371.50원",
-      "change": "-0.97%",
+      "value": "N/A원",
+      "change": "0.00%",
       "status": "외환시세"
     },
     {
       "name": "VIX 지수 (공포지수)",
-      "value": "14.43",
-      "change": "-8.96%",
+      "value": "N/A",
+      "change": "0.00%",
       "status": "변동성 지수"
     },
     {
       "name": "WTI 유가 (원유)",
-      "value": "$83.40",
-      "change": "-1.89%",
+      "value": "$N/A",
+      "change": "0.00%",
       "status": "국제 유가"
     }
   ],
   "indices": [
     {
       "name": "S&P 500",
-      "value": "7,711.76",
-      "change": "+0.49%"
+      "value": "N/A",
+      "change": "0.00%"
     },
     {
       "name": "다우존스",
-      "value": "53,560.00",
-      "change": "+0.53%"
+      "value": "N/A",
+      "change": "0.00%"
     },
     {
       "name": "나스닥",
-      "value": "26,402.42",
-      "change": "+0.85%"
+      "value": "N/A",
+      "change": "0.00%"
     },
     {
       "name": "필라델피아 반도체",
-      "value": "11,469.66",
-      "change": "-2.31%"
+      "value": "N/A",
+      "change": "0.00%"
     },
     {
       "name": "러셀 2000",
-      "value": "2,972.37",
-      "change": "-1.51%"
+      "value": "N/A",
+      "change": "0.00%"
     }
   ],
   "treasury_yields": [
@@ -56,19 +56,19 @@
     },
     {
       "tenor": "미국 10년물",
-      "yield_rate": "4.72%",
-      "change": "+0.34%",
+      "yield_rate": "N/A%",
+      "change": "0.00%",
       "status": "기준 국채"
     },
     {
       "tenor": "미국 30년물",
-      "yield_rate": "5.21%",
-      "change": "-0.48%",
+      "yield_rate": "N/A%",
+      "change": "0.00%",
       "status": "장기 국채"
     }
   ],
-  "strong_sectors_analysis": "<b>🔥 강한 자금 쏠림 섹터 분석:</b> 대형 기술주 및 소프트웨어, 경기소비재 섹터로 강한 자금 유입이 이루어지며 나스닥(+0.85%), 다우(+0.53%), S&P 500(+0.49%) 상승을 주도했습니다. WTI 유가가 1.89% 하락한 $83.40를 기록하며 비용 부담 완화 기대감이 형성되었고, VIX 지수가 14.43으로 8.96% 급락하면서 위험자산 선호 심리가 대형주를 중심으로 크게 개선되었습니다.",
-  "weak_sectors_analysis": "<b>❄️ 약세 섹터 분석:</b> 필라델피아 반도체 지수(-2.31%)와 러셀 2000 지수(-1.51%)가 뚜렷한 약세를 보였습니다. 반도체 섹터는 단기 고점에 대한 차익 실현 매물이 집중되며 강한 하방 압력을 받았습니다. 또한 미국 10년물 국채 금리가 4.72%(+0.34%)로 상승함에 따라 높은 자금 조달 비용에 노출된 중소형주(러셀 2000)와 에너지 가격 하락(-1.89%)의 영향을 받은 에너지 섹터에서 자금 이탈이 두드러졌습니다.",
-  "fed_speeches_summary": "<b>🎙️ 연준(Fed) 발언 및 매크로 이슈:</b> 10년물 국채 금리가 4.72%로 고점을 유지하는 가운데, 연준 당국자들은 인플레이션 목표치(2%) 달성을 위해 당분간 긴축적 통화정책 기조를 지속해야 한다는 매파적 stance를 유지했습니다. 원/달러 환율이 1,371.50원(-0.97%)으로 하락하며 달러화 강세 압력은 다소 완화되었으나, 장기 금리 상승에 따른 시중 금리 부담은 매크로 환경의 주요 리스크로 작용하고 있습니다.",
-  "overall_market_summary": "오늘 미국 증시는 3대 주요 지수(S&P 500 +0.49%, 다우 +0.53%, 나스닥 +0.85%)가 동반 상승 마감했으나 섹터별 차별화가 극명하게 나타났습니다. 유가 하락과 VIX 급락(-8.96%)이 대형주 중심의 훈풍을 이끌어낸 반면, 필라델피아 반도체 지수(-2.31%)의 조정과 10년물 금리 상승으로 인한 러셀 2000(-1.51%)의 약세가 시장의 상방을 일부 제한한 장세였습니다."
+  "strong_sectors_analysis": "<b>🔥 실시간 증시 종가 현황:</b><br>나스닥 None (None), S&P 500 None (None)<br>실시간 시장 주가 지수 흐름을 반영합니다.",
+  "weak_sectors_analysis": "<b>❄️ 실시간 매크로 지표 현황:</b><br>VIX 지수: None (None), WTI 원유: $None (None)",
+  "fed_speeches_summary": "<b>🎙️ 실시간 주요 외신 헤드라인:</b><ul><li>Wall Street ends lower after Fed Chair Warsh reaffirms inflation fight Reuters</li><li>The bond market prepares for a hike to interest rates, while US stocks drift lower Orlando Sentinel</li><li>WATCH: Fed Chair Warsh signals stubborn inflation may require rate hikes in Jackson Hole speech PBS</li><li>Wall Street is stuck in a holding pattern ahead of a big speech by the head of the Federal Reserve The Citizens' Voice</li><li>US stocks drift after expectations rise for the Fed to hike rates to get inflation under control The Wenatchee World</li><li>Wall Street stocks end tad lower after hot inflation data ahead of Nvidia earnings Reuters</li><li>Fed Chairman Warsh expresses concern about inflation, advocates for 'quieter' central bank CNBC</li><li>Fed Chairman Kevin Warsh stays quiet on interest rates but calls inflation ‘concerning’ CNN</li></ul>",
+  "overall_market_summary": "<b>📊 2026년 08월 28일(금) 증시 요약:</b><br>원/달러 환율 None원 (None), 미국 10년물 금리 None% (None)로 집계되었습니다."
 }
