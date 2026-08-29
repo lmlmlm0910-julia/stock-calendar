@@ -18,8 +18,8 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Google AI Library
-        run: pip install google-genai
+      - name: Install Google AI & Finance Libraries
+        run: pip install google-genai yfinance
 
       - name: Run Stock Schedule Script
         env:
@@ -36,4 +36,4 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add data.json us_market.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto update all market reports by Gemini AI" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto update all market reports with real financial data" && git push)
