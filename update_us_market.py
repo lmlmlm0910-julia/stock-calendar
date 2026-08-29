@@ -1,5 +1,6 @@
 import os
 import json
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
@@ -110,10 +111,24 @@ def generate_us_market_report():
     """
 
     print(f"Gemini AI가 {market_date_str} 리포트 작성 중...")
-    response = client.models.generate_content(
-        model='gemini-3.6-flash',
-        contents=prompt
-    )
+    
+    # 503 일시적 서버 과부하 대응: 최대 5회 자동 재시도 로직
+    max_retries = 5
+    response = None
+    for attempt in range(max_retries):
+        try:
+            response = client.models.generate_content(
+                model='gemini-3.6-flash',
+                contents=prompt
+            )
+            break
+        except Exception as e:
+            print(f"Gemini API 호출 중 일시적 오류 발생 (시도 {attempt + 1}/{max_retries}): {e}")
+            if attempt < max_retries - 1:
+                print("5초 후 다시 시도합니다...")
+                time.sleep(5)
+            else:
+                raise e
 
     text = response.text.strip()
     if "```" in text:
