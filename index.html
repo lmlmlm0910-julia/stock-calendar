@@ -3,52 +3,147 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>레드불의 증시 자동 일정 & AI 심층 분석</title>
-  <!-- 사파리 차단 방지용 안전 스타일 라이브러리 -->
+  <title>레드불 증시 통합 AI 대시보드</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .tab-active { border-bottom: 3px solid #ef4444; color: #ef4444; font-weight: bold; }
   </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
   <!-- 상단 네비게이션 -->
-  <header class="bg-gray-900 text-white border-b border-gray-800 sticky top-0 z-10 shadow-md">
+  <header class="bg-gray-900 text-white sticky top-0 z-20 shadow-md">
     <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
       <h1 class="text-xl font-bold flex items-center gap-2">
-        <span class="bg-red-600 text-white text-xs px-2 py-1 rounded font-extrabold tracking-wider">RED BULL</span>
-        <span>증시 자동 일정 & AI 심층 분석</span>
+        <span class="bg-red-600 text-white text-xs px-2.5 py-1 rounded font-extrabold tracking-wider">RED BULL</span>
+        <span>증시 AI 종합 대시보드</span>
       </h1>
       <span class="text-xs bg-red-900 text-red-300 border border-red-700 font-semibold px-2.5 py-1 rounded-full flex items-center gap-1">
-        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> 실시간 AI 연동 ON
+        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> AI 분석 연동 ON
       </span>
+    </div>
+
+    <!-- 탭 선택 바 -->
+    <div class="max-w-4xl mx-auto px-4 flex border-t border-gray-800 text-sm">
+      <button id="tab-btn-schedule" onclick="switchTab('schedule')" class="flex-1 py-3 text-center text-gray-400 hover:text-white tab-active">
+        🗓️ 한국/미국 증시 주요 일정
+      </button>
+      <button id="tab-btn-us" onclick="switchTab('us')" class="flex-1 py-3 text-center text-gray-400 hover:text-white">
+        📊 미장 마감 시황 & 매크로 (환율/VIX/금리)
+      </button>
     </div>
   </header>
 
-  <main class="max-w-4xl mx-auto px-4 py-8">
-    <!-- 주간 브리핑 헤더 -->
-    <div class="bg-gradient-to-r from-red-600 to-indigo-800 rounded-2xl p-6 text-white mb-8 shadow-xl">
-      <div class="text-xs font-bold text-red-200 tracking-widest mb-1">RED BULL STOCK ANALYTICS</div>
-      <h2 class="text-2xl font-bold mb-2">🔥 레드불의 글로벌 증시 일정 & 수혜주 리포트</h2>
-      <p class="text-red-100 text-sm">Gemini AI가 주요 일정의 중요도, 관전 포인트, 한국·미국 증시 영향도 및 수혜주를 심도 있게 분석합니다.</p>
-    </div>
+  <main class="max-w-4xl mx-auto px-4 py-6">
 
-    <!-- AI 데이터가 들어올 영역 -->
-    <div id="schedule-container" class="space-y-6">
-      <div class="bg-white rounded-xl p-12 text-center text-gray-400 border border-gray-200 shadow-sm">
-        <i class="fa-solid fa-spinner fa-spin text-3xl text-red-500 mb-3 block"></i>
-        Gemini AI가 분석한 최신 심층 데이터를 불러오는 중입니다...
+    <!-- 탭 1: 증시 주요 일정 세션 -->
+    <div id="tab-content-schedule" class="space-y-6">
+      <div class="bg-gradient-to-r from-red-600 to-indigo-800 rounded-2xl p-6 text-white shadow-xl">
+        <div class="text-xs font-bold text-red-200 tracking-widest mb-1">RED BULL STOCK ANALYTICS</div>
+        <h2 class="text-2xl font-bold mb-2">🔥 레드불의 글로벌 증시 일정 & 수혜주 리포트</h2>
+        <p class="text-red-100 text-sm">Gemini AI가 주요 일정의 중요도, 관전 포인트, 한국·미국 증시 영향도 및 수혜주를 심도 있게 분석합니다.</p>
+      </div>
+
+      <div id="schedule-container" class="space-y-6">
+        <div class="bg-white rounded-xl p-12 text-center text-gray-400 border border-gray-200 shadow-sm">
+          <i class="fa-solid fa-spinner fa-spin text-3xl text-red-500 mb-3 block"></i>
+          Gemini AI가 분석한 최신 일정 데이터를 불러오는 중입니다...
+        </div>
       </div>
     </div>
+
+    <!-- 탭 2: 미장 마감 시황 세션 (환율/VIX/유가/금리/지수) -->
+    <div id="tab-content-us" class="space-y-6 hidden">
+      <div class="bg-gray-900 rounded-2xl p-6 text-white shadow-xl border border-gray-800">
+        <div class="text-xs font-bold text-red-400 tracking-widest mb-1">RED BULL US MARKET DAILY WRAP-UP</div>
+        <h2 class="text-2xl font-bold mb-2">🇺🇸 미국장 마감 종합 시황 & 매크로 분석</h2>
+        <p class="text-gray-400 text-sm" id="us-update-time">미국 5대 지수, 국채 금리, 환율, VIX, 원유 및 연준 발언 요약 리포트</p>
+      </div>
+
+      <!-- 환율 / VIX / 유가 주요 매크로 지표 -->
+      <div id="macro-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+
+      <!-- 5대 주요 지수 -->
+      <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+        <h3 class="text-sm font-bold text-gray-700 mb-3 flex items-center gap-1.5">
+          <i class="fa-solid fa-chart-line text-red-500"></i> 미국 5대 주요 지수 동향
+        </h3>
+        <div id="indices-container" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
+      </div>
+
+      <!-- 국채 금리 추이 -->
+      <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
+        <h3 class="text-sm font-bold text-gray-700 mb-3 flex items-center gap-1.5">
+          <i class="fa-solid fa-landmark text-blue-500"></i> 미국 국채 금리 동향
+        </h3>
+        <div id="bonds-container" class="grid grid-cols-1 md:grid-cols-3 gap-3"></div>
+      </div>
+
+      <!-- 섹터 자금 흐름 & 연준 발언 분석 -->
+      <div class="space-y-4">
+        <!-- 강세 섹터 -->
+        <div class="bg-emerald-50 rounded-xl p-5 border border-emerald-200">
+          <h3 class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2 flex items-center gap-1">
+            <i class="fa-solid fa-arrow-trend-up text-emerald-600"></i> 🔥 강한 자금 쏠림 섹터 & 관심 배경
+          </h3>
+          <div id="strong-sectors" class="text-sm text-gray-800 leading-relaxed"></div>
+        </div>
+
+        <!-- 약세 섹터 -->
+        <div class="bg-rose-50 rounded-xl p-5 border border-rose-200">
+          <h3 class="text-xs font-bold text-rose-800 uppercase tracking-wider mb-2 flex items-center gap-1">
+            <i class="fa-solid fa-arrow-trend-down text-rose-600"></i> ❄️ 하방 압력 / 약세 섹터 & 요인 분석
+          </h3>
+          <div id="weak-sectors" class="text-sm text-gray-800 leading-relaxed"></div>
+        </div>
+
+        <!-- 연준 인사 발언 -->
+        <div class="bg-purple-50 rounded-xl p-5 border border-purple-200">
+          <h3 class="text-xs font-bold text-purple-800 uppercase tracking-wider mb-2 flex items-center gap-1">
+            <i class="fa-solid fa-comments text-purple-600"></i> 🎙️ 연준(Fed) 인사 발언 및 금리 매크로 이슈
+          </h3>
+          <div id="fed-speeches" class="text-sm text-gray-800 leading-relaxed"></div>
+        </div>
+
+        <!-- 시황 총평 -->
+        <div class="bg-blue-50 rounded-xl p-5 border border-blue-200">
+          <h3 class="text-xs font-bold text-blue-800 uppercase tracking-wider mb-2 flex items-center gap-1">
+            <i class="fa-solid fa-file-contract text-blue-600"></i> 📊 미국장 마감 시황 요약
+          </h3>
+          <div id="market-summary" class="text-sm text-gray-800 leading-relaxed"></div>
+        </div>
+      </div>
+    </div>
+
   </main>
 
   <script>
+    function switchTab(tabName) {
+      const scheduleContent = document.getElementById('tab-content-schedule');
+      const usContent = document.getElementById('tab-content-us');
+      const scheduleBtn = document.getElementById('tab-btn-schedule');
+      const usBtn = document.getElementById('tab-btn-us');
+
+      if (tabName === 'schedule') {
+        scheduleContent.classList.remove('hidden');
+        usContent.classList.add('hidden');
+        scheduleBtn.classList.add('tab-active');
+        usBtn.classList.remove('tab-active');
+      } else {
+        scheduleContent.classList.add('hidden');
+        usContent.classList.remove('hidden');
+        scheduleBtn.classList.remove('tab-active');
+        usBtn.classList.add('tab-active');
+        loadUSMarketData();
+      }
+    }
+
     async function fetchCalendarData() {
       try {
         const response = await fetch('data.json?v=' + new Date().getTime());
         const data = await response.json();
-        
         const container = document.getElementById('schedule-container');
         container.innerHTML = '';
 
@@ -61,8 +156,6 @@
 
           const card = `
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
-              
-              <!-- 날짜 및 타이틀 헤더 -->
               <div class="bg-gray-50 p-4 border-b border-gray-200 flex justify-between items-center">
                 <div class="flex items-center gap-2">
                   <span class="text-base font-extrabold text-gray-900">${item.year || '2026'}년 ${item.date}</span>
@@ -71,24 +164,16 @@
                 </div>
                 <span class="text-xs font-bold px-3 py-1 rounded-full border ${impactBadge}">시장 파급력: ${item.impact || '보통'}</span>
               </div>
-
-              <!-- 본문 내용 -->
               <div class="p-6 space-y-4 text-sm text-gray-700">
-                
-                <!-- 일정 제목 -->
                 <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
                   <i class="fa-solid fa-calendar-check text-red-500"></i> ${item.title}
                 </h3>
-
-                <!-- 1. 어떤 일정인가요? -->
                 <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <span class="font-bold text-gray-900 block mb-1 text-xs text-gray-500 flex items-center gap-1">
                     <i class="fa-solid fa-circle-info text-blue-500"></i> 어떤 일정인가요? (개요)
                   </span>
                   <p class="leading-relaxed text-gray-800">${item.overview || ''}</p>
                 </div>
-
-                <!-- 2. 왜 중요한가요? & 핵심 관전 포인트 -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
                     <span class="font-bold text-yellow-900 block mb-1 text-xs flex items-center gap-1">
@@ -96,7 +181,6 @@
                     </span>
                     <p class="leading-relaxed text-gray-800 text-xs">${item.importance || ''}</p>
                   </div>
-
                   <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
                     <span class="font-bold text-blue-900 block mb-1 text-xs flex items-center gap-1">
                       <i class="fa-solid fa-eye text-blue-600"></i> 핵심 관전 포인트
@@ -104,8 +188,6 @@
                     <p class="leading-relaxed text-gray-800 text-xs">${item.key_points || ''}</p>
                   </div>
                 </div>
-
-                <!-- 3. 증시 미치는 영향 -->
                 <div class="space-y-2 pt-2 border-t border-gray-100">
                   <div class="flex items-start gap-2">
                     <span class="text-xs font-bold bg-gray-100 text-gray-800 px-2 py-1 rounded shrink-0">🇰🇷 한국 증시 영향</span>
@@ -117,35 +199,75 @@
                     <p class="text-xs text-gray-700 leading-relaxed pt-0.5">${item.us_impact}</p>
                   </div>` : ''}
                 </div>
-
-                <!-- 4. AI 수혜주 및 종목 분석 -->
                 <div class="mt-4 bg-red-50 p-4 rounded-xl border border-red-100">
-                  <strong class="text-red-600 font-bold text-xs block mb-2">
-                    🤖 Gemini AI 수혜주 & 관련 종목 분석
-                  </strong>
-                  <div class="mb-2">
-                    ${stocksList}
-                  </div>
-                  <p class="text-xs text-gray-700 leading-relaxed mt-2 pt-2 border-t border-red-200">
-                    ${item.stock_reasons || ''}
-                  </p>
+                  <strong class="text-red-600 font-bold text-xs block mb-2">🤖 Gemini AI 수혜주 & 관련 종목 분석</strong>
+                  <div class="mb-2">${stocksList}</div>
+                  <p class="text-xs text-gray-700 leading-relaxed mt-2 pt-2 border-t border-red-200">${item.stock_reasons || ''}</p>
                 </div>
-
               </div>
             </div>
           `;
           container.innerHTML += card;
         });
       } catch (error) {
-        console.error("데이터 로드 실패:", error);
+        console.error("일정 로드 실패:", error);
+      }
+    }
+
+    async function loadUSMarketData() {
+      try {
+        const response = await fetch('us_market.json?v=' + new Date().getTime());
+        const data = await response.json();
+
+        // 1. 환율/VIX/유가
+        document.getElementById('macro-container').innerHTML = data.macro_indicators.map(m => `
+          <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center">
+            <div>
+              <div class="text-xs font-bold text-gray-500">${m.name}</div>
+              <div class="text-xl font-black text-gray-900 mt-1">${m.value}</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs font-bold ${m.change.startsWith('-') ? 'text-blue-600' : 'text-red-600'}">${m.change}</div>
+              <div class="text-xs text-gray-400 mt-1">${m.status}</div>
+            </div>
+          </div>
+        `).join('');
+
+        // 2. 5대 지수
+        document.getElementById('indices-container').innerHTML = data.indices.map(idx => `
+          <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 text-center">
+            <div class="text-xs font-bold text-gray-500">${idx.name}</div>
+            <div class="text-base font-black text-gray-900 mt-0.5">${idx.value}</div>
+            <div class="text-xs font-bold ${idx.change.startsWith('-') ? 'text-blue-600' : 'text-red-600'}">${idx.change}</div>
+          </div>
+        `).join('');
+
+        // 3. 국채 금리
+        document.getElementById('bonds-container').innerHTML = data.treasury_yields.map(b => `
+          <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 flex justify-between items-center">
+            <div>
+              <div class="text-xs font-bold text-gray-500">${b.tenor}</div>
+              <div class="text-base font-black text-gray-900">${b.yield_rate}</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs font-bold ${b.change.startsWith('-') ? 'text-blue-600' : 'text-red-600'}">${b.change}</div>
+              <div class="text-xs text-gray-400">${b.status}</div>
+            </div>
+          </div>
+        `).join('');
+
+        document.getElementById('strong-sectors').innerHTML = data.strong_sectors_analysis;
+        document.getElementById('weak-sectors').innerHTML = data.weak_sectors_analysis;
+        document.getElementById('fed-speeches').innerHTML = data.fed_speeches_summary;
+        document.getElementById('market-summary').innerHTML = data.overall_market_summary;
+        document.getElementById('us-update-time').innerText = `업데이트: ${data.updated_at}`;
+
+      } catch (err) {
+        console.error("미국 시황 로드 실패:", err);
       }
     }
 
     fetchCalendarData();
   </script>
-
-  <footer class="text-center py-6 text-xs text-gray-400">
-    © 2026 레드불 증시 AI 자동화 서비스. All rights reserved.
-  </footer>
 </body>
 </html>
