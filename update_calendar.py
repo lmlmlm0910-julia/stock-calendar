@@ -1,11 +1,16 @@
 import os
 import json
 import urllib.request
+import urllib.error
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 def ask_gemini(prompt):
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
+    if not GEMINI_API_KEY:
+        raise ValueError("GEMINI_API_KEY가 설정되지 않았습니다.")
+        
+    # 구글 표준 모델 경로로 수정 (404 에러 해결)
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={GEMINI_API_KEY}"
     headers = {"Content-Type": "application/json"}
     
     payload = {
@@ -26,10 +31,10 @@ def ask_gemini(prompt):
 
 def generate_stock_data():
     prompt = """
-    당신은 최고 수준의 주식 시장 분석가입니다.
-    다가오는 이번 주 및 다음 주의 한국 증시와 미국 증시 주요 일정을 분석해 주세요.
+    당신은 주식 시장 전문가입니다. 
+    이번 주 및 다음 주 한국 증시와 미국 증시의 주요 증시 일정과 관련 수혜 종목을 작성해 주세요.
     
-    반드시 아래와 같은 JSON 배열 형식으로만 응답해 주세요 (다른 설명글 절대 금지):
+    반드시 아래와 같은 JSON 배열 형식으로만 작성하세요 (다른 설명글 절대 금지):
     [
       {
         "date": "8월 31일",
@@ -42,16 +47,22 @@ def generate_stock_data():
         "analysis": "MSCI 편입으로 LG이노텍에 외국인 패시브 자금 유입이 기대됩니다."
       }
     ]
-    최소 4개 이상의 주요 경제 지표 발표, 기업 이벤트, 실적 발표 일정을 구성해 주세요.
     """
     
-    print("Gemini AI가 최신 증시 일정 및 수혜주를 분석 중입니다...")
-    response_json_text = ask_gemini(prompt)
-    data = json.loads(response_json_text)
+    print("Gemini AI 분석 실행 중...")
+    raw_response = ask_gemini(prompt).strip()
+    
+    if raw_response.startswith("```"):
+        raw_response = raw_response.split("```")[1]
+        if raw_response.startswith("json"):
+            raw_response = raw_response[4:]
+    raw_response = raw_response.strip()
+
+    data = json.loads(raw_response)
     
     with open("data.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    print("data.json 업데이트 완료!")
+    print("data.json 정상 업데이트 완료!")
 
 if __name__ == "__main__":
     generate_stock_data()
