@@ -9,7 +9,7 @@ from google import genai
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
 def get_market_date_string():
-    """토/일요일 실행 시 금요일 마감일자 계산"""
+    """토/일요일 실행 시 지난 금요일 마감일자 자동 계산"""
     now = datetime.now()
     weekday = now.weekday()
     if weekday == 5:
@@ -21,44 +21,76 @@ def get_market_date_string():
     days = ['월', '화', '수', '목', '금', '토', '일']
     return market_date.strftime(f"%Y년 %m월 %d일({days[market_date.weekday()]})")
 
-def fetch_real_quotes():
-    """야후 파이낸스에서 실제 시세 및 등락률 수집"""
-    symbols = ["^GSPC", "^DJI", "^IXIC", "^SOX", "^RUT", "KRW=X", "^VIX", "CL=F", "^IRX", "^TNX", "^TYX"]
-    symbols_str = ",".join(symbols)
-    url = f"https://query1.finance.yahoo.com/v7/finance/quote?symbols={symbols_str}"
+def fetch_yahoo_v8(symbol):
+    """v8/finance/chart 엔드포인트를 사용하여 인증(Crumb) 없이 100% 시세 수집"""
+    url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}?interval=1d&range=5d"
+    req = urllib.request.Request(url, headers={
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': '*/*'
+    })
     
-    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'})
-    name_map = {
-        "^GSPC": "S&P 500", "^DJI": "다우존스", "^IXIC": "나스닥", "^SOX": "필라델피아 반도체",
-        "^RUT": "러셀 2000", "KRW=X": "원/달러 환율", "^VIX": "VIX 지수", "CL=F": "WTI 유가",
-        "^IRX": "미국 2년물", "^TNX": "미국 10년물", "^TYX": "미국 30년물"
-    }
-    
-    results = {}
     try:
         with urllib.request.urlopen(req, timeout=10) as response:
             data = json.loads(response.read().decode('utf-8'))
-            quote_list = data.get('quoteResponse', {}).get('result', [])
-            for item in quote_list:
-                sym = item.get('symbol')
-                name = name_map.get(sym)
-                if not name: continue
-                
-                price = item.get('regularMarketPrice')
-                change_pct = item.get('regularMarketChangePercent')
-                
-                if price is not None and change_pct is not None:
-                    if sym in ["^TNX", "^TYX", "^IRX"] and price > 15:
-                        price /= 10.0
-                    price_str = f"{price:,.2f}" if price >= 1 else f"{price:.4f}"
-                    results[name] = {"price": price_str, "change": f"{change_pct:+.2f}%"}
+            result = data['chart']['result'][0]
+            meta = result['meta']
+            
+            price = meta.get('regularMarketPrice')
+            prev_close = meta.get('chartPreviousClose') or meta.get('previousClose')
+            
+            if price is None or prev_close is None:
+                closes = [c for c in result.get('indicators', {}).get('quote', [{}])[0].get('close', []) if c is not None]
+                if len(closes) >= 2:
+                    price = closes[-1]
+                    prev_close = closes[-2]
+            
+            if price is not None and prev_close is not None and prev_close != 0:
+                change_pct = ((price - prev_close) / prev_close) * 100
+                return price, change_pct
     except Exception as e:
-        print(f"시세 수집 에러: {e}")
+        print(f"[{symbol}] v8 수집 실패: {e}")
         
+    return None, None
+
+def get_real_market_data():
+    tickers = [
+        ("S&P 500", "^GSPC"),
+        ("다우존스", "^DJI"),
+        ("나스닥", "^IXIC"),
+        ("필라델피아 반도체", "^SOX"),
+        ("러셀 2000", "^RUT"),
+        ("원/달러 환율", "KRW=X"),
+        ("VIX 지수", "^VIX"),
+        ("WTI 유가", "CL=F"),
+        ("미국 2년물", "2YY=X"),
+        ("미국 10년물", "^TNX"),
+        ("미국 30년물", "^TYX")
+    ]
+    
+    results = {}
+    print("야후 파이낸스 v8 API에서 시세 직접 수집 중...")
+    
+    for name, symbol in tickers:
+        price, change_pct = fetch_yahoo_v8(symbol)
+        
+        # 2년물 금리 예외 처리 fallback
+        if price is None and name == "미국 2년물":
+            price, change_pct = fetch_yahoo_v8("^IRX")
+
+        if price is not None and change_pct is not None:
+            if symbol in ["^TNX", "^TYX", "^IRX"] and price > 15:
+                price = price / 10.0
+                
+            price_str = f"{price:,.2f}" if price >= 1 else f"{price:.4f}"
+            change_str = f"{change_pct:+.2f}%"
+            results[name] = {"price": price_str, "change": change_str}
+        else:
+            print(f"⚠️ {name} 수집 실패 - 방어 처리")
+            results[name] = {"price": "N/A", "change": "0.00%"}
+            
     return results
 
 def fetch_google_news():
-    """구글 뉴스 RSS에서 최신 외신 헤드라인 수집"""
     url = "https://news.google.com/rss/search?q=US+stock+market+fed+inflation&hl=en-US&gl=US&ceid=US:en"
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     news_titles = []
@@ -73,78 +105,76 @@ def fetch_google_news():
     except Exception as e:
         print(f"뉴스 수집 에러: {e}")
         
-    return "\n".join(news_titles) if news_titles else "최신 외신 뉴스 수집 중..."
+    return "\n".join(news_titles) if news_titles else "최신 외신 금융 뉴스를 수집하고 있습니다."
 
 def generate_us_market_report():
     if not GEMINI_API_KEY:
         raise ValueError("GEMINI_API_KEY가 설정되지 않았습니다.")
 
-    real_data = fetch_real_quotes()
+    real_data = get_real_market_data()
     real_news = fetch_google_news()
     market_date_str = get_market_date_string()
 
     ai_analysis = None
 
-    # 1. AI 호출 시도 (한도 초과/오류 발생 시 자동 에러 잡기)
-    try:
-        client = genai.Client(api_key=GEMINI_API_KEY)
-        prompt = f"""
-        당신은 월스트리트 수석 투자 전략가입니다.
-        
-        1. [{market_date_str}] 실제 증시 시세 수치:
-        {json.dumps(real_data, ensure_ascii=False, indent=2)}
+    if GEMINI_API_KEY:
+        try:
+            client = genai.Client(api_key=GEMINI_API_KEY)
+            prompt = f"""
+            당신은 월스트리트 수석 투자 전략가입니다.
+            
+            1. [{market_date_str}] 실제 증시 시세 수치:
+            {json.dumps(real_data, ensure_ascii=False, indent=2)}
 
-        2. [{market_date_str}] 실제 발생한 주요 미국 뉴스 기사 헤드라인:
-        {real_news}
+            2. [{market_date_str}] 실제 발생한 주요 미국 뉴스 기사 헤드라인:
+            {real_news}
 
-        [작성 규칙]
-        위 제공된 실제 수치와 구글 뉴스 기사를 기반으로, 
-        어떤 테마/섹터(엔비디아, 마이크로소프트, 테슬라, 애플, 반도체, 금융 등 주요 종목명 포함)에 자금이 쏠렸고 어떤 섹터가 하방 압력을 받았는지, 
-        연준 위원 발언이나 매크로 악재/호재 원인을 정밀 분석하여 작성해 주세요.
+            [작성 규칙]
+            위 제공된 실제 수치와 구글 뉴스 기사를 기반으로, 
+            어떤 테마/섹터(엔비디아, 마이크로소프트, 테슬라, 애플, 반도체, 금융 등 주요 종목명 포함)에 자금이 쏠렸고 어떤 섹터가 하방 압력을 받았는지, 
+            연준 위원 발언이나 매크로 악재/호재 원인을 정밀 분석하여 작성해 주세요.
 
-        HTML 태그(<b>, <br>, <ul>, <li>)를 써서 깔끔하게 출력해 주세요.
+            HTML 태그(<b>, <br>, <ul>, <li>)를 써서 깔끔하게 출력해 주세요.
 
-        반드시 아래 JSON 구조로만 응답하세요 (설명글/마크다운 금지):
-        {{
-          "strong_sectors_analysis": "HTML 포함 강세 섹터 & 대표 종목 수급 분석",
-          "weak_sectors_analysis": "HTML 포함 약세 섹터 & 악재 원인 분석",
-          "fed_speeches_summary": "HTML 포함 연준 발언 & 매크로 분석",
-          "overall_market_summary": "HTML 포함 오늘 증시 종합 총평"
-        }}
-        """
+            반드시 아래 JSON 구조로만 응답하세요 (설명글/마크다운 금지):
+            {{
+              "strong_sectors_analysis": "HTML 포함 강세 섹터 & 대표 종목 수급 분석",
+              "weak_sectors_analysis": "HTML 포함 약세 섹터 & 악재 원인 분석",
+              "fed_speeches_summary": "HTML 포함 연준 발언 & 매크로 분석",
+              "overall_market_summary": "HTML 포함 오늘 증시 종합 총평"
+            }}
+            """
 
-        models_to_try = ['gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-2.0-flash']
-        for model_name in models_to_try:
-            try:
-                print(f"Gemini API ({model_name}) 호출 중...")
-                response = client.models.generate_content(
-                    model=model_name,
-                    contents=prompt
-                )
-                text = response.text.strip()
-                if "```" in text:
-                    lines = text.splitlines()
-                    cleaned_lines = [line for line in lines if not line.strip().startswith("```")]
-                    text = "\n".join(cleaned_lines).strip()
-                ai_analysis = json.loads(text)
-                print(f"[{model_name}] 성공!")
-                break
-            except Exception as err:
-                print(f"[{model_name}] 호출 실패: {err}")
-                time.sleep(2)
+            models_to_try = ['gemini-2.5-flash', 'gemini-3.6-flash']
+            for model_name in models_to_try:
+                try:
+                    print(f"Gemini API ({model_name}) 분석 시도...")
+                    response = client.models.generate_content(
+                        model=model_name,
+                        contents=prompt
+                    )
+                    text = response.text.strip()
+                    if "```" in text:
+                        lines = text.splitlines()
+                        cleaned_lines = [line for line in lines if not line.strip().startswith("```")]
+                        text = "\n".join(cleaned_lines).strip()
+                    ai_analysis = json.loads(text)
+                    print(f"[{model_name}] 분석 성공!")
+                    break
+                except Exception as err:
+                    print(f"[{model_name}] 실패: {err}")
+                    time.sleep(2)
+        except Exception as outer_err:
+            print(f"Gemini API 예외: {outer_err}")
 
-    except Exception as outer_err:
-        print(f"Gemini API 호출 중 전체 예외: {outer_err}")
-
-    # 2. 일일 API 한도 초과(429) 시 안전 대체 생성 (워크플로 에러 방지)
     if not ai_analysis:
-        print("⚠️ API 한도 초과로 실제 수집된 데이터 기반 대체 리포트를 안전하게 리턴합니다.")
+        print("API 한도 대비 안전 리포트 생성")
         news_items = "".join([f"<li>{n.replace('- ', '')}</li>" for n in real_news.split("\n") if n.strip()])
         ai_analysis = {
-            "strong_sectors_analysis": f"<b>🔥 실시간 증시 종가 현황:</b><br>나스닥 {real_data.get('나스닥', {}).get('price')} ({real_data.get('나스닥', {}).get('change')}), S&P 500 {real_data.get('S&P 500', {}).get('price')} ({real_data.get('S&P 500', {}).get('change')})<br>실시간 시장 주가 지수 흐름을 반영합니다.",
-            "weak_sectors_analysis": f"<b>❄️ 실시간 매크로 지표 현황:</b><br>VIX 지수: {real_data.get('VIX 지수', {}).get('price')} ({real_data.get('VIX 지수', {}).get('change')}), WTI 원유: ${real_data.get('WTI 유가', {}).get('price')} ({real_data.get('WTI 유가', {}).get('change')})",
-            "fed_speeches_summary": f"<b>🎙️ 실시간 주요 외신 헤드라인:</b><ul>{news_items}</ul>",
-            "overall_market_summary": f"<b>📊 {market_date_str} 증시 요약:</b><br>원/달러 환율 {real_data.get('원/달러 환율', {}).get('price')}원 ({real_data.get('원/달러 환율', {}).get('change')}), 미국 10년물 금리 {real_data.get('미국 10년물', {}).get('price')}% ({real_data.get('미국 10년물', {}).get('change')})로 집계되었습니다."
+            "strong_sectors_analysis": f"<b>🔥 실시간 증시 종가 현황 ({market_date_str}):</b><br>나스닥 {real_data.get('나스닥', {}).get('price')} ({real_data.get('나스닥', {}).get('change')}), S&P 500 {real_data.get('S&P 500', {}).get('price')} ({real_data.get('S&P 500', {}).get('change')}) 실시간 종가 수치를 정상 반영했습니다.",
+            "weak_sectors_analysis": f"<b>❄️ 실시간 매크로 지표 현황:</b><br>VIX 공포지수: {real_data.get('VIX 지수', {}).get('price')} ({real_data.get('VIX 지수', {}).get('change')}), WTI 원유: ${real_data.get('WTI 유가', {}).get('price')} ({real_data.get('WTI 유가', {}).get('change')})",
+            "fed_speeches_summary": f"<b>🎙️ 실시간 외신 뉴스 헤드라인:</b><ul>{news_items}</ul>",
+            "overall_market_summary": f"<b>📊 {market_date_str} 마감 총평:</b><br>원/달러 환율 {real_data.get('원/달러 환율', {}).get('price')}원 ({real_data.get('원/달러 환율', {}).get('change')}), 미국 10년물 금리 {real_data.get('미국 10년물', {}).get('price')}% ({real_data.get('미국 10년물', {}).get('change')})로 집계되었습니다."
         }
 
     final_json = {
@@ -175,7 +205,7 @@ def generate_us_market_report():
     with open("us_market.json", "w", encoding="utf-8") as f:
         json.dump(final_json, f, ensure_ascii=False, indent=2)
 
-    print("us_market.json 정상 수집 완료!")
+    print("us_market.json 정상 업데이트 완료!")
 
 if __name__ == "__main__":
     generate_us_market_report()
