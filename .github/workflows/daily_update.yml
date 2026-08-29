@@ -2,7 +2,8 @@ name: Daily Stock Schedule Auto Update
 
 on:
   schedule:
-    - cron: '0 23 * * *'
+    # 매일 아침 6시 (한국시간 KST 기준) 자동 실행
+    - cron: '0 21 * * *'
   workflow_dispatch:
 
 jobs:
@@ -20,14 +21,19 @@ jobs:
       - name: Install Google AI Library
         run: pip install google-genai
 
-      - name: Run AI Script
+      - name: Run Stock Schedule Script
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python update_calendar.py
+
+      - name: Run US Market Wrapup Script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python update_us_market.py
 
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add data.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto update stock schedule by Gemini AI" && git push)
+          git add data.json us_market.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto update all market reports by Gemini AI" && git push)
