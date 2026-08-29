@@ -8,14 +8,13 @@ def generate_stock_data():
     if not GEMINI_API_KEY:
         raise ValueError("GEMINI_API_KEY가 설정되지 않았습니다. Secrets를 확인해 주세요.")
 
-    # 구글 공식 Client 연결
     client = genai.Client(api_key=GEMINI_API_KEY)
 
     prompt = """
     당신은 주식 시장 전문가입니다. 
     이번 주 및 다음 주 한국 증시와 미국 증시의 주요 증시 일정과 관련 수혜 종목을 작성해 주세요.
     
-    반드시 순수한 JSON 배열 형식으로만 응답해 주세요. 마크다운 기호나 추가 설명글은 모두 제외해 주세요.
+    반드시 순수한 JSON 배열 형식으로만 응답해 주세요. 마크다운 기호(```json 등)나 추가 설명글은 모두 제외해 주세요.
     [
       {
         "date": "8월 31일",
@@ -32,13 +31,12 @@ def generate_stock_data():
 
     print("Gemini AI 분석 실행 중...")
     response = client.models.generate_content(
-        model='gemini-2.5-flash',
+        model='gemini-3.6-flash',
         contents=prompt
     )
 
     text = response.text.strip()
 
-    # 코드 블록 태그 제거
     if "```" in text:
         lines = text.splitlines()
         cleaned_lines = [line for line in lines if not line.strip().startswith("```")]
