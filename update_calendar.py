@@ -1,40 +1,252 @@
 import os
 import json
+import time
 from datetime import datetime
 from google import genai
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
+# 이미지 속 9월 20개 핵심 기본 일정 베이스
+BASE_SEPTEMBER_EVENTS = [
+    {
+        "year": "2026", "date": "9월 1일", "day": "화", "title": "한국 8월 수출입 동향 지표 발표",
+        "category": "국내 경제지표", "impact": "상",
+        "overview": "8월 월간 수출입 동향 및 무역수지 통계 발표입니다.",
+        "importance": "반도체, 자동차 등 주요 품목의 수출 실적 및 무역수지 흑자 규모를 확인하는 지표입니다.",
+        "key_points": "반도체 수출 증가세 유지 여부, 대중국/대미국 수출 회복 속도.",
+        "korea_impact": "반도체 대장주(삼성전자, SK하이닉스) 및 자동차주 수급에 영향.",
+        "us_impact": "글로벌 IT 부품 및 공급망 수요 선행지표.",
+        "stocks": ["삼성전자", "SK하이닉스", "현대차"], "stock_reasons": "수출 호조 지속 시 반도체 대장주 강세."
+    },
+    {
+        "year": "2026", "date": "9월 1일", "day": "화", "title": "애플 신임 CEO 존 터너스 공식 취임",
+        "category": "미국 기업 이슈", "impact": "중",
+        "overview": "애플 하드웨어 수석 부사장 존 터너스가 새 CEO로 취임합니다.",
+        "importance": "차세대 폼팩터(폴더블, 온디바이스 AI) 비전 및 하드웨어 혁신 전환점입니다.",
+        "key_points": "온디바이스 AI 및 폴더블 스마트폰 전략 추진 속도.",
+        "korea_impact": "애플 핵심 부품 공급망(LG이노텍, 비에이치) 수혜 기대.",
+        "us_impact": "애플(AAPL) 투자 심리 변화.",
+        "stocks": ["애플", "LG이노텍", "비에이치"], "stock_reasons": "하드웨어 신전략 발표 기대감으로 애플 부품사 수혜."
+    },
+    {
+        "year": "2026", "date": "9월 3일", "day": "목", "title": "테슬라 사이버캡(Cybercab) 로보택시 행사",
+        "category": "신기술 / 자율주행", "impact": "상",
+        "overview": "테슬라의 완전 자율주행(FSD) 기반 무인 로보택시 공개 이벤트입니다.",
+        "importance": "자율주행 상용화 가능성과 서비스 수익화 모델을 검증받는 핵심 모멘텀입니다.",
+        "key_points": "FSD v13 완성도, 무인 운행 승인 현황 및 차량 가격.",
+        "korea_impact": "자율주행 카메라모듈 및 배터리 공급망 강세.",
+        "us_impact": "테슬라(TSLA) 주가 변동성 확대 및 로보택시 모멘텀.",
+        "stocks": ["테슬라", "LG에너지솔루션", "퓨런티어"], "stock_reasons": "자율주행 로보택시 상용화 기대감 수혜."
+    },
+    {
+        "year": "2026", "date": "9월 4일", "day": "금", "title": "미국 8월 비농업 고용지표 및 실업률 발표",
+        "category": "미국 핵심 매크로", "impact": "상",
+        "overview": "미 노동부 발표 8월 비농업 신규 고용 및 실업률 데이터입니다.",
+        "importance": "9월 FOMC 금리 결정 전 금리 인하 폭을 결정짓는 최우선 변수입니다.",
+        "key_points": "신규 고용 건수 예상치 부합 여부, 실업률 추이.",
+        "korea_impact": "미 금리 인하 수혜주(바이오, 성장주) 투자 심리 영향.",
+        "us_impact": "미 증시 3대 지수 급변동 및 금리 인하 폭 결정.",
+        "stocks": ["삼성바이오로직스", "알테오젠", "NAVER"], "stock_reasons": "고용 둔화 시 금리 인하 기대감으로 성장주 수혜."
+    },
+    {
+        "year": "2026", "date": "9월 9일~11월 4일", "day": "수", "title": "미 재무부 국채 바이백 규모 확대 ($2B → $4B)",
+        "category": "유동성 정책", "impact": "중",
+        "overview": "미 재무부가 국채 매입(바이백) 회당 한도를 2배로 늘립니다.",
+        "importance": "채권 수급 불균형을 완화하고 장기 국채 금리 급등을 억제하는 유동성 지원입니다.",
+        "key_points": "미 국채 금리(10년물/30년물) 안정화 여부.",
+        "korea_impact": "미 국채 금리 안정에 따른 환율 및 금융 시장 안정.",
+        "us_impact": "채권 금리 하락 및 위험자산 선호 심리 자극.",
+        "stocks": ["KB금융", "삼성물산"], "stock_reasons": "장기 금리 안정화로 금융 시장 안정 수혜."
+    },
+    {
+        "year": "2026", "date": "9월 10일", "day": "목", "title": "애플 아이폰 폴드 및 차세대 신제품 공개",
+        "category": "신제품 이벤트", "impact": "상",
+        "overview": "애플의 사상 첫 폴더블 스마트폰 '아이폰 폴드'가 공개됩니다.",
+        "importance": "폼팩터 대전환을 통한 교체 수요 자극 및 폴더블 시장 확대 기폭제입니다.",
+        "key_points": "아이폰 폴드 디스플레이 및 애플 인텔리전스 AI 통합 정도.",
+        "korea_impact": "폴더블 힌지, OLED 디스플레이, 카메라 모듈 공급사 수혜.",
+        "us_impact": "애플(AAPL) 주가 및 관련 빅테크 부품 공급망 모멘텀.",
+        "stocks": ["LG이노텍", "KH바텍", "파인엠텍"], "stock_reasons": "애플 폴더블 진출에 따른 핵심 부품사 수혜."
+    },
+    {
+        "year": "2026", "date": "9월 11일", "day": "금", "title": "한국 9월 1일~10일 조기 수출 지표 발표",
+        "category": "국내 경제지표", "impact": "중",
+        "overview": "관세청 발표 9월 초 10일간의 조기 수출입 통계 수치입니다.",
+        "importance": "당월 한국 전체 수출 성과와 IT/반도체 업황의 실시간 가늠자입니다.",
+        "key_points": "반도체 일평균 수출액 및 승용차 수출 실적.",
+        "korea_impact": "9월 국내 수출주 및 실적 대비 투자 심리 영향.",
+        "us_impact": "동아시아 제조업 공급망 가동률 확인 지표.",
+        "stocks": ["SK하이닉스", "한미반도체"], "stock_reasons": "반도체 조기 수출 호조 시 소부장주 수혜."
+    },
+    {
+        "year": "2026", "date": "9월 11일", "day": "금", "title": "미국 8월 CPI (소비자물가지수) 발표",
+        "category": "미국 핵심 매크로", "impact": "상",
+        "overview": "미 노동통계국 발표 8월 소비자물가지수(CPI) 데이터입니다.",
+        "importance": "9월 FOMC 금리 결정을 앞두고 마지막 인플레이션 향방을 확정 짓는 지표입니다.",
+        "key_points": "헤드라인 CPI 전년 대비 상승률 및 주거비 둔화 속도.",
+        "korea_impact": "원/달러 환율 및 한국은행 금리 정책 영향.",
+        "us_impact": "9월 FOMC 금리 인하 폭 결정 변수.",
+        "stocks": ["카카오", "NAVER", "셀트리온"], "stock_reasons": "물가 안정 확인 시 금리 인하 수혜 대표 성장주 상승."
+    },
+    {
+        "year": "2026", "date": "9월 14일", "day": "월", "title": "한국거래소(KRX) 애프터마켓 개설",
+        "category": "증시 제도 개편", "impact": "중",
+        "overview": "정규장 마감 이후 야간에도 주식을 거래하는 애프터마켓이 시작됩니다.",
+        "importance": "미 증시 개장 전후 호재/악재를 국내 증시에 즉각 반영하는 제도 개편입니다.",
+        "key_points": "거래대금 증가 여부 및 증권사 수수료 수익 확대.",
+        "korea_impact": "거래대금 급증에 따른 증권주 수혜.",
+        "us_impact": "미국장에 맞춘 한국주 야간 매매 반응.",
+        "stocks": ["키움증권", "미래에셋증권"], "stock_reasons": "거래 시간 연장에 따른 위탁매매 수수료 수익 증가."
+    },
+    {
+        "year": "2026", "date": "9월 15일", "day": "화", "title": "미국 가상자산 명확성 법안(Clarity Act) 절차 표결",
+        "category": "미국 규제 / 법안", "impact": "중",
+        "overview": "가상자산 증권성 구분 및 SEC/CFTC 관할권을 정리하는 법안 표결입니다.",
+        "importance": "가상자산 규제 불확실성을 해소하고 기관 자금 유입을 가속화합니다.",
+        "key_points": "초당적 찬성표 확보 여부 및 비트코인 규제 기준.",
+        "korea_impact": "국내 가상자산 관련주 및 핀테크 종목 모멘텀.",
+        "us_impact": "코인베이스(COIN) 등 암호화폐 테크주 강세.",
+        "stocks": ["코인베이스", "우리기술투자"], "stock_reasons": "암호화폐 제도권 명확화로 디지털 자산 관련주 수혜."
+    },
+    {
+        "year": "2026", "date": "9월 17일", "day": "목", "title": "미국 9월 FOMC 기준금리 결정 및 점도표 공개",
+        "category": "글로벌 핵심 매크로", "impact": "상",
+        "overview": "미 연방공개시장위원회가 기준금리와 점도표를 발표합니다.",
+        "importance": "피벗(통화정책 전환)의 시작점과 향후 금리 인하 경로가 확정됩니다.",
+        "key_points": "금리 인하 폭(25bp vs 50bp) 및 점도표상 연말 금리 목표치.",
+        "korea_impact": "한국은행 금리 인하 여건 마련 및 원화 강세 전환 계기.",
+        "us_impact": "글로벌 전 자산 시장 향방 결정.",
+        "stocks": ["삼성전자", "SK하이닉스", "알테오젠"], "stock_reasons": "금리 인하 국면 진입에 따른 글로벌 유동성 장세 수혜."
+    },
+    {
+        "year": "2026", "date": "9월 18일", "day": "금", "title": "일본은행(BOJ) 금융정책결정회의 금리 발표",
+        "category": "글로벌 통화정책", "impact": "상",
+        "overview": "일본은행이 추가 금리 인상 여부를 결정합니다.",
+        "importance": "엔 캐리 트레이드 청산에 따른 증시 단기 발작 가능성 점검 지표입니다.",
+        "key_points": "추가 금리 인상 여부 및 엔/달러 환율 변화.",
+        "korea_impact": "국내 증시 변동성 및 수출 경쟁력 변화.",
+        "us_impact": "미-일 금리차 축소에 따른 일본계 자금 회수 여부.",
+        "stocks": ["고려아연", "KODEX 일본TOPIX"], "stock_reasons": "엔화 강세 전환 시 국내 수출 기업 반사이익."
+    },
+    {
+        "year": "2026", "date": "9월 중", "day": "수", "title": "한국 대미 프로젝트 투자 1호 공식 발표",
+        "category": "국내 정책 / 투자", "impact": "중",
+        "overview": "대미 국책 투자 프로젝트 1호 사업 계획이 공식 공개됩니다.",
+        "importance": "대미 수출 및 미국 현지 공장 설립 관련 정부 지원/수주 모멘텀입니다.",
+        "key_points": "수주 대상 기업 및 보조금 수혜 규모.",
+        "korea_impact": "대미 투자 수혜 밸류체인 수주 기업 단기 급등 모멘텀.",
+        "us_impact": "미국 내 제조 공급망 수혜.",
+        "stocks": ["HD현대중공업", "두산에너빌리티"], "stock_reasons": "미국 현지 투자 확대 및 조선/원전 프로젝트 수혜."
+    },
+    {
+        "year": "2026", "date": "9월 중", "day": "목", "title": "정부 주도 국민성장펀드 2차 자금 모집 및 판매",
+        "category": "국내 정책 자금", "impact": "중",
+        "overview": "첨단 전략 산업(AI, 반도체, 바이오)에 투입하는 정책 펀드 2차 모집입니다.",
+        "importance": "증시에 수조 원 단위의 신규 기관 패시브 유동성을 공급합니다.",
+        "key_points": "펀드 편입 대상 섹터 및 목표 모집 금액.",
+        "korea_impact": "국내 첨단 산업 중소형 종목으로의 자금 유입.",
+        "us_impact": "한국 기술 기업으로의 유동성 집결.",
+        "stocks": ["리노공업", "레인보우로보틱스"], "stock_reasons": "정책 펀드 중점 투자 대상인 첨단기업 수급 수혜."
+    },
+    {
+        "year": "2026", "date": "9월 중", "day": "금", "title": "원화 연동 스테이블코인 법안 발의 여부",
+        "category": "가상자산 정책", "impact": "중",
+        "overview": "원화 가치 연동 스테이블코인을 인정하는 가상자산 2단계 법안 발의입니다.",
+        "importance": "국내 핀테크/금융사의 블록체인 사업 진출 법적 토대입니다.",
+        "key_points": "발행 주체 허용 범위 및 준비금 적립 의무 규정.",
+        "korea_impact": "국내 핀테크 및 가상자산 관련주 모멘텀.",
+        "us_impact": "글로벌 스테이블코인 규제 체계와 비교 평가.",
+        "stocks": ["카카오페이", "다날"], "stock_reasons": "디지털 자산 인프라 보유 핀테크 기업 수혜."
+    },
+    {
+        "year": "2026", "date": "9월 23일~24일", "day": "수", "title": "메타 커넥트 2026 (Meta Connect) 컨퍼런스",
+        "category": "빅테크 행사", "impact": "중",
+        "overview": "메타의 차세대 스마트글래스, AR/VR 및 Llama AI 모델이 공개됩니다.",
+        "importance": "공간 컴퓨팅과 온디바이스 AI 융합 기술 시연입니다.",
+        "key_points": "경량화 AR 스마트글래스 공개 및 온디바이스 AI 탑재.",
+        "korea_impact": "광학 부품, 카메라 모듈, OLED 디스플레이 밸류체인 수혜.",
+        "us_impact": "메타(META) 주가 모멘텀 및 AI HW 경쟁 가속.",
+        "stocks": ["메타", "LG이노텍", "뉴프렉스"], "stock_reasons": "메타 AR 기기 신제품 출시 수혜."
+    },
+    {
+        "year": "2026", "date": "9월 24일~", "day": "목", "title": "시진핑 중국 국가주석 방미 및 미중 정상회담",
+        "category": "글로벌 외교", "impact": "상",
+        "overview": "시진핑 주석 방미로 양국 관세 및 반도체 규제 현안을 논의합니다.",
+        "importance": "G2 국가 간 무역 갈등 완화 및 지정학적 리스크 해소 이벤트입니다.",
+        "key_points": "대중 관세 완화 및 원자재 수출 통제 완화 합의 여부.",
+        "korea_impact": "대중국 수출 비중이 높은 반도체, 화학, 소비재 수혜.",
+        "us_impact": "대중 매출 비중 높은 빅테크(엔비디아, 애플) 안도 랠리.",
+        "stocks": ["삼성전자", "LG화학", "엔비디아"], "stock_reasons": "무역 장벽 축소에 따른 글로벌 제조/수출 기업 수혜."
+    },
+    {
+        "year": "2026", "date": "9월 넷째 주", "day": "금", "title": "마이크론 테크놀로지(Micron) 분기 실적 발표",
+        "category": "미국 실적발표", "impact": "상",
+        "overview": "메모리 반도체 3대 기업 중 가장 먼저 실적을 발표하는 마이크론 실적입니다.",
+        "importance": "반도체 업황(HBM, DRAM)의 풍향계 역할을 하는 최우선 실적입니다.",
+        "key_points": "HBM3E 공급 규모 및 DRAM 가격 상승폭.",
+        "korea_impact": "삼성전자와 SK하이닉스 주가에 직접적 영향.",
+        "us_impact": "필라델피아 반도체 지수 및 엔비디아 등 AI 밸류체인 영향.",
+        "stocks": ["SK하이닉스", "삼성전자", "마이크론"], "stock_reasons": "메모리 반도체 업황 호조 확인 시 반도체 랠리 재개."
+    },
+    {
+        "year": "2026", "date": "9월 24일~27일", "day": "목", "title": "한국 추석 명절 연휴 증시 휴장",
+        "category": "국내 휴장 일정", "impact": "하",
+        "overview": "한국 증시가 추석 명절 연휴로 전면 휴장합니다.",
+        "importance": "휴장 기간 해외 증시 변동성 노출에 따른 위험 관리 필요성점입니다.",
+        "key_points": "연휴 전 포트폴리오 현금 비중 조율.",
+        "korea_impact": "연휴 전 거래량 감소 및 차익 실현 현금화 매물 출회 가능성.",
+        "us_impact": "한국장 휴장 동안 해외 증시 독자적 흐름.",
+        "stocks": ["신세계", "대한항공"], "stock_reasons": "명절 연휴 내수 소비 및 항공/여행 수요 증가 수혜."
+    },
+    {
+        "year": "2026", "date": "9월 30일", "day": "수", "title": "미국 회계연도 2027년 예산안 처리 기한",
+        "category": "미국 정치 / 재정", "impact": "상",
+        "overview": "미국 연방 정부 예산안 또는 임시 지출안의 의회 통과 기한입니다.",
+        "importance": "예산안 타결 실패 시 셧다운 리스크 부각으로 단기 시장 불안을 유발합니다.",
+        "key_points": "초당적 예산안 합의 여부 및 셧다운 회피 가능성.",
+        "korea_impact": "미 정부 셧다운 노이즈 발생 시 위험자산 회피 심리.",
+        "us_impact": "미 국채 금리 및 방산/정부 계약 관련주 변동성.",
+        "stocks": ["록히드마틴", "KODEX 미국채"], "stock_reasons": "예산안 최종 타결 시 국방 지출 관련 수주 안정성 회복."
+    }
+]
+
 def generate_stock_data():
     if not GEMINI_API_KEY:
-        raise ValueError("GEMINI_API_KEY가 설정되지 않았습니다.")
+        print("API 키 없음 - 9월 기본 일정으로 업데이트합니다.")
+        save_data(BASE_SEPTEMBER_EVENTS)
+        return
 
     now = datetime.now()
     today_str = now.strftime("%Y년 %m월 %d일")
-    current_year = now.strftime("%Y")
 
     prompt = f"""
-    당신은 글로벌 금융 시장 최고의 수석 아날리스트입니다.
+    당신은 글로벌 금융 시장 수석 아날리스트입니다.
     오늘 기준 날짜는 [{today_str}] 입니다.
-    오늘 이후 다가오는 이번 주 및 다음 주의 한국 증시와 미국 증시 핵심 주요 일정을 최소 4개 이상 추출하여 매우 심도 있게 분석해 주세요.
 
-    반드시 아래와 같은 순수한 JSON 배열 형식으로만 응답해 주세요 (설명글/마크다운 금지):
+    아래 [9월 핵심 증시 일정 베이스 데이터]를 바탕으로, 오늘 날짜 기준 최신 증시 상황과 수혜주 분석을 더욱 세련되고 풍성하게 보완한 JSON 배열을 생성해 주세요.
+
+    [9월 핵심 증시 일정 베이스 데이터]
+    {json.dumps(BASE_SEPTEMBER_EVENTS[:8], ensure_ascii=False, indent=2)} ... (총 20개 일정)
+
+    [지침]
+    1. 위 20개 일정을 바탕으로 작성하되, 오늘 날짜 기준 추가된 최신 호재/악재 뉴스나 실시간 수혜주 요인을 매일 다듬어 주세요.
+    2. 반드시 아래 순수한 JSON 배열 형식으로만 응답해 주세요 (설명글/마크다운 금지):
 
     [
       {{
-        "year": "{current_year}",
-        "date": "8월 31일",
-        "day": "월",
-        "title": "MSCI 지수 리밸런싱",
-        "category": "국내 주식",
+        "year": "2026",
+        "date": "9월 1일",
+        "day": "화",
+        "title": "일정 제목",
+        "category": "카테고리",
         "impact": "상",
-        "overview": "MSCI 지수의 구성 종목 변경 및 비중 조정 작업입니다.",
-        "importance": "글로벌 패시브 자금이 종목 변경에 따라 강제 이동하므로 단기 수급 변동성을 유발합니다.",
-        "key_points": "종목 편입/편출에 따른 동시호가 수급 유입 및 외국인 순매수 변화.",
-        "korea_impact": "편입 종목에는 외국인 패시브 자금이 유입되어 상승 모멘텀을 형성합니다.",
-        "us_impact": "신흥국 지수 내 한국 비중 변화에 따라 글로벌 자금 이동이 나타납니다.",
-        "stocks": ["LG이노텍"],
-        "stock_reasons": "MSCI 지수 편입에 따른 패시브 자금 수혜 기대."
+        "overview": "개요",
+        "importance": "중요성",
+        "key_points": "관전포인트",
+        "korea_impact": "한국증시 영향",
+        "us_impact": "미국증시 영향",
+        "stocks": ["관련주1", "관련주2"],
+        "stock_reasons": "수혜주 상세 분석 이유"
       }}
     ]
     """
@@ -42,10 +254,10 @@ def generate_stock_data():
     data = None
     try:
         client = genai.Client(api_key=GEMINI_API_KEY)
-        models_to_try = ['gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-2.0-flash']
-        for model_name in models_to_try:
+        models = ['gemini-2.5-flash', 'gemini-3.6-flash']
+        for model_name in models:
             try:
-                print(f"Gemini AI 일정 분석 중 ({model_name})...")
+                print(f"Gemini AI 매일 아침 일정 자동 업데이트 중 ({model_name})...")
                 response = client.models.generate_content(
                     model=model_name,
                     contents=prompt
@@ -56,38 +268,25 @@ def generate_stock_data():
                     cleaned_lines = [line for line in lines if not line.strip().startswith("```")]
                     text = "\n".join(cleaned_lines).strip()
                 data = json.loads(text)
-                print(f"[{model_name}] 일정 분석 성공!")
+                print(f"[{model_name}] 일정 자동 업데이트 성공!")
                 break
             except Exception as e:
                 print(f"[{model_name}] 실패: {e}")
+                time.sleep(2)
     except Exception as err:
-        print(f"API 호출 전체 에러: {err}")
+        print(f"API 전체 오류: {err}")
 
-    # API 한도 초과 시 기존 파일 유지 또는 기본 구조 생성하여 워크플로 실패 방지
+    # API 한도 초과 또는 오류 시 20개 9월 일정 베이스로 완벽 방어
     if not data:
-        if os.path.exists("data.json"):
-            print("API 제한으로 인해 기존 data.json을 유지합니다.")
-            return
-        data = [{
-            "year": current_year,
-            "date": "8월 31일",
-            "day": "월",
-            "title": "주요 증시 일정 자동 갱신 대기",
-            "category": "증시 일정",
-            "impact": "보통",
-            "overview": "Gemini API 무료 한도 소진으로 기본 데이터가 표시됩니다. 내일 아침 6시 최신 일정으로 자동 업데이트됩니다.",
-            "importance": "매일 아침 6시 자동 갱신",
-            "key_points": "API 리셋 후 자동으로 최신 데이터 반영",
-            "korea_impact": "정상 연동 대기 중",
-            "us_impact": "정상 연동 대기 중",
-            "stocks": ["주요 종목"],
-            "stock_reasons": "자동 갱신 대기 중"
-        }]
+        print("⚠️ Gemini API 사용 한도 초과 시 20개 9월 전체 일정 기본 세트로 자동 갱신합니다.")
+        data = BASE_SEPTEMBER_EVENTS
 
+    save_data(data)
+
+def save_data(data):
     with open("data.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-
-    print("data.json 정상 처리 완료!")
+    print("data.json 정상 저장 완료!")
 
 if __name__ == "__main__":
     generate_stock_data()
