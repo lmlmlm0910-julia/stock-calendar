@@ -1,0 +1,86 @@
+[
+  {
+    "date": "3월 3일",
+    "day": "월",
+    "title": "MWC 2025 (모바일 월드 콩그레스) 개막",
+    "category": "국내 주식",
+    "impact": "상",
+    "details": "세계 최대 모바일 전시회 개최, AI 에이전트, 온디바이스 AI 및 차세대 통신 기술 집중 조명",
+    "stocks": [
+      "삼성전자",
+      "SK텔레콤",
+      "KMW"
+    ],
+    "analysis": "온디바이스 AI 생태계 확대와 차세대 통신망(6G) 관련 기술 보유 기업들의 모멘텀 부각 가능성이 높습니다."
+  },
+  {
+    "date": "3월 4일",
+    "day": "화",
+    "title": "미국 2월 ISM 제조업 PMI 발표",
+    "category": "미국 주식",
+    "impact": "중",
+    "details": "미국 실물 경기 흐름과 제조업 업황 회복 여부를 가늠하는 대표 지표",
+    "stocks": [
+      "Caterpillar",
+      "General Electric",
+      "Freeport-McMoRan"
+    ],
+    "analysis": "제조업 지표 회복세 확인 시 경기 민감주 및 산업재, 원자재 섹터로의 자금 유입이 기대됩니다."
+  },
+  {
+    "date": "3월 6일",
+    "day": "목",
+    "title": "브로드컴(Broadcom) 실적 발표",
+    "category": "미국 주식",
+    "impact": "상",
+    "details": "AI 맞춤형 반도체(ASIC) 및 네트워킹 칩 선도 기업의 분기 실적 발표",
+    "stocks": [
+      "Broadcom",
+      "NVIDIA",
+      "Marvell Technology"
+    ],
+    "analysis": "빅테크 기업들의 AI 칩 수요 지속성을 확인할 수 있으며, 반도체 및 AI 공급망 전반에 큰 영향을 줄 것입니다."
+  },
+  {
+    "date": "3월 7일",
+    "day": "금",
+    "title": "미국 2월 비농업 고용보고서 발표",
+    "category": "미국 주식",
+    "impact": "상",
+    "details": "연준(Fed)의 금리 결정에 직접적인 영향을 미치는 신규 고용 및 실업률 지표",
+    "stocks": [
+      "Apple",
+      "Microsoft",
+      "Amazon"
+    ],
+    "analysis": "고용 시장 완화 신호가 확인될 경우 둔화된 금리 인하 기대감이 회복되며 대형 기술주 중심으로 긍정적 영향이 예상됩니다."
+  },
+  {
+    "date": "3월 11일",
+    "day": "화",
+    "title": "한국 3월 1~10일 수출입 현황 발표",
+    "category": "국내 주식",
+    "impact": "중",
+    "details": "반도체, 바이오, 자동차 등 핵심 수출 품목의 월초 실적 확인",
+    "stocks": [
+      "SK하이닉스",
+      "HD현대중공업",
+      "삼성바이오로직스"
+    ],
+    "analysis": "반도체 및 조선 등 주력 수출 품목의 견조한 성장세가 확인될 경우 관련 대형 수출주의 수급에 호재로 작용합니다."
+  },
+  {
+    "date": "3월 12일",
+    "day": "수",
+    "title": "미국 2월 소비자물가지수(CPI) 발표",
+    "category": "미국 주식",
+    "impact": "상",
+    "details": "3월 FOMC 회의 직전 발표되는 가장 중요한 인플레이션 지표",
+    "stocks": [
+      "Tesla",
+      "Meta Platforms",
+      "Alphabet"
+    ],
+    "analysis": "CPI 상승률이 시장 예상치에 부합하거나 하회할 경우 통화정책 불확실성이 해소되어 증시 전반에 상승 동력을 제공할 수 있습니다."
+  }
+]
