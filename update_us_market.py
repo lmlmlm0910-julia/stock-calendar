@@ -22,7 +22,7 @@ def get_market_date_string():
     return market_date.strftime(f"%Y년 %m월 %d일({days[market_date.weekday()]})")
 
 def fetch_real_quotes():
-    """야후 파이낸스에서 실제 시세 및 정확한 등락률 직접 계산"""
+    """야후 파이낸스에서 실제 시세 및 등락률 수집"""
     symbols = ["^GSPC", "^DJI", "^IXIC", "^SOX", "^RUT", "KRW=X", "^VIX", "CL=F", "^IRX", "^TNX", "^TYX"]
     symbols_str = ",".join(symbols)
     url = f"https://query1.finance.yahoo.com/v7/finance/quote?symbols={symbols_str}"
@@ -58,7 +58,7 @@ def fetch_real_quotes():
     return results
 
 def fetch_google_news():
-    """구글 뉴스 RSS에서 미국 증시 최신 기사 제목 직접 수집"""
+    """구글 뉴스 RSS에서 최신 외신 헤드라인 수집"""
     url = "https://news.google.com/rss/search?q=US+stock+market+fed+inflation&hl=en-US&gl=US&ceid=US:en"
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     news_titles = []
@@ -67,7 +67,7 @@ def fetch_google_news():
         with urllib.request.urlopen(req, timeout=10) as response:
             xml_data = response.read()
             root = ET.fromstring(xml_data)
-            for item in root.findall('.//item')[:10]:
+            for item in root.findall('.//item')[:8]:
                 title = item.find('title').text
                 news_titles.append(f"- {title}")
     except Exception as e:
@@ -81,62 +81,71 @@ def generate_us_market_report():
 
     real_data = fetch_real_quotes()
     real_news = fetch_google_news()
-    
-    client = genai.Client(api_key=GEMINI_API_KEY)
     market_date_str = get_market_date_string()
 
-    prompt = f"""
-    당신은 월스트리트 수석 투자 전략가입니다.
-    
-    1. [{market_date_str}] 실제 증시 시세 수치:
-    {json.dumps(real_data, ensure_ascii=False, indent=2)}
+    ai_analysis = None
 
-    2. [{market_date_str}] 실제 발생한 주요 미국 뉴스 기사 헤드라인:
-    {real_news}
+    # 1. AI 호출 시도 (한도 초과/오류 발생 시 자동 에러 잡기)
+    try:
+        client = genai.Client(api_key=GEMINI_API_KEY)
+        prompt = f"""
+        당신은 월스트리트 수석 투자 전략가입니다.
+        
+        1. [{market_date_str}] 실제 증시 시세 수치:
+        {json.dumps(real_data, ensure_ascii=False, indent=2)}
 
-    [작성 규칙]
-    위 제공된 실제 수치와 구글 뉴스 기사를 기반으로, 
-    어떤 테마/섹터(엔비디아, 마이크로소프트, 테슬라, 애플, 반도체, 금융 등 주요 종목명 포함)에 자금이 쏠렸고 어떤 섹터가 하방 압력을 받았는지, 
-    연준 위원 발언이나 매크로 악재/호재 원인을 정밀 분석하여 작성해 주세요.
+        2. [{market_date_str}] 실제 발생한 주요 미국 뉴스 기사 헤드라인:
+        {real_news}
 
-    HTML 태그(<b>, <br>, <ul>, <li>)를 써서 깔끔하게 출력해 주세요.
+        [작성 규칙]
+        위 제공된 실제 수치와 구글 뉴스 기사를 기반으로, 
+        어떤 테마/섹터(엔비디아, 마이크로소프트, 테슬라, 애플, 반도체, 금융 등 주요 종목명 포함)에 자금이 쏠렸고 어떤 섹터가 하방 압력을 받았는지, 
+        연준 위원 발언이나 매크로 악재/호재 원인을 정밀 분석하여 작성해 주세요.
 
-    반드시 아래 JSON 구조로만 응답하세요 (설명글/마크다운 금지):
-    {{
-      "strong_sectors_analysis": "HTML 포함 강세 섹터 & 대표 종목 수급 분석",
-      "weak_sectors_analysis": "HTML 포함 약세 섹터 & 악재 원인 분석",
-      "fed_speeches_summary": "HTML 포함 연준 발언 & 매크로 분석",
-      "overall_market_summary": "HTML 포함 오늘 증시 종합 총평"
-    }}
-    """
+        HTML 태그(<b>, <br>, <ul>, <li>)를 써서 깔끔하게 출력해 주세요.
 
-    print(f"Gemini AI가 {market_date_str} 리포트 작성 중...")
-    
-    # 503 일시적 서버 과부하 대응: 최대 5회 자동 재시도 로직
-    max_retries = 5
-    response = None
-    for attempt in range(max_retries):
-        try:
-            response = client.models.generate_content(
-                model='gemini-3.6-flash',
-                contents=prompt
-            )
-            break
-        except Exception as e:
-            print(f"Gemini API 호출 중 일시적 오류 발생 (시도 {attempt + 1}/{max_retries}): {e}")
-            if attempt < max_retries - 1:
-                print("5초 후 다시 시도합니다...")
-                time.sleep(5)
-            else:
-                raise e
+        반드시 아래 JSON 구조로만 응답하세요 (설명글/마크다운 금지):
+        {{
+          "strong_sectors_analysis": "HTML 포함 강세 섹터 & 대표 종목 수급 분석",
+          "weak_sectors_analysis": "HTML 포함 약세 섹터 & 악재 원인 분석",
+          "fed_speeches_summary": "HTML 포함 연준 발언 & 매크로 분석",
+          "overall_market_summary": "HTML 포함 오늘 증시 종합 총평"
+        }}
+        """
 
-    text = response.text.strip()
-    if "```" in text:
-        lines = text.splitlines()
-        cleaned_lines = [line for line in lines if not line.strip().startswith("```")]
-        text = "\n".join(cleaned_lines).strip()
+        models_to_try = ['gemini-3.6-flash', 'gemini-2.5-flash', 'gemini-2.0-flash']
+        for model_name in models_to_try:
+            try:
+                print(f"Gemini API ({model_name}) 호출 중...")
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=prompt
+                )
+                text = response.text.strip()
+                if "```" in text:
+                    lines = text.splitlines()
+                    cleaned_lines = [line for line in lines if not line.strip().startswith("```")]
+                    text = "\n".join(cleaned_lines).strip()
+                ai_analysis = json.loads(text)
+                print(f"[{model_name}] 성공!")
+                break
+            except Exception as err:
+                print(f"[{model_name}] 호출 실패: {err}")
+                time.sleep(2)
 
-    ai_analysis = json.loads(text)
+    except Exception as outer_err:
+        print(f"Gemini API 호출 중 전체 예외: {outer_err}")
+
+    # 2. 일일 API 한도 초과(429) 시 안전 대체 생성 (워크플로 에러 방지)
+    if not ai_analysis:
+        print("⚠️ API 한도 초과로 실제 수집된 데이터 기반 대체 리포트를 안전하게 리턴합니다.")
+        news_items = "".join([f"<li>{n.replace('- ', '')}</li>" for n in real_news.split("\n") if n.strip()])
+        ai_analysis = {
+            "strong_sectors_analysis": f"<b>🔥 실시간 증시 종가 현황:</b><br>나스닥 {real_data.get('나스닥', {}).get('price')} ({real_data.get('나스닥', {}).get('change')}), S&P 500 {real_data.get('S&P 500', {}).get('price')} ({real_data.get('S&P 500', {}).get('change')})<br>실시간 시장 주가 지수 흐름을 반영합니다.",
+            "weak_sectors_analysis": f"<b>❄️ 실시간 매크로 지표 현황:</b><br>VIX 지수: {real_data.get('VIX 지수', {}).get('price')} ({real_data.get('VIX 지수', {}).get('change')}), WTI 원유: ${real_data.get('WTI 유가', {}).get('price')} ({real_data.get('WTI 유가', {}).get('change')})",
+            "fed_speeches_summary": f"<b>🎙️ 실시간 주요 외신 헤드라인:</b><ul>{news_items}</ul>",
+            "overall_market_summary": f"<b>📊 {market_date_str} 증시 요약:</b><br>원/달러 환율 {real_data.get('원/달러 환율', {}).get('price')}원 ({real_data.get('원/달러 환율', {}).get('change')}), 미국 10년물 금리 {real_data.get('미국 10년물', {}).get('price')}% ({real_data.get('미국 10년물', {}).get('change')})로 집계되었습니다."
+        }
 
     final_json = {
       "updated_at": f"{market_date_str} 미국장 마감 시황",
@@ -166,7 +175,7 @@ def generate_us_market_report():
     with open("us_market.json", "w", encoding="utf-8") as f:
         json.dump(final_json, f, ensure_ascii=False, indent=2)
 
-    print("us_market.json 정상 업데이트 완료!")
+    print("us_market.json 정상 수집 완료!")
 
 if __name__ == "__main__":
     generate_us_market_report()
