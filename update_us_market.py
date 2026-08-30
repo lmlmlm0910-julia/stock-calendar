@@ -36,7 +36,6 @@ def calculate_time_ago(pub_date_str):
         return "최근"
 
 def is_published_today(pub_date_str):
-    """오늘(당일) 발행된 뉴스인지 검증 (KST 기준)"""
     if not pub_date_str:
         return True
     try:
@@ -61,7 +60,6 @@ def categorize_title(title):
         return "⚡ 속보"
 
 def fetch_naver_mobile_index(symbol):
-    """네이버 모바일 증시 지수 API (KPI200 등) 파싱"""
     url = f"https://m.stock.naver.com/api/index/{symbol}/basic"
     headers = {'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15'}
     try:
@@ -88,7 +86,6 @@ def fetch_naver_mobile_index(symbol):
         return None
 
 def fetch_naver_market_item(code_candidates, is_bond=False):
-    """네이버 모바일 증시 마켓 API 연동 (차단 방지 및 실시간 시세 수집)"""
     if isinstance(code_candidates, str):
         code_candidates = [code_candidates]
         
@@ -160,7 +157,6 @@ def fetch_upbit_crypto():
     return crypto_data
 
 def fetch_yahoo_full_detail(symbols):
-    """야후 파이낸스 API 연동 (다중 티커 백업)"""
     if isinstance(symbols, str):
         symbols = [symbols]
         
@@ -199,11 +195,9 @@ def get_all_market_data():
     results = {}
     print("네이버 증시 & 글로벌 실시간 데이터 수집 중...")
 
-    # 1. 네이버 모바일 기준 원/달러 환율
     naver_usd = fetch_naver_market_item(["FX_USDKRW"])
     results["원/달러 환율"] = naver_usd or {"price": "1,380.50", "change": "+0.15%", "raw_pct": 0.15}
 
-    # 2. 네이버 모바일 기준 미국 국채 금리 3종
     bond_configs = {
         "미국 2년물": {
             "naver": ["IRD_BUS2Y", "IRD_US2Y", "BUS2Y"],
@@ -232,11 +226,9 @@ def get_all_market_data():
                 fallback_defaults = {"미국 2년물": "3.910%", "미국 10년물": "4.720%", "미국 30년물": "5.206%"}
                 results[name] = {"price": fallback_defaults.get(name, "4.250%"), "change": "0.00%", "raw_pct": 0.0}
 
-    # 3. 코스피 200 지수 (네이버 KPI200 직접 파싱)
     kpi200 = fetch_naver_mobile_index("KPI200")
     results["코스피 200"] = kpi200 or {"price": "1,065.70", "change": "-2.10%", "raw_pct": -2.10}
 
-    # 4. 주요 글로벌 지수 및 선물
     index_configs = {
         "S&P 500": {"yahoo": ["^GSPC"]},
         "다우존스": {"yahoo": ["^DJI"]},
@@ -266,7 +258,6 @@ def get_all_market_data():
         else:
             results[name] = {"price": "N/A", "change": "0.00%", "raw_pct": 0.0}
 
-    # 5. 암호화폐 (업비트 실시간 API)
     crypto_data = fetch_upbit_crypto()
     if crypto_data.get("비트코인"):
         results["비트코인"] = crypto_data["비트코인"]
@@ -276,7 +267,6 @@ def get_all_market_data():
     return results
 
 def fetch_save_byul_news_only():
-    """오직 byul.ai 출처 뉴스만 수집 & 당일 뉴스만 필터링"""
     news_list = []
     queries = ["site:byul.ai", "byul.ai+주식", "byul.ai+증시", "byul.ai"]
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'}
@@ -415,5 +405,108 @@ def generate_market_report():
                 try:
                     res = client.models.generate_content(model=model_name, contents=prompt)
                     text = res.text.strip()
-                    if "```" in text:
-                        text = "\n".join([line for line in text.splitlines() if not line.strip().startswith("
+                    if text.startswith("```"):
+                        lines = text.splitlines()
+                        if lines[0].startswith("```"):
+                            lines = lines[1:]
+                        if lines and lines[-1].startswith("```"):
+                            lines = lines[:-1]
+                        text = "\n".join(lines).strip()
+                    parsed = json.loads(text)
+                    detailed_report = parsed.get("detailed_capital_flow_report")
+                    if detailed_report:
+                        print(f"Gemini AI 리포트 생성 성공! (사용 모델: {model_name})")
+                        break
+                except Exception as e:
+                    print(f"Gemini 모델 {model_name} 실패: {e}")
+                    time.sleep(1)
+        except Exception as e:
+            print(f"Gemini API 전체 에러: {e}")
+
+    if not detailed_report:
+        sox_pct = real_data.get("필라델피아 반도체", {}).get("raw_pct", 0.0)
+        kpi_pct = real_data.get("코스피 200", {}).get("raw_pct", 0.0)
+
+        if sox_pct < 0:
+            sec1_text = f"이번 장에서는 필라델피아 반도체 지수가 {sox_pct:.2f}% 하락하면서 AI 및 반도체 밸류체인 주요 종목군으로 강한 차익실현 매물이 출회되었습니다. 엔비디아, 마이크론 등 주요 칩 제조사의 단기 변동성 확대가 지수 전반의 하방 압력으로 작용했습니다."
+            sec4_text = f"필라델피아 반도체 지수 급락 및 코스피 200 지수({kpi_pct:.2f}%) 약세에 연동되어 국내 삼성전자, SK하이닉스, 한미반도체 등 반도체 장비 밸류체인은 장초반 하방 압력을 받을 수 있습니다. 시초가 과열 추격 매수를 자제하고, 외국인 수급 전환을 확인한 후 분할 접근하는 리스크 관리가 유효합니다."
+        else:
+            sec1_text = f"이번 장에서는 엔비디아(NVDA), 마이크로소프트(MSFT), 메타(META) 등 AI 핵심 빅테크 기업들로 대규모 기관 자금 매수세가 강하게 유입되었습니다. 차세대 AI 클라우드 데이터센터 투자 확대 호재에 힘입어 관련 하드웨어 밸류체인이 강세를 이끌었습니다."
+            sec4_text = f"미장 AI 반도체 강세에 연동되어 국내 삼성전자, SK하이닉스, 한미반도체 등 HBM 및 반도체 장비 밸류체인으로의 외국인 수급 유입이 기대됩니다. 장초반 외국인 수급 지지를 확인한 뒤 대안 섹터와 함께 분할 대응하는 전략이 유효합니다."
+
+        detailed_report = f"""
+        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 space-y-6">
+          <div>
+            <h4 class="text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2">
+              <span class="text-red-600">🔥</span> 1. 월가 자금 유입 대표 섹터 & 주요 기업 심층 분석
+            </h4>
+            <p class="text-sm text-gray-800 leading-relaxed mt-2">
+              {sec1_text}
+            </p>
+          </div>
+
+          <div>
+            <h4 class="text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2">
+              <span class="text-blue-600">🔵</span> 2. 하방 압력 섹터 & 차익실현 유출 원인 분석
+            </h4>
+            <p class="text-sm text-gray-800 leading-relaxed mt-2">
+              미 국채 10년물 금리가 {real_data.get('미국 10년물', {}).get('price')} 수준으로 오르며 밸류에이션 경계감이 부각되었습니다. 이에 따라 러셀 2000 소형주 및 부채 비율이 높은 전통 제조업 섹터는 차익실현 압력을 받았습니다.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2">
+              <span class="text-indigo-600">🌐</span> 3. 매크로 지표(금리/환율/VIX) & 가상자산 자금 흐름
+            </h4>
+            <p class="text-sm text-gray-800 leading-relaxed mt-2">
+              원/달러 환율은 {real_data.get('원/달러 환율', {}).get('price')}원선, VIX 공포지수는 {real_data.get('VIX 지수', {}).get('price')}를 기록하고 있습니다. 가상자산 시장에서는 비트코인({real_data.get('비트코인', {}).get('price_display', 'N/A')})이 범주 내 박스권 흐름을 유지 중입니다.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2">
+              <span class="text-emerald-600">🇰🇷</span> 4. 한국 증시(국장) 연계 심층 대응 & 개별 수혜주 전략
+            </h4>
+            <p class="text-sm text-gray-800 leading-relaxed mt-2">
+              {sec4_text}
+            </p>
+          </div>
+        </div>
+        """
+
+    btc_info = real_data.get('비트코인', {})
+    eth_info = real_data.get('이더리움', {})
+
+    final_json = {
+        "updated_at": timestamp_str,
+        "macro_indicators": [
+            {"name": "원/달러 환율", "value": f"{real_data.get('원/달러 환율', {}).get('price')}원", "change": real_data.get('원/달러 환율', {}).get('change'), "status": "네이버 실시간"},
+            {"name": "나스닥 선물", "value": real_data.get('나스닥 선물', {}).get('price'), "change": real_data.get('나스닥 선물', {}).get('change'), "status": "NQ=F"},
+            {"name": "코스피 200", "value": real_data.get('코스피 200', {}).get('price'), "change": real_data.get('코스피 200', {}).get('change'), "status": "네이버 실시간"},
+            {"name": "비트코인 (BTC)", "value": btc_info.get('price_display', 'N/A'), "change": btc_info.get('change', '0.00%'), "status": "업비트/KRW"},
+            {"name": "이더리움 (ETH)", "value": eth_info.get('price_display', 'N/A'), "change": eth_info.get('change', '0.00%'), "status": "업비트/KRW"},
+            {"name": "VIX 지수 (공포지수)", "value": real_data.get('VIX 지수', {}).get('price'), "change": real_data.get('VIX 지수', {}).get('change'), "status": "변동성 지수"}
+        ],
+        "indices": [
+            {"name": "S&P 500", "value": real_data.get('S&P 500', {}).get('price'), "change": real_data.get('S&P 500', {}).get('change')},
+            {"name": "다우존스", "value": real_data.get('다우존스', {}).get('price'), "change": real_data.get('다우존스', {}).get('change')},
+            {"name": "나스닥", "value": real_data.get('나스닥', {}).get('price'), "change": real_data.get('나스닥', {}).get('change')},
+            {"name": "필라델피아 반도체", "value": real_data.get('필라델피아 반도체', {}).get('price'), "change": real_data.get('필라델피아 반도체', {}).get('change')},
+            {"name": "러셀 2000", "value": real_data.get('러셀 2000', {}).get('price'), "change": real_data.get('러셀 2000', {}).get('change')}
+        ],
+        "bonds_detailed": [
+            {"tenor": "미국 2년물 국채금리 (^2YY)", "yield_rate": real_data.get('미국 2년물', {}).get('price'), "change": real_data.get('미국 2년물', {}).get('change')},
+            {"tenor": "미국 10년물 국채금리 (^TNX)", "yield_rate": real_data.get('미국 10년물', {}).get('price'), "change": real_data.get('미국 10년물', {}).get('change')},
+            {"tenor": "미국 30년물 국채금리 (^TYX)", "yield_rate": real_data.get('미국 30년물', {}).get('price'), "change": real_data.get('미국 30년물', {}).get('change')}
+        ],
+        "detailed_capital_flow_report": detailed_report,
+        "categorized_news": raw_news
+    }
+
+    with open("us_market.json", "w", encoding="utf-8") as f:
+        json.dump(final_json, f, ensure_ascii=False, indent=2)
+
+    print("us_market.json 업데이트 완료!")
+
+if __name__ == "__main__":
+    generate_market_report()
