@@ -20,42 +20,5 @@
     {"tenor": "미 국채 10년물 (벤치마크)", "yield_rate": "4.720%", "change": "+0.082%"},
     {"tenor": "10Y-2Y 장단기 금리차", "yield_rate": "-0.165%p", "change": "역전 폭 축소"}
   ],
-  "detailed_capital_flow_report": "
-    <div class='space-y-6 text-sm text-gray-800 leading-relaxed'>
-      
-      <!-- 섹션 1 -->
-      <div class='bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-2'>
-        <h4 class='text-base font-extrabold text-gray-900 flex items-center gap-2'>
-          <span class='w-2.5 h-2.5 rounded-full bg-red-600'></span> 1. 매크로 메커니즘 분석 (금리 커브 · 실질금리 · 달러 유동성)
-        </h4>
-        <div class='bg-white p-4 rounded-xl border border-gray-200 space-y-2 text-xs'>
-          <p><b>■ 실질금리(Real Yield) 주도의 멀티플 압박:</b> 미 국채 10년물 금리가 4.72%로 급등했습니다. 이는 기대인플레이션(BEI) 고정이 유지된 상태에서 <b>실질금리가 +8.2bp 상승</b>한 데 기인하며, 고Valuation 테크주의 할인율(Discount Rate)을 직접 자극했습니다.</p>
-          <p><b>■ 환율 및 외국인 유동성 압력:</b> DXY 달러인덱스(105.42) 강세로 역외 달러 유동성이 위축됨에 따라 원/달러 환율이 1,380.50원으로 재상승했습니다. 이는 한국 증시 내 외국인 패시브 자금의 순매도 유출 압력으로 이어집니다.</p>
-        </div>
-      </div>
-
-      <!-- 섹션 2 -->
-      <div class='bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-2'>
-        <h4 class='text-base font-extrabold text-gray-900 flex items-center gap-2'>
-          <span class='w-2.5 h-2.5 rounded-full bg-blue-600'></span> 2. 섹터 자금 회전율(Rotation) & 마켓 미세구조
-        </h4>
-        <div class='bg-white p-4 rounded-xl border border-gray-200 space-y-2 text-xs'>
-          <p><b>■ SOX 반도체 지수(-3.47%) 자금 출회:</b> 엔비디아, 마이크론 등 주요 반도체 밸류체인의 VWAP 하향 이탈이 관측되었습니다. 자금은 시장 이탈(De-risking)과 함께 일부 유틸리티 및 헬스케어 등 방어주 섹터로 로테이션 되었습니다.</p>
-          <p><b>■ 옵션 딜러 감마(Gamma) 익스포저:</b> S&P 500 주요 풋옵션 벽(Put Wall) 하향 돌파 시 딜러들의 숏 델타 헤지 매도물량이 출회되며 장 막판 변동성을 확대한 것으로 분석됩니다.</p>
-        </div>
-      </div>
-
-      <!-- 섹션 3 -->
-      <div class='bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-2'>
-        <h4 class='text-base font-extrabold text-gray-900 flex items-center gap-2'>
-          <span class='w-2.5 h-2.5 rounded-full bg-emerald-600'></span> 3. 프롭 트레이더 실전 트레이딩 플레이북 (국장 연계)
-        </h4>
-        <div class='bg-white p-4 rounded-xl border border-gray-200 space-y-2 text-xs'>
-          <p><b>■ 국장 시초가 갭(Gap) 대응 전략:</b> 필라델피아 반도체 지수 급락으로 SK하이닉스 및 삼성전자의 -2%~-3% 수준 시초가 음봉 갭하락 출발이 예상됩니다. <b>장 시작 후 15분간 외국인 KOSPI200 선물 순매수 속도</b>를 반드시 점검하십시오.</p>
-          <p><b>■ 타점 가이드:</b> 시초가 음봉 추격 매수를 지양하고, 선물 순매도가 주춤해지는 09:30 이후 VWAP 지지선 확인 후 기술적 반등 타점을 노리는 리스크 관리가 유효합니다.</p>
-        </div>
-      </div>
-
-    </div>
-  "
+  "detailed_capital_flow_report": "<div class='space-y-6 text-sm text-gray-800 leading-relaxed'><div class='bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-3'><h4 class='text-base font-extrabold text-gray-900 flex items-center gap-2'><span class='w-2.5 h-2.5 rounded-full bg-red-600'></span> 1. 매크로 메커니즘: 금리와 환율이 기술주를 누르는 원리</h4><div class='bg-white p-4 rounded-xl border border-gray-200 space-y-2.5 text-xs text-gray-700 leading-relaxed'><p><b>🎓 금리의 질적 분석 (실질금리의 상승):</b> 국채 10년물 금리가 4.72%로 올랐을 때 트레이더가 봐야 할 핵심은 <b>'물가 때문인가, 실질금리 때문인가'</b>입니다. 인플레이션 기대치는 그대로인데 실질금리가 급등하면, 기업의 미래 이익을 현재 가치로 끌어와 계산하는 '할인율'이 커집니다. 이 때문에 버는 돈 대비 주가가 높은 엔비디아·마이크론 같은 고성능 성장주가 가장 먼저 차익실현 타격을 받게 됩니다.</p><p><b>🎓 달러 인덱스와 한국 증시 수급:</b> 강달러(DXY 105.42)로 인해 원/달러 환율이 1,380원 위로 튀면, 한국 주식을 가진 외국인 입장에서는 환차손(환율 변동으로 인한 손실) 위험이 커집니다. 따라서 기술적 문제와 상관없이 패시브 자금이 한국 증시에서 일시 유출되는 메커니즘이 작동합니다.</p></div></div><div class='bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-3'><h4 class='text-base font-extrabold text-gray-900 flex items-center gap-2'><span class='w-2.5 h-2.5 rounded-full bg-blue-600'></span> 2. 자금 이동(Money Flow): 시장 이탈인가, 밸류체인 이동인가?</h4><div class='bg-white p-4 rounded-xl border border-gray-200 space-y-2.5 text-xs text-gray-700 leading-relaxed'><p><b>🎓 디리스킹(De-risking) 대 순환매(Rotation):</b> 필라델피아 반도체 지수가 -3.47% 급락했으나, 시장 전체에서 돈이 다 빠져나간 것은 아닙니다. 반도체에서 나온 차익실현 자금이 헬스케어, 유틸리티, 필수소비재 등 경기방어주로 이동하는 <b>'섹터 로테이션'</b> 양상을 보였습니다. 이는 시장이 전면 붕괴하는 것이 아니라 잠시 숨을 고르는 건강한 구조 조정 과정임을 의미합니다.</p><p><b>🎓 시장 변동성(VIX) 지표 읽기:</b> VIX 지수가 16선으로 상승했으나 극단적 공포 단계(20 이상)는 아닙니다. 기관 투자자들이 선물 파생시장에서 주식 보유 분에 대한 단기 위험 헤지(Hedge) 물량을 늘리며 발생한 정상적인 변동성 구간입니다.</p></div></div><div class='bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-3'><h4 class='text-base font-extrabold text-gray-900 flex items-center gap-2'><span class='w-2.5 h-2.5 rounded-full bg-emerald-600'></span> 3. 국장 트레이더 실전 대응 시나리오 (Actionable Playbook)</h4><div class='bg-white p-4 rounded-xl border border-gray-200 space-y-2.5 text-xs text-gray-700 leading-relaxed'><p><b>📌 시초가 갭하락 대응 기준:</b> 미 반도체 약세 여파로 SK하이닉스, 삼성전자 등 대장주가 시초가 -2%~-3% 수준의 음봉 갭하락 출발할 가능성이 높습니다. <b>장 시작 15분간(09:00~09:15) 절대 추격 매수나 감정적 손절을 자제하십시오.</b></p><p><b>📌 핵심 관찰 지표 (외국인 선물 수급 속도):</b> 장 개시 후 외국인의 'KOSPI 200 선물 순매수 수량'을 확인해야 합니다. 시초가 갭하락 이후 외국인 선물 매도세가 둔화되거나 순매수로 전환되는 시점이 매수세가 살아나는 '당일 기술적 저점 타점'이 됩니다.</p></div></div></div>"
 }
