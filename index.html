@@ -77,6 +77,9 @@
             <span class="text-red-500">일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
           </div>
           <div id="calendar-days-grid" class="grid grid-cols-7 gap-y-3 text-center text-sm font-semibold text-gray-700"></div>
+          <div class="text-center text-xs text-gray-400 pt-3 border-t border-gray-100">
+            * 날짜 클릭 시 해당 날짜의 일정만 필터링됩니다.
+          </div>
         </div>
 
         <div class="md:col-span-7 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
@@ -117,13 +120,13 @@
         <div id="indices-container" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
       </div>
 
-      <!-- 미국 국채 금리 카드 (깔끔하게 정돈) -->
+      <!-- 미국 국채 금리 카드 -->
       <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
         <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-1.5"><i class="fa-solid fa-landmark text-blue-500"></i> 미국 국채 금리 동향 (^2YY / ^TNX / ^TYX)</h3>
         <div id="bonds-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
       </div>
 
-      <!-- 100% 정상 출력되는 TradingView 실시간 S&P 500 히트맵 -->
+      <!-- TradingView 실시간 S&P 500 히트맵 -->
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-3">
         <div class="flex justify-between items-center border-b border-gray-200 pb-3">
           <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
@@ -134,12 +137,11 @@
           </a>
         </div>
         <div class="w-full rounded-xl overflow-hidden border border-gray-200 bg-gray-900" style="height: 680px;">
-          <!-- TradingView Stock Heatmap Widget -->
           <iframe src="https://s.tradingview.com/embed-widget/stock-heatmap/?locale=kr#%7B%22dataSource%22%3A%22SPX500%22%2C%22blockSize%22%3A%22market_cap_basic%22%2C%22blockColor%22%3A%22change%22%2C%22grouping%22%3A%22sector%22%2C%22hasTopBar%22%3Afalse%2C%22isDataSetEnabled%22%3Afalse%2C%22colorTheme%22%3A%22dark%22%7D" class="w-full h-full border-none"></iframe>
         </div>
       </div>
 
-      <!-- 월가 돈의 흐름 심층 분석 리포트 (중복 표 전면 삭제) -->
+      <!-- 월가 돈의 흐름 심층 분석 리포트 -->
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-4">
         <h3 class="text-lg font-bold text-gray-900 border-b border-gray-200 pb-3 flex items-center gap-2"><i class="fa-solid fa-file-invoice-dollar text-red-600"></i> 🔥 월가 경제 전문가 자금 흐름(Money Flow) 심층 분석 리포트</h3>
         <div id="detailed-report-content" class="pt-2"></div>
@@ -206,7 +208,18 @@
             </select>
             <input type="text" id="jo-return" placeholder="손익률 %" class="px-4 py-2.5 bg-white border border-gray-300 rounded-xl text-sm">
           </div>
+          <div class="grid grid-cols-2 gap-3">
+            <input type="text" id="jo-buy-price" placeholder="매수가" class="px-4 py-2 bg-white border border-gray-300 rounded-xl text-xs">
+            <input type="text" id="jo-sell-price" placeholder="매도가" class="px-4 py-2 bg-white border border-gray-300 rounded-xl text-xs">
+          </div>
           <textarea id="jo-content" rows="4" required placeholder="매매 원인, 진입 타점 이유..." class="w-full p-4 bg-white border border-gray-300 rounded-xl text-sm"></textarea>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input type="url" id="jo-url" placeholder="🔗 관련 뉴스/공시 URL" class="px-4 py-2 bg-white border border-gray-300 rounded-xl text-xs">
+            <label class="cursor-pointer bg-white border border-gray-300 rounded-xl px-4 py-2 text-xs font-semibold text-gray-600 flex items-center justify-between hover:bg-gray-100">
+              <span id="jo-image-label"><i class="fa-solid fa-chart-line text-emerald-500"></i> 차트/캡처 이미지 첨부</span>
+              <input type="file" id="jo-image-file" accept="image/*" class="hidden" onchange="updateFileNameLabel(event, 'jo-image-label')">
+            </label>
+          </div>
           <div class="text-right">
             <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow">
               <i class="fa-solid fa-check mr-1"></i> 매매일지 노트 저장
@@ -217,7 +230,7 @@
       </div>
     </div>
 
-    <!-- 탭 5: 섹터별 관련주 정리 갤러리 (새 섹터 만들기 100% 정상화) -->
+    <!-- 탭 5: 섹터별 관련주 정리 갤러리 -->
     <div id="tab-content-stocks" class="space-y-6 hidden">
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-6">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-gray-200 pb-4 gap-3">
@@ -257,6 +270,60 @@
     </div>
 
   </main>
+
+  <!-- 일정 상세 모달 -->
+  <div id="schedule-detail-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl border border-gray-200 relative">
+      <div class="sticky top-0 bg-white px-6 py-4 border-b border-gray-100 flex justify-between items-center z-10">
+        <div class="flex items-center gap-2">
+          <span id="sc-modal-date" class="text-xs font-bold bg-gray-900 text-white px-2.5 py-0.5 rounded-md">2026년 9월</span>
+          <span id="sc-modal-impact" class="text-xs font-bold bg-red-100 text-red-700 border border-red-200 px-2.5 py-0.5 rounded-md">시장 파급력: 상</span>
+        </div>
+        <button onclick="closeScheduleModal()" class="text-gray-400 hover:text-gray-700 p-1"><i class="fa-solid fa-xmark text-xl"></i></button>
+      </div>
+
+      <div class="p-6 space-y-4 text-sm">
+        <h3 id="sc-modal-title" class="text-xl font-bold text-gray-900 leading-snug">일정 제목</h3>
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+          <strong class="text-xs text-gray-500 block mb-1">📌 일정 개요</strong>
+          <p id="sc-modal-overview" class="text-gray-800 leading-relaxed"></p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200">
+            <strong class="text-xs text-yellow-900 block mb-1">⚠️ 중요성</strong>
+            <p id="sc-modal-importance" class="text-xs text-gray-800 leading-relaxed"></p>
+          </div>
+          <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+            <strong class="text-xs text-blue-900 block mb-1">👁️ 관전 포인트</strong>
+            <p id="sc-modal-keypoints" class="text-xs text-gray-800 leading-relaxed"></p>
+          </div>
+        </div>
+        <div class="space-y-1.5 text-xs bg-gray-50 p-4 rounded-xl border border-gray-200">
+          <div><b>🇰🇷 한국 증시 영향:</b> <span id="sc-modal-korea"></span></div>
+          <div><b>🇺🇸 미국 증시 영향:</b> <span id="sc-modal-us"></span></div>
+        </div>
+        <div class="bg-red-50 p-4 rounded-xl border border-red-100">
+          <strong class="text-red-600 font-bold text-xs block mb-2">🤖 Gemini AI 수혜주 분석</strong>
+          <div id="sc-modal-stocks" class="mb-2"></div>
+          <p id="sc-modal-stock-reasons" class="text-xs text-gray-700 leading-relaxed pt-2 border-t border-red-200"></p>
+        </div>
+      </div>
+
+      <div class="bg-gray-50 px-6 py-3 border-t border-gray-100 text-right">
+        <button onclick="closeScheduleModal()" class="px-4 py-2 bg-gray-900 text-white text-xs font-semibold rounded-lg hover:bg-gray-800">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 이미지 크게 보기 모달 -->
+  <div id="image-lightbox-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4 hidden" onclick="closeLightbox()">
+    <div class="relative max-w-4xl w-full max-h-[90vh] flex justify-center items-center">
+      <img id="lightbox-img" class="max-w-full max-h-[85vh] rounded-lg shadow-2xl object-contain">
+      <button onclick="closeLightbox()" class="absolute top-2 right-2 text-white bg-gray-800 p-2 rounded-full hover:bg-gray-700">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+    </div>
+  </div>
 
   <script>
     const firebaseConfig = {
@@ -334,6 +401,13 @@
       switchTab(targetTab);
     }
 
+    function updateFileNameLabel(e, labelId) {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById(labelId).innerHTML = `<i class="fa-solid fa-check text-emerald-500"></i> ${file.name}`;
+      }
+    }
+
     function startLiveClockAndUpbit() {
       setInterval(() => {
         const now = new Date();
@@ -360,7 +434,151 @@
       } catch (e) { console.log("업비트 에러:", e); }
     }
 
-    /* 🔥 5. 섹터별 갤러리 관리 (새 섹터 만들기 100% 정상 작동) */
+    /* 시나리오 메모장 */
+    function getScenarioPosts() { return JSON.parse(localStorage.getItem('redbull_scenarios') || '[]'); }
+
+    function handleSaveScenario(e) {
+      e.preventDefault();
+      const title = document.getElementById('sc-title').value.trim();
+      const category = document.getElementById('sc-category').value;
+      const content = document.getElementById('sc-content').value.trim();
+      const url = document.getElementById('sc-url').value.trim();
+      const imageFile = document.getElementById('sc-image-file').files[0];
+
+      const savePost = (imgBase64) => {
+        const posts = getScenarioPosts();
+        posts.unshift({
+          id: Date.now(),
+          date: new Date().toLocaleString('ko-KR'),
+          title, category, content, url,
+          image: imgBase64 || null
+        });
+        localStorage.setItem('redbull_scenarios', JSON.stringify(posts));
+        syncUserDataToFirebase();
+        e.target.reset();
+        document.getElementById('sc-image-label').innerHTML = `<i class="fa-solid fa-image text-indigo-500"></i> 차트/자료 이미지 첨부`;
+        renderScenarioPosts();
+      };
+
+      if (imageFile) compressAndBase64(imageFile, (base64) => savePost(base64));
+      else savePost(null);
+    }
+
+    function deleteScenarioPost(id) {
+      if (!confirm("이 시나리오 노트를 삭제하시겠습니까?")) return;
+      let posts = getScenarioPosts();
+      posts = posts.filter(p => p.id !== id);
+      localStorage.setItem('redbull_scenarios', JSON.stringify(posts));
+      syncUserDataToFirebase();
+      renderScenarioPosts();
+    }
+
+    function renderScenarioPosts() {
+      const container = document.getElementById('scenario-posts-feed');
+      const posts = getScenarioPosts();
+
+      if (posts.length === 0) {
+        container.innerHTML = `<div class="text-center py-12 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50 text-gray-400 text-xs">작성된 시나리오가 없습니다.</div>`;
+        return;
+      }
+
+      container.innerHTML = posts.map(post => `
+        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-3 relative group">
+          <div class="flex justify-between items-start">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold bg-red-100 text-red-700 px-2.5 py-0.5 rounded-full">${post.category}</span>
+                <span class="text-xs text-gray-400">${post.date}</span>
+              </div>
+              <h4 class="text-base font-bold text-gray-900">${post.title}</h4>
+            </div>
+            <button onclick="deleteScenarioPost(${post.id})" class="text-gray-400 hover:text-red-600 p-1 text-xs"><i class="fa-solid fa-trash"></i></button>
+          </div>
+          <p class="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap bg-white p-4 rounded-xl border border-gray-200">${post.content}</p>
+          ${post.url ? `<div class="text-xs"><a href="${post.url}" target="_blank" class="text-blue-600 font-semibold hover:underline inline-flex items-center gap-1"><i class="fa-solid fa-link text-gray-400"></i> ${post.url}</a></div>` : ''}
+          ${post.image ? `<div class="mt-2"><img src="${post.image}" onclick="openLightbox('${post.image}')" class="max-h-80 rounded-xl border border-gray-200 cursor-pointer object-contain" alt="시나리오 이미지"></div>` : ''}
+        </div>
+      `).join('');
+    }
+
+    /* 매매일지 노트 */
+    function getJournalPosts() { return JSON.parse(localStorage.getItem('redbull_journals') || '[]'); }
+
+    function handleSaveJournal(e) {
+      e.preventDefault();
+      const stock = document.getElementById('jo-stock').value.trim();
+      const type = document.getElementById('jo-type').value;
+      const ret = document.getElementById('jo-return').value.trim();
+      const buyPrice = document.getElementById('jo-buy-price').value.trim();
+      const sellPrice = document.getElementById('jo-sell-price').value.trim();
+      const content = document.getElementById('jo-content').value.trim();
+      const url = document.getElementById('jo-url').value.trim();
+      const imageFile = document.getElementById('jo-image-file').files[0];
+
+      const savePost = (imgBase64) => {
+        const posts = getJournalPosts();
+        posts.unshift({
+          id: Date.now(),
+          date: new Date().toLocaleString('ko-KR'),
+          stock, type, returnPct: ret, buyPrice, sellPrice, content, url,
+          image: imgBase64 || null
+        });
+        localStorage.setItem('redbull_journals', JSON.stringify(posts));
+        syncUserDataToFirebase();
+        e.target.reset();
+        document.getElementById('jo-image-label').innerHTML = `<i class="fa-solid fa-chart-line text-emerald-500"></i> 차트/캡처 이미지 첨부`;
+        renderJournalPosts();
+      };
+
+      if (imageFile) compressAndBase64(imageFile, (base64) => savePost(base64));
+      else savePost(null);
+    }
+
+    function deleteJournalPost(id) {
+      if (!confirm("이 매매일지 노트를 삭제하시겠습니까?")) return;
+      let posts = getJournalPosts();
+      posts = posts.filter(p => p.id !== id);
+      localStorage.setItem('redbull_journals', JSON.stringify(posts));
+      syncUserDataToFirebase();
+      renderJournalPosts();
+    }
+
+    function renderJournalPosts() {
+      const container = document.getElementById('journal-posts-feed');
+      const posts = getJournalPosts();
+
+      if (posts.length === 0) {
+        container.innerHTML = `<div class="text-center py-12 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50 text-gray-400 text-xs">작성된 매매일지가 없습니다.</div>`;
+        return;
+      }
+
+      container.innerHTML = posts.map(post => {
+        const isLoss = post.returnPct && post.returnPct.includes('-');
+        const returnBadgeClass = isLoss ? 'bg-blue-100 text-blue-700 border-blue-200' : 'bg-red-100 text-red-700 border-red-200';
+
+        return `
+          <div class="bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-3 relative group">
+            <div class="flex justify-between items-start">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full">${post.type}</span>
+                  ${post.returnPct ? `<span class="text-xs font-extrabold px-2.5 py-0.5 rounded-full border ${returnBadgeClass}">${post.returnPct}</span>` : ''}
+                  <span class="text-xs text-gray-400">${post.date}</span>
+                </div>
+                <h4 class="text-base font-bold text-gray-900">${post.stock}</h4>
+              </div>
+              <button onclick="deleteJournalPost(${post.id})" class="text-gray-400 hover:text-red-600 p-1 text-xs"><i class="fa-solid fa-trash"></i></button>
+            </div>
+            ${(post.buyPrice || post.sellPrice) ? `<div class="flex gap-4 text-xs font-semibold text-gray-600 bg-white p-2.5 rounded-lg border border-gray-200">${post.buyPrice ? `<div>매수가: <b class="text-gray-900">${post.buyPrice}</b></div>` : ''}${post.sellPrice ? `<div>매도가: <b class="text-gray-900">${post.sellPrice}</b></div>` : ''}</div>` : ''}
+            <p class="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap bg-white p-4 rounded-xl border border-gray-200">${post.content}</p>
+            ${post.url ? `<div class="text-xs"><a href="${post.url}" target="_blank" class="text-blue-600 font-semibold hover:underline inline-flex items-center gap-1"><i class="fa-solid fa-link text-gray-400"></i> ${post.url}</a></div>` : ''}
+            ${post.image ? `<div class="mt-2"><img src="${post.image}" onclick="openLightbox('${post.image}')" class="max-h-80 rounded-xl border border-gray-200 cursor-pointer object-contain" alt="매매 차트 이미지"></div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    /* 섹터별 갤러리 관리 */
     function getSectorFolders() {
       try {
         return JSON.parse(localStorage.getItem('redbull_sector_folders') || '[]');
@@ -446,6 +664,13 @@
       renderSectorGallery();
     }
 
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('image-lightbox-modal').classList.remove('hidden');
+    }
+
+    function closeLightbox() { document.getElementById('image-lightbox-modal').classList.add('hidden'); }
+
     function renderSectorGallery() {
       const container = document.getElementById('sector-folders-container');
       if (!container) return;
@@ -474,7 +699,7 @@
       container.innerHTML = folders.map(folder => {
         const imagesHtml = folder.images.length > 0 ? folder.images.map((imgSrc, idx) => `
           <div class="relative group rounded-xl overflow-hidden border border-gray-200 shadow-sm bg-gray-50">
-            <img src="${imgSrc}" class="w-full h-auto max-h-[600px] object-contain cursor-pointer hover:opacity-95 transition" alt="${folder.title}">
+            <img src="${imgSrc}" onclick="openLightbox('${imgSrc}')" class="w-full h-auto max-h-[600px] object-contain cursor-pointer hover:opacity-95 transition" alt="${folder.title}">
             <button onclick="deleteImageFromFolder(${folder.id}, ${idx})" class="absolute top-2 right-2 bg-red-600 text-white p-1.5 rounded-lg text-xs opacity-0 group-hover:opacity-100 transition shadow">
               <i class="fa-solid fa-trash"></i>
             </button>
@@ -512,6 +737,116 @@
       }).join('');
     }
 
+    /* 증시 일정 로직 */
+    async function loadScheduleCalendarData() {
+      try {
+        const resp = await fetch('data.json?v=' + new Date().getTime());
+        globalSchedules = await resp.json();
+        renderCalendarGrid();
+        renderScheduleList();
+      } catch (e) { console.error("일정 데이터 로드 실패:", e); }
+    }
+
+    function renderCalendarGrid() {
+      const grid = document.getElementById('calendar-days-grid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      const daysInMonth = 30;
+      const startDayOffset = 2;
+
+      for (let i = 0; i < startDayOffset; i++) { grid.innerHTML += `<div></div>`; }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `2026-09-${day < 10 ? '0' + day : day}`;
+        const dayEvents = globalSchedules.filter(s => s.date === dateStr);
+        const isSelected = dateStr === selectedDate;
+        let dotsHtml = dayEvents.length > 0 ? `<div class="flex justify-center gap-0.5 mt-1"><span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span></div>` : '';
+
+        grid.innerHTML += `
+          <div onclick="selectCalendarDate('${dateStr}')" class="cursor-pointer p-1.5 rounded-lg ${isSelected ? 'bg-indigo-600 text-white font-bold' : 'hover:bg-gray-100'}">
+            <span>${day}</span>
+            ${dotsHtml}
+          </div>
+        `;
+      }
+    }
+
+    function selectCalendarDate(dateStr) {
+      selectedDate = dateStr;
+      currentFilterMode = "date";
+      renderCalendarGrid();
+      renderScheduleList();
+    }
+
+    function filterScheduleMode(mode) {
+      currentFilterMode = mode;
+      selectedDate = null;
+      document.getElementById('filter-btn-all').className = mode === 'all' ? "px-3 py-1 bg-gray-900 text-white rounded-full font-bold" : "px-3 py-1 bg-gray-100 text-gray-600 rounded-full font-bold";
+      document.getElementById('filter-btn-stars').className = mode === 'stars' ? "px-3 py-1 bg-gray-900 text-white rounded-full font-bold" : "px-3 py-1 bg-gray-100 text-gray-600 rounded-full font-bold";
+      renderCalendarGrid();
+      renderScheduleList();
+    }
+
+    function renderScheduleList() {
+      const container = document.getElementById('schedule-items-list');
+      if (!container) return;
+      let filtered = [];
+
+      if (currentFilterMode === 'all') {
+        document.getElementById('schedule-selected-date-title').innerText = `9월 전체 증시 일정 (${globalSchedules.length}건)`;
+        filtered = [...globalSchedules].sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+      } else if (currentFilterMode === 'stars') {
+        document.getElementById('schedule-selected-date-title').innerText = `9월 주요 핵심 일정 (★3개)`;
+        filtered = globalSchedules.filter(s => s.stars >= 3).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+      } else if (currentFilterMode === 'date' && selectedDate) {
+        document.getElementById('schedule-selected-date-title').innerText = `${selectedDate} 등록 일정`;
+        filtered = globalSchedules.filter(s => s.date === selectedDate);
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="text-center py-12 text-gray-400 text-sm">선택하신 날짜/조건에 등록된 일정이 없습니다.</div>`;
+        return;
+      }
+
+      container.innerHTML = filtered.map((item) => {
+        const starHtml = '★'.repeat(item.stars || 1) + '☆'.repeat(3 - (item.stars || 1));
+        const dayDisplay = item.date.split('-')[2] + '일';
+        return `
+          <div onclick="openScheduleModal(${item.id})" class="bg-gray-50 p-4 rounded-xl border border-gray-200 shadow-sm cursor-pointer card-hover flex justify-between items-center">
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-bold text-white bg-gray-800 px-2 py-1 rounded">${dayDisplay} ${item.time || '00:00'}</span>
+              <span class="text-xs text-yellow-500 font-bold tracking-widest">${starHtml}</span>
+              <span class="text-sm font-bold text-gray-900">${item.title}</span>
+            </div>
+            <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openScheduleModal(id) {
+      const item = globalSchedules.find(s => s.id === id);
+      if (!item) return;
+
+      document.getElementById('sc-modal-date').innerText = item.date + " (" + (item.time || '시간 미정') + ")";
+      document.getElementById('sc-modal-impact').innerText = "시장 파급력: " + item.impact;
+      document.getElementById('sc-modal-title').innerText = item.title;
+      document.getElementById('sc-modal-overview').innerText = item.overview;
+      document.getElementById('sc-modal-importance').innerText = item.importance;
+      document.getElementById('sc-modal-keypoints').innerText = item.key_points;
+      document.getElementById('sc-modal-korea').innerText = item.korea_impact;
+      document.getElementById('sc-modal-us').innerText = item.us_impact;
+
+      const stocksList = item.stocks ? item.stocks.map(s => `<span class="text-xs font-bold bg-red-100 text-red-700 border border-red-200 px-2 py-0.5 rounded mr-1"># ${s}</span>`).join('') : '';
+      document.getElementById('sc-modal-stocks').innerHTML = stocksList;
+      document.getElementById('sc-modal-stock-reasons').innerText = item.stock_reasons || '';
+
+      document.getElementById('schedule-detail-modal').classList.remove('hidden');
+    }
+
+    function closeScheduleModal() { document.getElementById('schedule-detail-modal').classList.add('hidden'); }
+
+    /* 🔥 마감 시황 데이터 로드 & 뉴스 수집 연동 */
     async function loadUSMarketData() {
       try {
         const resp = await fetch('us_market.json?v=' + new Date().getTime());
@@ -526,6 +861,7 @@
           </div>
         `).join('');
 
+        /* 5대 지수 동향 */
         document.getElementById('indices-container').innerHTML = data.indices.map(idx => `
           <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 text-center">
             <div class="text-xs font-bold text-gray-500">${idx.name}</div>
@@ -534,7 +870,7 @@
           </div>
         `).join('');
 
-        /* 국채 금리 카드 깔끔하게 렌더링 */
+        /* 국채 금리 동향 */
         document.getElementById('bonds-container').innerHTML = data.bonds_detailed.map(b => `
           <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-1 text-center">
             <div class="text-xs font-bold text-gray-600">${b.tenor}</div>
@@ -546,9 +882,58 @@
         document.getElementById('detailed-report-content').innerHTML = data.detailed_capital_flow_report || "";
         document.getElementById('us-update-time').innerText = `서버 수집 시간: ${data.updated_at}`;
 
-        renderNewsCards(data.categorized_news);
+        /* 🔥 JSON에 뉴스가 유효하면 표시하고, 비어 있으면 브라우저가 직접 실시간 뉴스 파싱 */
+        if (data.categorized_news && data.categorized_news.length > 0) {
+          renderNewsCards(data.categorized_news);
+        } else {
+          fetchLiveNewsFromBrowser();
+        }
 
-      } catch (err) { console.error("마감 데이터 로드 실패:", err); }
+      } catch (err) { 
+        console.error("마감 데이터 로드 실패:", err); 
+        fetchLiveNewsFromBrowser();
+      }
+    }
+
+    /* 🔥 브라우저에서 직접 실시간 뉴스 파싱하는 백업 수집 함수 */
+    async function fetchLiveNewsFromBrowser() {
+      const container = document.getElementById('news-cards-container');
+      if (!container) return;
+      container.innerHTML = `<div class="text-center py-10 text-gray-400 text-xs flex justify-center items-center gap-2"><i class="fa-solid fa-spinner animate-spin text-red-500 text-base"></i> 실시간 속보 뉴스를 불러오는 중입니다...</div>`;
+
+      try {
+        const rssUrl = encodeURIComponent("https://news.google.com/rss/search?q=주식+증시+속보&hl=ko&gl=KR&ceid=KR:ko");
+        const resp = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`);
+        const data = await resp.json();
+
+        if (data.status === 'ok' && data.items && data.items.length > 0) {
+          const newsList = data.items.slice(0, 15).map(item => {
+            let title = item.title || "";
+            let source = "byul.ai";
+            if (title.includes(" - ")) {
+              const parts = title.split(" - ");
+              source = parts.pop();
+              title = parts.join(" - ");
+            }
+            return {
+              title: title,
+              source: source,
+              time_ago: "방금 전",
+              category: "⚡ 속보",
+              link: item.link,
+              ai_interpretation: `[${title}] 관련 이슈는 장중 테마 수급 변동성을 유발할 수 있습니다.`,
+              korea_impact: "🇰🇷 국내 연관 증시 종목 수급 동향 및 변동성에 유의하세요.",
+              investor_opinion: "💡 외인/기관 수급 지지선 확인 후 차분한 대응 권장."
+            };
+          });
+          renderNewsCards(newsList);
+        } else {
+          container.innerHTML = `<div class="text-center py-10 text-gray-400 text-xs">최신 속보 뉴스가 없습니다.</div>`;
+        }
+      } catch (e) {
+        console.error("브라우저 실시간 뉴스 로드 실패:", e);
+        container.innerHTML = `<div class="text-center py-10 text-gray-400 text-xs">뉴스를 불러오는 중 오류가 발생했습니다.</div>`;
+      }
     }
 
     function renderNewsCards(newsList) {
@@ -598,8 +983,9 @@
       }
     }
 
-    /* 초기화 */
+    /* 초기화 실행 */
     initActiveTab();
+    loadScheduleCalendarData();
     startLiveClockAndUpbit();
     initFirebaseRealtimeSync();
   </script>
