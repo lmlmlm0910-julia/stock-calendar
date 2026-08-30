@@ -124,12 +124,18 @@
         <div id="bonds-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
       </div>
 
+      <!-- 핀비즈(Finviz) S&P 500 정사각형 전체 화면 실시간 히트맵 -->
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-3">
-        <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
-          <i class="fa-solid fa-fire text-red-600"></i> 🔥 S&P 500 섹터별 전일 종가 히트맵
-        </h3>
-        <div class="w-full h-[550px] rounded-xl overflow-hidden border border-gray-200">
-          <iframe src="https://s.tradingview.com/embed-widget/stock-heatmap/?locale=kr#%7B%22dataSource%22%3A%22SPX500%22%2C%22blockSize%22%3A%22market_cap_basic%22%2C%22blockColor%22%3A%22change%22%2C%22grouping%22%3A%22sector%22%2C%22hasTopBar%22%3Afalse%2C%22isDataSetEnabled%22%3Afalse%2C%22colorTheme%22%3A%22light%22%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%7D" style="width: 100%; height: 100%; border: none;"></iframe>
+        <div class="flex justify-between items-center border-b border-gray-200 pb-3">
+          <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+            <i class="fa-solid fa-fire text-red-600"></i> 🔥 Finviz S&P 500 실시간 정사각형 히트맵
+          </h3>
+          <a href="https://finviz.com/map.ashx?t=sec" target="_blank" class="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Finviz 원본 크게 보기
+          </a>
+        </div>
+        <div class="w-full rounded-xl overflow-hidden border border-gray-200 bg-gray-900 relative" style="height: 780px;">
+          <iframe src="https://finviz.com/map.ashx?t=sec" class="w-full h-full border-none" scrolling="no"></iframe>
         </div>
       </div>
 
