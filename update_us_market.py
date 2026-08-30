@@ -10,6 +10,7 @@ from google import genai
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
 def get_market_datetime_string():
+    """한국 표준시(KST) 기준 타임스탬프"""
     now_kst = datetime.utcnow() + timedelta(hours=9)
     weekday = now_kst.weekday()
     days = ['월', '화', '수', '목', '금', '토', '일']
@@ -36,7 +37,6 @@ def calculate_time_ago(pub_date_str):
         return "최근"
 
 def categorize_title(title):
-    """제목 키워드로 카테고리 자동 분류"""
     t = title.lower()
     if any(k in t for k in ['금리', '연준', 'fed', '환율', '국채', '물가', 'cpi', 'pce', '파월']):
         return "🏛️ 거시/금리"
@@ -49,7 +49,30 @@ def categorize_title(title):
     else:
         return "⚡ 속보"
 
+def fetch_naver_market_item(code):
+    """네이버 증시 API 직접 수집 (원/달러 환율 등 100% 네이버 매칭)"""
+    url = f"https://api.stock.naver.com/marketindex/item/{code}"
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+    try:
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            price = data.get('closePrice', '').replace(',', '')
+            ratio = float(data.get('fluctuationsRatio', 0.0))
+            if data.get('compareToPreviousClosePrice', '').startswith('-') or data.get('fluctuationsType', {}).get('code') == '5':
+                ratio = -abs(ratio)
+            else:
+                ratio = abs(ratio)
+            return {
+                "price": f"{float(price):,.2f}",
+                "change": f"{ratio:+.2f}%",
+                "raw_pct": ratio
+            }
+    except Exception as e:
+        print(f"네이버 API 수집 실패 ({code}): {e}")
+    return None
+
 def fetch_upbit_crypto():
+    """업비트 비트코인 및 이더리움 시세 수집"""
     url = "https://api.upbit.com/v1/ticker?markets=KRW-BTC,KRW-ETH"
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     crypto_data = {}
@@ -93,28 +116,20 @@ def fetch_yahoo_full_detail(symbol):
             quote = result.get('indicators', {}).get('quote', [{}])[0]
             closes = [c for c in quote.get('close', []) if c is not None]
             opens = [o for o in quote.get('open', []) if o is not None]
-            highs = [h for h in quote.get('high', []) if h is not None]
-            lows = [l for l in quote.get('low', []) if l is not None]
 
             if len(closes) >= 2:
                 price = closes[-1]
                 prev_close = closes[-2]
-                open_p = opens[-1] if len(opens) >= 1 else price
-                high_p = highs[-1] if len(highs) >= 1 else price
-                low_p = lows[-1] if len(lows) >= 1 else price
             else:
                 price = meta.get('regularMarketPrice')
                 prev_close = meta.get('regularMarketPreviousClose') or meta.get('previousClose')
-                open_p = meta.get('regularMarketOpen') or price
-                high_p = meta.get('regularMarketDayHigh') or price
-                low_p = meta.get('regularMarketDayLow') or price
 
             if price is not None and prev_close is not None and prev_close > 0:
                 change_val = price - prev_close
                 change_pct = (change_val / prev_close) * 100
                 return {
                     "price": price, "change_val": change_val, "change_pct": change_pct,
-                    "prev_close": prev_close, "open": open_p, "high": high_p, "low": low_p
+                    "prev_close": prev_close
                 }
     except Exception as e:
         print(f"[{symbol}] 파싱 에러: {e}")
@@ -128,8 +143,7 @@ def get_all_market_data():
         "필라델피아 반도체": "^SOX",
         "러셀 2000": "^RUT",
         "나스닥 선물": "NQ=F",
-        "코스피 야간선물": "KM=F",
-        "원/달러 환율": "KRW=X",
+        "코스피 200 선물": "KM=F",
         "VIX 지수": "^VIX",
         "WTI 유가": "CL=F",
         "미국 2년물": "^2YY",
@@ -139,41 +153,42 @@ def get_all_market_data():
     
     results = {}
     print("실시간 증시 / 선물 / 국채 / 외환 데이터 수집 중...")
-    
+
+    # 1. 네이버 기준 원/달러 환율 파싱
+    naver_usd = fetch_naver_market_item("FX_USDKRW")
+    if naver_usd:
+        results["원/달러 환율"] = naver_usd
+    else:
+        usd_yahoo = fetch_yahoo_full_detail("KRW=X")
+        if usd_yahoo:
+            results["원/달러 환율"] = {
+                "price": f"{usd_yahoo['price']:,.2f}",
+                "change": f"{usd_yahoo['change_pct']:+.2f}%",
+                "raw_pct": usd_yahoo['change_pct']
+            }
+
+    # 2. 야후 파이낸스 지수/선물 파싱
     for name, symbol in tickers.items():
         data = fetch_yahoo_full_detail(symbol)
-        
-        if not data and symbol == "^2YY":
-            data = fetch_yahoo_full_detail("US2Y=X") or fetch_yahoo_full_detail("^IRX")
         if not data and symbol == "KM=F":
-            data = fetch_yahoo_full_detail("^KS11")
+            data = fetch_yahoo_full_detail("^KS200") # 코스피 200 지수로 보정
 
         if data:
             price = data["price"]
             if symbol in ["^TNX", "^TYX", "^2YY"] and price > 10:
                 price /= 10.0
-                data["prev_close"] /= 10.0
-                data["open"] /= 10.0
-                data["high"] /= 10.0
-                data["low"] /= 10.0
 
             p_str = f"{price:,.2f}" if price >= 10 else f"{price:.3f}"
 
             results[name] = {
                 "price": p_str,
                 "change": f"{data['change_pct']:+.2f}%",
-                "raw_pct": data["change_pct"],
-                "prev_close": f"{data['prev_close']:,.2f}" if data['prev_close'] >= 10 else f"{data['prev_close']:.3f}",
-                "open": f"{data['open']:,.2f}" if data['open'] >= 10 else f"{data['open']:.3f}",
-                "high": f"{data['high']:,.2f}" if data['high'] >= 10 else f"{data['high']:.3f}",
-                "low": f"{data['low']:,.2f}" if data['low'] >= 10 else f"{data['low']:.3f}"
+                "raw_pct": data["change_pct"]
             }
         else:
-            results[name] = {
-                "price": "N/A", "change": "0.00%", "raw_pct": 0.0,
-                "prev_close": "N/A", "open": "N/A", "high": "N/A", "low": "N/A"
-            }
+            results[name] = {"price": "N/A", "change": "0.00%", "raw_pct": 0.0}
             
+    # 3. 비트코인 및 이더리움 포함
     crypto_data = fetch_upbit_crypto()
     if crypto_data.get("비트코인"):
         results["비트코인"] = crypto_data["비트코인"]
@@ -183,7 +198,6 @@ def get_all_market_data():
     return results
 
 def fetch_save_ticker_news():
-    """byul.ai 스타일 수십 개 실시간 뉴스 다량 크롤링"""
     queries = [
         "주식+증시+속보",
         "미국증시+엔비디아+연준",
@@ -198,11 +212,10 @@ def fetch_save_ticker_news():
         try:
             with urllib.request.urlopen(req, timeout=10) as resp:
                 root = ET.fromstring(resp.read())
-                for item in root.findall('.//item')[:6]:
+                for item in root.findall('.//item')[:5]:
                     title = item.find('title').text if item.find('title') is not None else ""
                     pub_date = item.find('pubDate').text if item.find('pubDate') is not None else ""
                     link = item.find('link').text if item.find('link') is not None else ""
-                    
                     source_elem = item.find('source')
                     source = source_elem.text if source_elem is not None else "byul.ai"
                     
@@ -223,14 +236,14 @@ def fetch_save_ticker_news():
                             "category": category,
                             "link": link,
                             "summary": f"{source}에서 보도한 최신 실시간 시장 속보 기사입니다.",
-                            "ai_interpretation": f"[{title}] 관련 이슈는 관련 섹터의 단기 수급 및 투심 변동에 직접적인 영향을 줄 수 있습니다.",
-                            "korea_impact": "🇰🇷 관련 테마주 및 국내 연관 증시 섹터 변동성에 유의하세요.",
-                            "investor_opinion": "💡 무리한 추격 매수보다는 선물지수 방향성 및 외인 수급 지지 확인 후 접근 추천."
+                            "ai_interpretation": f"[{title}] 관련 이슈는 관련 섹터 수급 및 투자 심리에 직접적인 연관을 줍니다.",
+                            "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 변동성에 유의하세요.",
+                            "investor_opinion": "💡 선물지수 향방 및 외인 수급 확인 후 분할 매수 접근 추천."
                         })
         except Exception as e:
             print(f"뉴스 크롤링 오류: {e}")
             
-    return news_list[:15]  # 최신 실시간 기사 15개 유지
+    return news_list[:15]
 
 def generate_market_report():
     real_data = get_all_market_data()
@@ -243,11 +256,19 @@ def generate_market_report():
         try:
             client = genai.Client(api_key=GEMINI_API_KEY)
             prompt = f"""
-            업데이트 타임스탬프: [{timestamp_str}]
+            당신은 월가 수석 경제 분석 전문가입니다.
             수집 데이터: {json.dumps(real_data, ensure_ascii=False, indent=2)}
             
-            월가 마감 종합 시황보고서(detailed_capital_flow_report)를 정교한 HTML 문자열로 작성하세요.
-            JSON 구조: {{"detailed_capital_flow_report": "HTML내용"}}
+            [절대 준수 사항]:
+            - 상단 지수 카드에 이미 수치들이 있으므로 지수/가격 수치 요약 표는 절대로 만들지 마세요.
+            - 오직 "월가의 돈의 흐름 및 심층 분석 리포트"만 HTML 카드 형태(<div class="bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-4">...</div>)로 작성하세요.
+
+            [필수 포함 3대 분석 내용]:
+            1. 🔥 1. 월가 자금 유입 섹터 & 배경 원인 분석 (어떤 섹터/기업으로 기관 자금이 쏠렸는지, 매크로/실적 배경 상세 분석)
+            2. 🔵 2. 하방 압력 섹터 & 유출 원인 분석 (어떤 섹터가 차익실현이나 매도세를 받았는지 및 악재/금리 배경 분석)
+            3. 🇰🇷 3. 한국 증시 연계 심층 대응 전략 (미국 섹터 흐름이 K-반도체, K-배터리, 바이오, 방산 등 한국 증시에 미칠 영향과 투자 전략)
+
+            JSON 전용 응답: {{"detailed_capital_flow_report": "HTML 문자열"}}
             """
             for model_name in ['gemini-2.5-flash', 'gemini-3.6-flash']:
                 try:
@@ -261,15 +282,17 @@ def generate_market_report():
                 except Exception as e:
                     time.sleep(1)
         except Exception as e:
-            print(f"API 에러: {e}")
+            print(f"Gemini API 에러: {e}")
 
     if not detailed_report:
         detailed_report = f"""
-        <div class="space-y-4 text-sm leading-relaxed text-gray-800">
-          <div class="bg-gray-50 p-5 rounded-2xl border border-gray-200">
-            <h4 class="text-base font-bold text-gray-900 mb-2">1. 미국장 마감 시황 & 글로벌 자금 흐름</h4>
-            <p>대형 기술주 중심의 혼조세 속에 선물지수 및 국채금리 향방에 주목해야 하는 장세입니다.</p>
-          </div>
+        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-4">
+          <h4 class="text-base font-bold text-gray-900 border-b border-gray-200 pb-2">🔥 1. 월가 자금 유입 섹터 & 배경 원인 분석</h4>
+          <p class="text-sm text-gray-700 leading-relaxed">대형 기술주 및 AI 모멘텀 섹터 중심으로 저가 매수세 및 기관 수급 유입이 지속되고 있습니다.</p>
+          <h4 class="text-base font-bold text-gray-900 border-b border-gray-200 pb-2 pt-2">🔵 2. 하방 압력 섹터 & 유출 원인 분석</h4>
+          <p class="text-sm text-gray-700 leading-relaxed">금리 변동성으로 인해 고밸류 성장주 및 일부 소형주 섹터에서 차익 실현 물량이 출회되었습니다.</p>
+          <h4 class="text-base font-bold text-gray-900 border-b border-gray-200 pb-2 pt-2">🇰🇷 3. 한국 증시 연계 심층 대응 전략</h4>
+          <p class="text-sm text-gray-700 leading-relaxed">나스닥 선물 및 코스피 200 선물 연동성을 주시하며 반도체/대장주 중심 외인 수급을 확인 후 대응하세요.</p>
         </div>
         """
 
@@ -278,11 +301,13 @@ def generate_market_report():
 
     final_json = {
         "updated_at": timestamp_str,
+        # Top 6 핵심 지수 카드 (이더리움 복구 및 6개 구성)
         "macro_indicators": [
-            {"name": "원/달러 환율", "value": f"{real_data.get('원/달러 환율', {}).get('price')}원", "change": real_data.get('원/달러 환율', {}).get('change'), "status": "외환시세"},
+            {"name": "원/달러 환율", "value": f"{real_data.get('원/달러 환율', {}).get('price')}원", "change": real_data.get('원/달러 환율', {}).get('change'), "status": "네이버 시세"},
             {"name": "나스닥 선물", "value": real_data.get('나스닥 선물', {}).get('price'), "change": real_data.get('나스닥 선물', {}).get('change'), "status": "NQ=F"},
-            {"name": "코스피 야간선물", "value": real_data.get('코스피 야간선물', {}).get('price'), "change": real_data.get('코스피 야간선물', {}).get('change'), "status": "KM=F"},
+            {"name": "코스피 200 선물", "value": real_data.get('코스피 200 선물', {}).get('price'), "change": real_data.get('코스피 200 선물', {}).get('change'), "status": "KOSPI 200"},
             {"name": "비트코인 (BTC)", "value": btc_info.get('price_display', 'N/A'), "change": btc_info.get('change', '0.00%'), "status": "업비트/KRW"},
+            {"name": "이더리움 (ETH)", "value": eth_info.get('price_display', 'N/A'), "change": eth_info.get('change', '0.00%'), "status": "업비트/KRW"},
             {"name": "VIX 지수 (공포지수)", "value": real_data.get('VIX 지수', {}).get('price'), "change": real_data.get('VIX 지수', {}).get('change'), "status": "변동성 지수"}
         ],
         "indices": [
@@ -293,21 +318,9 @@ def generate_market_report():
             {"name": "러셀 2000", "value": real_data.get('러셀 2000', {}).get('price'), "change": real_data.get('러셀 2000', {}).get('change')}
         ],
         "bonds_detailed": [
-            {
-                "tenor": "미국 2년물 국채금리 (^2YY)", "yield_rate": f"{real_data.get('미국 2년물', {}).get('price')}%",
-                "change": real_data.get('미국 2년물', {}).get('change'), "prev_close": real_data.get('미국 2년물', {}).get('prev_close'),
-                "open": real_data.get('미국 2년물', {}).get('open'), "high": real_data.get('미국 2년물', {}).get('high'), "low": real_data.get('미국 2년물', {}).get('low')
-            },
-            {
-                "tenor": "미국 10년물 국채금리 (^TNX)", "yield_rate": f"{real_data.get('미국 10년물', {}).get('price')}%",
-                "change": real_data.get('미국 10년물', {}).get('change'), "prev_close": real_data.get('미국 10년물', {}).get('prev_close'),
-                "open": real_data.get('미국 10년물', {}).get('open'), "high": real_data.get('미국 10년물', {}).get('high'), "low": real_data.get('미국 10년물', {}).get('low')
-            },
-            {
-                "tenor": "미국 30년물 국채금리 (^TYX)", "yield_rate": f"{real_data.get('미국 30년물', {}).get('price')}%",
-                "change": real_data.get('미국 30년물', {}).get('change'), "prev_close": real_data.get('미국 30년물', {}).get('prev_close'),
-                "open": real_data.get('미국 30년물', {}).get('open'), "high": real_data.get('미국 30년물', {}).get('high'), "low": real_data.get('미국 30년물', {}).get('low')
-            }
+            {"tenor": "미국 2년물 국채금리 (^2YY)", "yield_rate": f"{real_data.get('미국 2년물', {}).get('price')}%", "change": real_data.get('미국 2년물', {}).get('change')},
+            {"tenor": "미국 10년물 국채금리 (^TNX)", "yield_rate": f"{real_data.get('미국 10년물', {}).get('price')}%", "change": real_data.get('미국 10년물', {}).get('change')},
+            {"tenor": "미국 30년물 국채금리 (^TYX)", "yield_rate": f"{real_data.get('미국 30년물', {}).get('price')}%", "change": real_data.get('미국 30년물', {}).get('change')}
         ],
         "detailed_capital_flow_report": detailed_report,
         "categorized_news": raw_news
@@ -316,7 +329,7 @@ def generate_market_report():
     with open("us_market.json", "w", encoding="utf-8") as f:
         json.dump(final_json, f, ensure_ascii=False, indent=2)
 
-    print("us_market.json 업데이트 성공!")
+    print("us_market.json 완벽 업데이트 성공!")
 
 if __name__ == "__main__":
     generate_market_report()
