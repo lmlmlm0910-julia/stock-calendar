@@ -3,20 +3,53 @@ import json
 import time
 import urllib.request
 import xml.etree.ElementTree as ET
+import email.utils
 from datetime import datetime, timedelta
 from google import genai
 
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
 def get_market_datetime_string():
-    """한국 표준시(KST) 기준 연-월-일 시:분:초 타임스탬프 생성"""
     now_kst = datetime.utcnow() + timedelta(hours=9)
     weekday = now_kst.weekday()
     days = ['월', '화', '수', '목', '금', '토', '일']
     return now_kst.strftime(f"%Y년 %m월 %d일({days[weekday]}) %H:%M:%S KST")
 
+def calculate_time_ago(pub_date_str):
+    """RSS pubDate를 'X분 전', 'X시간 전'으로 변환"""
+    if not pub_date_str:
+        return "방금 전"
+    try:
+        dt = email.utils.parsedate_to_datetime(pub_date_str)
+        now = datetime.now(dt.tzinfo)
+        diff = now - dt
+        seconds = int(diff.total_seconds())
+        if seconds < 60:
+            return "방금 전"
+        elif seconds < 3600:
+            return f"{seconds // 60}분 전"
+        elif seconds < 86400:
+            return f"{seconds // 3600}시간 전"
+        else:
+            return f"{seconds // 86400}일 전"
+    except Exception:
+        return "최근"
+
+def categorize_title(title):
+    """제목 키워드로 카테고리 자동 분류"""
+    t = title.lower()
+    if any(k in t for k in ['금리', '연준', 'fed', '환율', '국채', '물가', 'cpi', 'pce', '파월']):
+        return "🏛️ 거시/금리"
+    elif any(k in t for k in ['비트코인', '암호화폐', '코인', 'btc', 'eth', '이더리움', '가상자산']):
+        return "🪙 가상자산"
+    elif any(k in t for k in ['엔비디아', '반도체', 'ai', '빅테크', '애플', '테슬라', '아마존', 'ms', '구글']):
+        return "💻 기술/AI"
+    elif any(k in t for k in ['코스피', '코스닥', '정부', '차관', '임명', '한국', '연합뉴스']):
+        return "🇰🇷 국내증시"
+    else:
+        return "⚡ 속보"
+
 def fetch_upbit_crypto():
-    """업비트 API를 통한 비트코인 및 이더리움 실시간 원화/달러 시세 파싱"""
     url = "https://api.upbit.com/v1/ticker?markets=KRW-BTC,KRW-ETH"
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
     crypto_data = {}
@@ -110,11 +143,10 @@ def get_all_market_data():
     for name, symbol in tickers.items():
         data = fetch_yahoo_full_detail(symbol)
         
-        # 보정 로직
         if not data and symbol == "^2YY":
             data = fetch_yahoo_full_detail("US2Y=X") or fetch_yahoo_full_detail("^IRX")
         if not data and symbol == "KM=F":
-            data = fetch_yahoo_full_detail("^KS11")  # KOSPI 대체 파싱 보정
+            data = fetch_yahoo_full_detail("^KS11")
 
         if data:
             price = data["price"]
@@ -151,8 +183,15 @@ def get_all_market_data():
     return results
 
 def fetch_save_ticker_news():
-    queries = ["byul+경제+주식+암호화폐", "US+stock+market+fed+nvidia+bitcoin"]
+    """byul.ai 스타일 수십 개 실시간 뉴스 다량 크롤링"""
+    queries = [
+        "주식+증시+속보",
+        "미국증시+엔비디아+연준",
+        "가상자산+비트코인+속보",
+        "기획재정부+한국은행+금리"
+    ]
     news_list = []
+    
     for q in queries:
         url = f"https://news.google.com/rss/search?q={q}&hl=ko&gl=KR&ceid=KR:ko"
         req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -161,64 +200,54 @@ def fetch_save_ticker_news():
                 root = ET.fromstring(resp.read())
                 for item in root.findall('.//item')[:6]:
                     title = item.find('title').text if item.find('title') is not None else ""
+                    pub_date = item.find('pubDate').text if item.find('pubDate') is not None else ""
+                    link = item.find('link').text if item.find('link') is not None else ""
+                    
                     source_elem = item.find('source')
                     source = source_elem.text if source_elem is not None else "byul.ai"
                     
-                    if " - " in title and (source == "byul.ai" or not source):
+                    if " - " in title:
                         parts = title.rsplit(" - ", 1)
                         title = parts[0]
-                        source = parts[1]
-                    
+                        if not source or source == "byul.ai":
+                            source = parts[1]
+
+                    time_ago = calculate_time_ago(pub_date)
+                    category = categorize_title(title)
+
                     if title and not any(n['title'] == title for n in news_list):
-                        news_list.append({"title": title, "source": source})
+                        news_list.append({
+                            "title": title,
+                            "source": source or "byul.ai",
+                            "time_ago": time_ago,
+                            "category": category,
+                            "link": link,
+                            "summary": f"{source}에서 보도한 최신 실시간 시장 속보 기사입니다.",
+                            "ai_interpretation": f"[{title}] 관련 이슈는 관련 섹터의 단기 수급 및 투심 변동에 직접적인 영향을 줄 수 있습니다.",
+                            "korea_impact": "🇰🇷 관련 테마주 및 국내 연관 증시 섹터 변동성에 유의하세요.",
+                            "investor_opinion": "💡 무리한 추격 매수보다는 선물지수 방향성 및 외인 수급 지지 확인 후 접근 추천."
+                        })
         except Exception as e:
             print(f"뉴스 크롤링 오류: {e}")
             
-    return news_list
-
-def generate_deep_comprehensive_report(real_data, timestamp_str):
-    report_html = f"""
-    <div class="space-y-6 text-sm leading-relaxed text-gray-800">
-      <div class="bg-gray-50 p-5 rounded-2xl border border-gray-200">
-        <h4 class="text-base font-bold text-gray-900 mb-3 flex items-center gap-2">
-          <i class="fa-solid fa-chart-line text-red-600"></i> 1. 월가 종합 시황 분석 및 선물 지수 동향
-        </h4>
-        <p class="mb-3">
-          금일 미국 증시는 대형 기술주의 차익 실현 경계감 속에 나스닥 선물({real_data.get('나스닥 선물', {}).get('price')}) 및 코스피 야간선물({real_data.get('코스피 야간선물', {}).get('price')})의 변동성을 유의깊게 관찰해야 하는 장세입니다.
-        </p>
-      </div>
-    </div>
-    """
-    news = [
-      {
-        "category": "속보",
-        "source": "byul.ai",
-        "title": "나스닥 선물 및 야간 선물 변동성 확대... AI 실적 경계감 유효",
-        "summary": "주요 반도체 대장주 실적 발표를 앞두고 글로벌 야간 선물 시장 내 순환매 진행 중.",
-        "ai_interpretation": "실적 변동성에 대비한 리스크 관리 기조가 선물 지수에 반영 중입니다.",
-        "korea_impact": "🇰🇷 코스피 야간 선물 흐름에 연동된 주간 코스피 개장 시가 형성 지점 주시.",
-        "investor_opinion": "💡 선물지수의 하방 지지력을 확인하며 분할 매수 전략 유지."
-      }
-    ]
-    return report_html, news
+    return news_list[:15]  # 최신 실시간 기사 15개 유지
 
 def generate_market_report():
     real_data = get_all_market_data()
     raw_news = fetch_save_ticker_news()
     timestamp_str = get_market_datetime_string()
 
-    detailed_report, categorized_news = None, None
+    detailed_report = None
 
     if GEMINI_API_KEY:
         try:
             client = genai.Client(api_key=GEMINI_API_KEY)
             prompt = f"""
             업데이트 타임스탬프: [{timestamp_str}]
-            실제 수집 데이터: {json.dumps(real_data, ensure_ascii=False, indent=2)}
-            수집 뉴스: {json.dumps(raw_news, ensure_ascii=False, indent=2)}
-            1. 'detailed_capital_flow_report': 마감시황 리포트 작성
-            2. 'categorized_news': 뉴스 카드 배열
-            JSON 응답 전용.
+            수집 데이터: {json.dumps(real_data, ensure_ascii=False, indent=2)}
+            
+            월가 마감 종합 시황보고서(detailed_capital_flow_report)를 정교한 HTML 문자열로 작성하세요.
+            JSON 구조: {{"detailed_capital_flow_report": "HTML내용"}}
             """
             for model_name in ['gemini-2.5-flash', 'gemini-3.6-flash']:
                 try:
@@ -228,17 +257,21 @@ def generate_market_report():
                         text = "\n".join([line for line in text.splitlines() if not line.strip().startswith("```")]).strip()
                     parsed = json.loads(text)
                     detailed_report = parsed.get("detailed_capital_flow_report")
-                    categorized_news = parsed.get("categorized_news")
                     break
                 except Exception as e:
                     time.sleep(1)
         except Exception as e:
             print(f"API 에러: {e}")
 
-    if not detailed_report or not categorized_news:
-        fallback_rep, fallback_news = generate_deep_comprehensive_report(real_data, timestamp_str)
-        if not detailed_report: detailed_report = fallback_rep
-        if not categorized_news: categorized_news = fallback_news
+    if not detailed_report:
+        detailed_report = f"""
+        <div class="space-y-4 text-sm leading-relaxed text-gray-800">
+          <div class="bg-gray-50 p-5 rounded-2xl border border-gray-200">
+            <h4 class="text-base font-bold text-gray-900 mb-2">1. 미국장 마감 시황 & 글로벌 자금 흐름</h4>
+            <p>대형 기술주 중심의 혼조세 속에 선물지수 및 국채금리 향방에 주목해야 하는 장세입니다.</p>
+          </div>
+        </div>
+        """
 
     btc_info = real_data.get('비트코인', {})
     eth_info = real_data.get('이더리움', {})
@@ -277,7 +310,7 @@ def generate_market_report():
             }
         ],
         "detailed_capital_flow_report": detailed_report,
-        "categorized_news": categorized_news
+        "categorized_news": raw_news
     }
 
     with open("us_market.json", "w", encoding="utf-8") as f:
