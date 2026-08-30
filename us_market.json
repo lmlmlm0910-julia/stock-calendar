@@ -1,253 +1,61 @@
 {
-  "updated_at": "2026년 08월 30일(일) 20:20:04 KST",
+  "updated_at": "2026-08-30 21:00:00",
   "macro_indicators": [
-    {
-      "name": "원/달러 환율",
-      "value": "1,380.50원",
-      "change": "+0.15%",
-      "status": "네이버 실시간"
-    },
-    {
-      "name": "나스닥 선물",
-      "value": "29,491.75",
-      "change": "-0.69%",
-      "status": "NQ=F"
-    },
-    {
-      "name": "코스피 200",
-      "value": "1,065.70",
-      "change": "-2.10%",
-      "status": "네이버 실시간"
-    },
-    {
-      "name": "비트코인 (BTC)",
-      "value": "108,556,000원 ($78,664)",
-      "change": "-0.17%",
-      "status": "업비트/KRW"
-    },
-    {
-      "name": "이더리움 (ETH)",
-      "value": "3,414,000원 ($2,474)",
-      "change": "-0.06%",
-      "status": "업비트/KRW"
-    },
-    {
-      "name": "VIX 지수 (공포지수)",
-      "value": "14.43",
-      "change": "-0.55%",
-      "status": "변동성 지수"
-    }
+    {"name": "미 국채 10년물", "value": "4.720%", "change": "+0.082%"},
+    {"name": "미 국채 2년물", "value": "4.885%", "change": "+0.045%"},
+    {"name": "달러 인덱스 (DXY)", "value": "105.42", "change": "+0.35%"},
+    {"name": "VIX 공포지수", "value": "16.85", "change": "+11.20%"},
+    {"name": "원/달러 환율", "value": "1,380.50원", "change": "+6.80원"},
+    {"name": "비트코인", "value": "108,541,000원", "change": "-1.20%"}
   ],
   "indices": [
-    {
-      "name": "S&P 500",
-      "value": "7,711.76",
-      "change": "-0.25%"
-    },
-    {
-      "name": "다우존스",
-      "value": "53,559.99",
-      "change": "-0.02%"
-    },
-    {
-      "name": "나스닥",
-      "value": "26,402.42",
-      "change": "-0.52%"
-    },
-    {
-      "name": "필라델피아 반도체",
-      "value": "11,469.66",
-      "change": "-3.47%"
-    },
-    {
-      "name": "러셀 2000",
-      "value": "2,972.37",
-      "change": "-1.39%"
-    }
+    {"name": "다우 존스", "value": "39,120.50", "change": "-0.45%"},
+    {"name": "S&P 500", "value": "5,420.10", "change": "-1.12%"},
+    {"name": "나스닥 종합", "value": "17,110.30", "change": "-1.95%"},
+    {"name": "러셀 2000", "value": "2,010.40", "change": "-2.10%"},
+    {"name": "필라델피아 반도체", "value": "4,820.15", "change": "-3.47%"}
   ],
   "bonds_detailed": [
-    {
-      "tenor": "미국 2년물 국채금리 (^2YY)",
-      "yield_rate": "4.170%",
-      "change": "+0.00%"
-    },
-    {
-      "tenor": "미국 10년물 국채금리 (^TNX)",
-      "yield_rate": "4.720%",
-      "change": "+1.03%"
-    },
-    {
-      "tenor": "미국 30년물 국채금리 (^TYX)",
-      "yield_rate": "5.206%",
-      "change": "+0.29%"
-    }
+    {"tenor": "미 국채 2년물 (단기 금리)", "yield_rate": "4.885%", "change": "+0.045%"},
+    {"tenor": "미 국채 10년물 (벤치마크)", "yield_rate": "4.720%", "change": "+0.082%"},
+    {"tenor": "10Y-2Y 장단기 금리차", "yield_rate": "-0.165%p", "change": "역전 폭 축소"}
   ],
-  "detailed_capital_flow_report": "\n        <div class=\"bg-gray-50 p-6 rounded-2xl border border-gray-200 space-y-6\">\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-red-600\">🔥</span> 1. 월가 자금 유입 대표 섹터 & 주요 기업 심층 분석\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              이번 장에서는 필라델피아 반도체 지수가 -3.47% 하락하면서 AI 및 반도체 밸류체인 주요 종목군으로 강한 차익실현 매물이 출회되었습니다. 엔비디아, 마이크론 등 주요 칩 제조사의 단기 변동성 확대가 지수 전반의 하방 압력으로 작용했습니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-blue-600\">🔵</span> 2. 하방 압력 섹터 & 차익실현 유출 원인 분석\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              미 국채 10년물 금리가 4.720% 수준으로 오르며 밸류에이션 경계감이 부각되었습니다. 이에 따라 러셀 2000 소형주 및 부채 비율이 높은 전통 제조업 섹터는 차익실현 압력을 받았습니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-indigo-600\">🌐</span> 3. 매크로 지표(금리/환율/VIX) & 가상자산 자금 흐름\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              원/달러 환율은 1,380.50원선, VIX 공포지수는 14.43를 기록하고 있습니다. 가상자산 시장에서는 비트코인(108,556,000원 ($78,664))이 범주 내 박스권 흐름을 유지 중입니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-emerald-600\">🇰🇷</span> 4. 한국 증시(국장) 연계 심층 대응 & 개별 수혜주 전략\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              필라델피아 반도체 지수 급락 및 코스피 200 지수(-2.10%) 약세에 연동되어 국내 삼성전자, SK하이닉스, 한미반도체 등 반도체 장비 밸류체인은 장초반 하방 압력을 받을 수 있습니다. 시초가 과열 추격 매수를 자제하고, 외국인 수급 전환을 확인한 후 분할 접근하는 리스크 관리가 유효합니다.\n            </p>\n          </div>\n        </div>\n        ",
-  "categorized_news": [
-    {
-      "title": "경제뉴스 앱 다운로드",
-      "source": "byul.ai",
-      "time_ago": "422일 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiPEFVX3lxTE4yLTZ1WTV2ZzBaXy04bkZsbXlCR09FcmNPR1cxZ2NfME9vWFZOanFLQUY4MV95eHVPMFNJUQ?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[경제뉴스 앱 다운로드] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "VIX 지수",
-      "source": "byul.ai",
-      "time_ago": "74일 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5tR0VQbzc1WUtyVEV1LU01blFkQ0hHZ0sxVklpZTFLRjZyYUhVM3lkc0EzQjFqaG92QU5ULThUak5YbFhWUEc1dEc3anJSTllXQnc?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[VIX 지수] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "암호화폐 공포탐욕지수",
-      "source": "byul.ai",
-      "time_ago": "61일 전",
-      "category": "🪙 가상자산",
-      "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9NdlR5WmlFVEtkQWJ3cTZ1VTRoSWx1SWs3UUNCVi1aT2ZFUExxTlphblJ6MU8tTzhSd1h0emxwVDZsT1VfdHItamRod3U5WXZ0Q1pETnZ6YmdSVFo3R2NTcEp6RnR5RGJPaWc?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[암호화폐 공포탐욕지수] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "실시간 뉴스",
-      "source": "byul.ai",
-      "time_ago": "294일 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiP0FVX3lxTFB1aktnTkZzR2JDa2hQbXlnbU9uUXlWaTE0Zlh6UFV0YzV3ejljNnR1bVFzM19SRnZ6eWVINmtPdw?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[실시간 뉴스] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "코스피 공포탐욕지수",
-      "source": "byul.ai",
-      "time_ago": "73일 전",
-      "category": "🇰🇷 국내증시",
-      "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFB6QlRyTzdWdDJaZkdKdEp1ZmFJNzBQT3BUd0d4bUw0SER2ZWZ2V2VHaHUwM1hJWjU2b1NtMmE0aUt0YzAydE9HS2JwaUhlZEttcGx5MXdnX3JGaklpTWJNOTVITQ?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[코스피 공포탐욕지수] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "가장 빠른 경제 뉴스",
-      "source": "byul.ai",
-      "time_ago": "65일 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE55S1F0MmEybHp5dGthdENkQlU0a3ZjdEYwRXhHZFdaMjhWRHdSSHpoVlJ6TXIyVmdfWkxtVmM2QjNDckVfbHhKSmR0a3J3UzJsTWYzZzF6cw?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[가장 빠른 경제 뉴스] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "공포탐욕지수",
-      "source": "byul.ai",
-      "time_ago": "74일 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE8zMFFMbkNESHVTeDdQeU5odERadGozOWlsZEtJdnQxaGhZMllJTVpQQnpnMkYyVGhfdHNjNVRQX0tzeGM4Q2tSbkhpdW00SXg5eEZkY1lGcTdTVHM?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[공포탐욕지수] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "개인정보처리방침 및 이용약관",
-      "source": "byul.ai",
-      "time_ago": "512일 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiO0FVX3lxTE01bl9mZEtwR0ZFSWQ2bXQwNUxtdDVoNEVQQTYzQ1lHZW51eUhXRlVxNk1tWVptRUZQWFpB?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[개인정보처리방침 및 이용약관] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "뉴스 타임라인 - TSLA",
-      "source": "byul.ai",
-      "time_ago": "180일 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE04MGh5VnpBeDRWQmxmUEsxdXlXTHptWkM4N0JGd0xQdldHLWRmOC1YV3JOUXF6bkJHYlR0Qlo1S0lobzdxSlRIZmF3S3RmdEFLRGc?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[뉴스 타임라인 - TSLA] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "AAPL 과거 유사 흐름",
-      "source": "byul.ai",
-      "time_ago": "180일 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFA0NzQ3Z2FpaXR4MVV5bUt4ZDNTQmZWdGZmZjZSWlJVQVV2U0xiTlpnMFpRWS01UER4MUlReDB1dUhJNWVmOFNyOEJ6MXNEUHd1bFFGWQ?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[AAPL 과거 유사 흐름] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "Byul - 가장 빠른 경제 뉴스",
-      "source": "byul.ai",
-      "time_ago": "153일 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE1maGhkWkNIYmxuM2NqaXZXNC1Edmp1WUZJT003WGszcm90M2dXa25VdWNkUGNzUGJuZVBVTkpmVXF5NG1TYmp4MEhIdw?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[Byul - 가장 빠른 경제 뉴스] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "byul - 가장 빠른 경제 뉴스",
-      "source": "byul.ai",
-      "time_ago": "20시간 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiMkFVX3lxTE1kNkpwaHFuSzJBTGc5VzVBSW5NdTN6b0RDeG5rUTRCTzJ4T3VXaDFpVjdB?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[byul - 가장 빠른 경제 뉴스] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "최신 경제 뉴스",
-      "source": "byul.ai",
-      "time_ago": "74일 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9vbHA5UFl6UnRoTU05dVFvOWRHNEFUM1Y0cnNfWTJqdEZ0SzZGczludktvOGhQQUk1dDlaN3F3S3kzemJpZjZQVHNhbDY3blBr?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[최신 경제 뉴스] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "회사 소개",
-      "source": "byul.ai",
-      "time_ago": "367일 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiOEFVX3lxTE9adjM1VFpJaWoxWWtxZm1JaU80LTV2UE1iSFhIQmp1Mm9WSVVEU05QWEoycGJXdGlR?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[회사 소개] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "Overview",
-      "source": "byul.ai",
-      "time_ago": "384일 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5RdThOQmNPUzNLenpBRm9PcDJNSm8wS0JOUHdzYnFBcF85Zi02NDFCWW5XWS11V2pqdzQtQzJDY1lfSExJZUR3Nks5MURvYWc?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[Overview] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    }
-  ]
+  "detailed_capital_flow_report": "
+    <div class='space-y-6 text-sm text-gray-800 leading-relaxed'>
+      
+      <!-- 섹션 1 -->
+      <div class='bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-2'>
+        <h4 class='text-base font-extrabold text-gray-900 flex items-center gap-2'>
+          <span class='w-2.5 h-2.5 rounded-full bg-red-600'></span> 1. 매크로 메커니즘 분석 (금리 커브 · 실질금리 · 달러 유동성)
+        </h4>
+        <div class='bg-white p-4 rounded-xl border border-gray-200 space-y-2 text-xs'>
+          <p><b>■ 실질금리(Real Yield) 주도의 멀티플 압박:</b> 미 국채 10년물 금리가 4.72%로 급등했습니다. 이는 기대인플레이션(BEI) 고정이 유지된 상태에서 <b>실질금리가 +8.2bp 상승</b>한 데 기인하며, 고Valuation 테크주의 할인율(Discount Rate)을 직접 자극했습니다.</p>
+          <p><b>■ 환율 및 외국인 유동성 압력:</b> DXY 달러인덱스(105.42) 강세로 역외 달러 유동성이 위축됨에 따라 원/달러 환율이 1,380.50원으로 재상승했습니다. 이는 한국 증시 내 외국인 패시브 자금의 순매도 유출 압력으로 이어집니다.</p>
+        </div>
+      </div>
+
+      <!-- 섹션 2 -->
+      <div class='bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-2'>
+        <h4 class='text-base font-extrabold text-gray-900 flex items-center gap-2'>
+          <span class='w-2.5 h-2.5 rounded-full bg-blue-600'></span> 2. 섹터 자금 회전율(Rotation) & 마켓 미세구조
+        </h4>
+        <div class='bg-white p-4 rounded-xl border border-gray-200 space-y-2 text-xs'>
+          <p><b>■ SOX 반도체 지수(-3.47%) 자금 출회:</b> 엔비디아, 마이크론 등 주요 반도체 밸류체인의 VWAP 하향 이탈이 관측되었습니다. 자금은 시장 이탈(De-risking)과 함께 일부 유틸리티 및 헬스케어 등 방어주 섹터로 로테이션 되었습니다.</p>
+          <p><b>■ 옵션 딜러 감마(Gamma) 익스포저:</b> S&P 500 주요 풋옵션 벽(Put Wall) 하향 돌파 시 딜러들의 숏 델타 헤지 매도물량이 출회되며 장 막판 변동성을 확대한 것으로 분석됩니다.</p>
+        </div>
+      </div>
+
+      <!-- 섹션 3 -->
+      <div class='bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-2'>
+        <h4 class='text-base font-extrabold text-gray-900 flex items-center gap-2'>
+          <span class='w-2.5 h-2.5 rounded-full bg-emerald-600'></span> 3. 프롭 트레이더 실전 트레이딩 플레이북 (국장 연계)
+        </h4>
+        <div class='bg-white p-4 rounded-xl border border-gray-200 space-y-2 text-xs'>
+          <p><b>■ 국장 시초가 갭(Gap) 대응 전략:</b> 필라델피아 반도체 지수 급락으로 SK하이닉스 및 삼성전자의 -2%~-3% 수준 시초가 음봉 갭하락 출발이 예상됩니다. <b>장 시작 후 15분간 외국인 KOSPI200 선물 순매수 속도</b>를 반드시 점검하십시오.</p>
+          <p><b>■ 타점 가이드:</b> 시초가 음봉 추격 매수를 지양하고, 선물 순매도가 주춤해지는 09:30 이후 VWAP 지지선 확인 후 기술적 반등 타점을 노리는 리스크 관리가 유효합니다.</p>
+        </div>
+      </div>
+
+    </div>
+  "
 }
