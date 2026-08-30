@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026년 08월 28일(금) 미국장 마감 시황",
+  "updated_at": "2026년 08월 30일(일) 10:13:10 KST",
   "macro_indicators": [
     {
       "name": "원/달러 환율",
@@ -9,15 +9,15 @@
     },
     {
       "name": "비트코인 (BTC)",
-      "value": "$78,227.43",
-      "change": "-2.53%",
-      "status": "암호화폐"
+      "value": "108,506,000원 ($78,628)",
+      "change": "-0.22%",
+      "status": "업비트/KRW"
     },
     {
       "name": "이더리움 (ETH)",
-      "value": "$2,462.02",
-      "change": "-1.93%",
-      "status": "암호화폐"
+      "value": "3,413,000원 ($2,473)",
+      "change": "-0.09%",
+      "status": "업비트/KRW"
     },
     {
       "name": "VIX 지수 (공포지수)",
@@ -61,8 +61,8 @@
   ],
   "bonds_detailed": [
     {
-      "tenor": "미국 2년물 국채금리",
-      "yield_rate": "3.7300%",
+      "tenor": "미국 2년물 국채금리 (^2YY)",
+      "yield_rate": "3.730%",
       "change": "+1.41%",
       "prev_close": "3.68",
       "open": "3.67",
@@ -70,8 +70,8 @@
       "low": "3.66"
     },
     {
-      "tenor": "미국 10년물 국채금리",
-      "yield_rate": "4.7200%",
+      "tenor": "미국 10년물 국채금리 (^TNX)",
+      "yield_rate": "4.720%",
       "change": "+1.03%",
       "prev_close": "4.67",
       "open": "4.69",
@@ -79,8 +79,8 @@
       "low": "4.65"
     },
     {
-      "tenor": "미국 30년물 국채금리",
-      "yield_rate": "5.2060%",
+      "tenor": "미국 30년물 국채금리 (^TYX)",
+      "yield_rate": "5.206%",
       "change": "+0.29%",
       "prev_close": "5.19",
       "open": "5.21",
@@ -88,7 +88,7 @@
       "low": "5.16"
     }
   ],
-  "detailed_capital_flow_report": "\n    <div class=\"space-y-6 text-sm leading-relaxed text-gray-800\">\n      <div class=\"bg-gray-50 p-5 rounded-xl border border-gray-200\">\n        <h4 class=\"text-base font-bold text-gray-900 mb-2\">📌 1. 월가 자금 흐름(Money Flow) & 섹터 로테이션 요약</h4>\n        <p>금일 월가 자금은 단기 고점 부담감이 반영된 반도체/하드웨어 섹터에서 실적 가이던스 하방 지지력이 확인된 빅테크 플랫폼 서비스 및 메가캡 종목으로 자금이 매끄럽게 이동했습니다.</p>\n      </div>\n\n      <div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\">\n        <div class=\"bg-emerald-50 p-4 rounded-xl border border-emerald-200\">\n          <strong class=\"text-emerald-900 font-bold block mb-2 text-sm\">🔥 자금 집중 강세 섹터 & 대표 종목</strong>\n          <ul class=\"list-disc pl-4 space-y-1.5 text-xs text-gray-700\">\n            <li><b>소매/IT 서비스 (아마존 AMZN +3.97%):</b> AWS 클라우드 매출 가속화 및 소비 지표 호조로 거래대금 최상위 기록.</li>\n            <li><b>플랫폼 서비스 (알파벳 GOOGL +1.74%, 메타 META +1.21%):</b> 생성형 AI 광고 수익화 및 온디바이스 모멘텀에 자금 유입.</li>\n            <li><b>대형 소프트웨어 (마이크로소프트 MSFT +1.68%, 애플 AAPL +1.63%):</b> 기관 패시브 자금의 안정적 유입으로 지수 하방을 방어.</li>\n          </ul>\n        </div>\n\n        <div class=\"bg-rose-50 p-4 rounded-xl border border-rose-200\">\n          <strong class=\"text-rose-900 font-bold block mb-2 text-sm\">❄️ 하방 압력 약세 섹터 & 대표 종목</strong>\n          <ul class=\"list-disc pl-4 space-y-1.5 text-xs text-gray-700\">\n            <li><b>반도체/장비 (엔비디아 NVDA -4.57%, 필라델피아 반도체 -3.47%):</b> 실적 발표 전 대량 차익 실현 및 대중국 규제 우려 반영.</li>\n            <li><b>중소형 고부채주 (러셀 2000 -1.51%):</b> 연준 당국자들의 매파적 금리 발언 지속으로 자금 조달 비용 우려 출회.</li>\n            <li><b>에너지/원자재 (WTI $83.40):</b> 글로벌 경기 둔화 우려와 수급 불균형으로 유가 보합권 형성.</li>\n          </ul>\n        </div>\n      </div>\n\n      <div class=\"bg-blue-50 p-5 rounded-xl border border-blue-200 space-y-2\">\n        <h4 class=\"text-base font-bold text-blue-900\">💡 2. 한국 증시(KOSPI/KOSDAQ) 연계 영향 & 투자자 대응 전략</h4>\n        <p class=\"text-xs text-blue-950\"><b>• 국내 반도체향 외국인 수급:</b> 엔비디아의 단기 급락은 삼성전자 및 SK하이닉스의 외국인 매도세를 유발할 수 있으나, 플랫폼주의 선방은 NAVER, 카카오 등 국내 성장주에 긍정적 온기를 불어넣을 수 있습니다.</p>\n        <p class=\"text-xs text-blue-950\"><b>• 환율 및 금리 변동성:</b> 원/달러 환율 1,371.50원 기조 속 미국 10년물 국채 금리(4.7200%)의 추이를 주시하며 고배당 및 확실한 밸류체인 위주의 분할 매수 접근이 권장됩니다.</p>\n      </div>\n    </div>\n    ",
+  "detailed_capital_flow_report": "\n    <div class=\"space-y-6 text-sm leading-relaxed text-gray-800\">\n      \n      <div class=\"bg-gray-50 p-5 rounded-2xl border border-gray-200\">\n        <h4 class=\"text-base font-bold text-gray-900 mb-3 flex items-center gap-2\">\n          <i class=\"fa-solid fa-chart-line text-red-600\"></i> 1. 월가 종합 시황 & 주요 지수 움직임 심층 분석\n        </h4>\n        <p class=\"mb-3\">\n          금일 미국 증시는 <b>엔비디아(NVDA)</b> 등 주요 반도체 대장주들의 실적 발표를 앞둔 차익 실현 경계감과, 연준(Fed) 주요 인사들의 매파적 금리 발언이 교차하며 지수별로 차별화된 흐름을 나타냈습니다.\n        </p>\n        <ul class=\"list-disc pl-5 space-y-1.5 text-xs text-gray-700\">\n          <li><b>S&P 500 (7,711.76, -0.25%):</b> 대형 기술주의 혼조세 속에 금융 및 헬스케어 방어주의 선방으로 소폭 하방 압력 소화.</li>\n          <li><b>나스닥 종합지수 (26,402.42, -0.52%):</b> 반도체 섹터의 매물 출회 및 AI 테마주 숨고르기로 주요 지수 중 상대적 약세 연출.</li>\n          <li><b>필라델피아 반도체 지수 (11,469.66, -3.47%):</b> 엔비디아, AMD, Broadcom 등 반도체 밸류체인 전반의 단기 고점 매물 출회로 지수 하락 가속.</li>\n          <li><b>러셀 2000 (2,972.37, -1.39%):</b> 고금리 장기화 우려에 따른 자금 조달 비용 부담으로 중소형주 수급 이탈 지속.</li>\n        </ul>\n      </div>\n\n      <div class=\"grid grid-cols-1 md:grid-cols-2 gap-5\">\n        <div class=\"bg-emerald-50 p-5 rounded-2xl border border-emerald-200\">\n          <h5 class=\"text-sm font-bold text-emerald-900 mb-2 flex items-center gap-1.5\">\n            <i class=\"fa-solid fa-circle-arrow-up text-emerald-600\"></i> 🔥 강한 자금 유입 섹터 & 대표 기업\n          </h5>\n          <p class=\"text-xs text-gray-700 mb-3\">\n            반도체에서 차익 실현된 유동성이 이익 안정성과 현금 흐름이 확실한 메가캡 소프트웨어 및 플랫폼주로 빠르게 유입되었습니다.\n          </p>\n          <div class=\"space-y-2 text-xs text-gray-800\">\n            <div class=\"bg-white p-2.5 rounded-lg border border-emerald-100\">\n              <b>• 아마존 (AMZN):</b> AWS 클라우드 매출 재가속 및 전자상거래 효율화 모멘텀으로 매수세 집중.\n            </div>\n            <div class=\"bg-white p-2.5 rounded-lg border border-emerald-100\">\n              <b>• 알파벳 (GOOGL) & 메타 (META):</b> 생성형 AI 검색 광고 수익화 및 온디바이스 AI 시장 선점 기대감 유지.\n            </div>\n            <div class=\"bg-white p-2.5 rounded-lg border border-emerald-100\">\n              <b>• 마이크로소프트 (MSFT) & 애플 (AAPL):</b> 기관 패시브 자금의 하방 지지 매수세 유입.\n            </div>\n          </div>\n        </div>\n\n        <div class=\"bg-rose-50 p-5 rounded-2xl border border-rose-200\">\n          <h5 class=\"text-sm font-bold text-rose-900 mb-2 flex items-center gap-1.5\">\n            <i class=\"fa-solid fa-circle-arrow-down text-rose-600\"></i> ❄️ 하방 압력 약세 섹터 & 요인 분석\n          </h5>\n          <p class=\"text-xs text-gray-700 mb-3\">\n            밸류에이션 부담이 가중된 반도체 밸류체인과 고금리 민감 종목군에서 선제적 리스크 관리 매물이 출회되었습니다.\n          </p>\n          <div class=\"space-y-2 text-xs text-gray-800\">\n            <div class=\"bg-white p-2.5 rounded-lg border border-rose-100\">\n              <b>• 엔비디아 (NVDA) & AMD:</b> 실적 발표를 앞둔 불확실성 및 차익 실현 물량 소화 진행.\n            </div>\n            <div class=\"bg-white p-2.5 rounded-lg border border-rose-100\">\n              <b>• 러셀 2000 중소형주:</b> 연준의 피벗(금리 인하) 시기 지연에 따른 이자 비용 부담 가중.\n            </div>\n            <div class=\"bg-white p-2.5 rounded-lg border border-rose-100\">\n              <b>• 에너지 & 원자재:</b> WTI 유가($83.40)의 보합권 형성에 따른 모멘텀 둔화.\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"bg-indigo-50 p-5 rounded-2xl border border-indigo-200 space-y-3\">\n        <h4 class=\"text-base font-bold text-indigo-950 flex items-center gap-2\">\n          <i class=\"fa-solid fa-globe text-indigo-600\"></i> 3. 매크로 경제 지표 & 가상자산 수급 파급력\n        </h4>\n        <div class=\"grid grid-cols-1 md:grid-cols-3 gap-3 text-xs\">\n          <div class=\"bg-white p-3 rounded-xl border border-indigo-100\">\n            <b class=\"text-gray-900 block mb-1\">💵 원/달러 환율 (1,371.50원)</b>\n            외환시장에서 달러화 강세 흐름 속에 원화 가치 변동성이 이어지며 외국인 수급의 경계감을 유발하고 있습니다.\n          </div>\n          <div class=\"bg-white p-3 rounded-xl border border-indigo-100\">\n            <b class=\"text-gray-900 block mb-1\">🏛️ 미국 10년물 국채 금리 (4.720%)</b>\n            연준 위원들의 매파적 스탠스와 물가 지표 발표 대기 속 금리 상방 압력이 지속되고 있습니다.\n          </div>\n          <div class=\"bg-white p-3 rounded-xl border border-indigo-100\">\n            <b class=\"text-gray-900 block mb-1\">🪙 비트코인 (108,506,000원 ($78,628))</b>\n            현물 ETF로의 기관 자금 수급 지지력이 작용하며 매크로 변동성 대비 양호한 박스권 하방 지지력을 형성 중입니다.\n          </div>\n        </div>\n      </div>\n\n      <div class=\"bg-blue-50 p-5 rounded-2xl border border-blue-200 space-y-2\">\n        <h4 class=\"text-base font-bold text-blue-900 flex items-center gap-2\">\n          <i class=\"fa-solid fa-lightbulb text-yellow-500\"></i> 4. 🇰🇷 한국 증시 연계 영향 & 투자자 심층 대응 전략\n        </h4>\n        <p class=\"text-xs text-blue-950 leading-relaxed\">\n          <b>• 국내 반도체(삼성전자, SK하이닉스) 영향:</b> 엔비디아 및 필라델피아 반도체 지수의 단기 차익 실현 출회는 코스피 반도체 대장주의 외국인 순매도 유출을 자극할 수 있으나, HBM3e/HBM4 실질 수혜 모멘텀은 유효합니다.\n        </p>\n        <p class=\"text-xs text-blue-950 leading-relaxed\">\n          <b>• 포트폴리오 대응 전략:</b> 지수 상방이 제한되는 변동성 장세에서는 무리한 추격 매수를 자제하고, 확실한 실적 가이던스를 입증한 대형 플랫폼주 및 고배당·가치주 위주의 분할 매수 접근이 바람직합니다.\n        </p>\n      </div>\n\n    </div>\n    ",
   "categorized_news": [
     {
       "category": "속보",
