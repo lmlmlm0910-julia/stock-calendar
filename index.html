@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>레드불 증시 통합 AI 대시보드</title>
   
-  <!-- Tailwind CSS 공식 스크립트 CDN 적용 (스타일 깨짐 방지) -->
+  <!-- Tailwind CSS 공식 Play CDN 적용 -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   
@@ -117,7 +117,6 @@
         </button>
       </div>
 
-      <!-- 상단 6대 매크로 지수 카드 -->
       <div id="macro-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3"></div>
 
       <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
@@ -125,13 +124,11 @@
         <div id="indices-container" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
       </div>
 
-      <!-- 미국 국채 금리 카드 -->
       <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
         <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-1.5"><i class="fa-solid fa-landmark text-blue-500"></i> 미국 국채 금리 동향 (네이버 증시 100% 동기화)</h3>
         <div id="bonds-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
       </div>
 
-      <!-- TradingView 실시간 S&P 500 히트맵 -->
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-3">
         <div class="flex justify-between items-center border-b border-gray-200 pb-3">
           <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
@@ -146,7 +143,6 @@
         </div>
       </div>
 
-      <!-- 월가 돈의 흐름 심층 분석 리포트 -->
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-4">
         <h3 class="text-lg font-bold text-gray-900 border-b border-gray-200 pb-3 flex items-center gap-2"><i class="fa-solid fa-file-invoice-dollar text-red-600"></i> 🔥 월가 경제 전문가 자금 흐름(Money Flow) 심층 분석 리포트</h3>
         <div id="detailed-report-content" class="pt-2"></div>
@@ -463,7 +459,7 @@
       const data = {
         scenarios: JSON.parse(localStorage.getItem('redbull_scenarios') || '[]'),
         journals: JSON.parse(localStorage.getItem('redbull_journals') || '[]'),
-        sector_folders: JSON.parse(localStorage.getItem('redbull_sector_folders') || '[]'),
+        sector_folders: getSectorFolders(),
         custom_schedules: getCustomSchedules()
       };
       firebaseDb.ref('redbull_user_data').set(data);
@@ -476,11 +472,14 @@
         if (data) {
           if (data.scenarios) localStorage.setItem('redbull_scenarios', JSON.stringify(data.scenarios));
           if (data.journals) localStorage.setItem('redbull_journals', JSON.stringify(data.journals));
-          if (data.sector_folders && data.sector_folders.length > 0) {
-            localStorage.setItem('redbull_sector_folders', JSON.stringify(data.sector_folders));
+          if (data.sector_folders) {
+            let folders = Array.isArray(data.sector_folders) ? data.sector_folders : Object.values(data.sector_folders);
+            folders.forEach(f => { if (!f.images) f.images = []; });
+            localStorage.setItem('redbull_sector_folders', JSON.stringify(folders));
           }
           if (data.custom_schedules) {
-            localStorage.setItem('redbull_user_schedules', JSON.stringify(data.custom_schedules));
+            let schedules = Array.isArray(data.custom_schedules) ? data.custom_schedules : Object.values(data.custom_schedules);
+            localStorage.setItem('redbull_user_schedules', JSON.stringify(schedules));
           }
           
           const activeTab = localStorage.getItem('redbull_active_tab') || 'schedule';
@@ -556,7 +555,7 @@
       } catch (e) { console.log("업비트 에러:", e); }
     }
 
-    /* 🔥 AI 스마트 일정/기업 분석 엔진 */
+    /* AI 일정 분석 엔진 */
     function generateAIScheduleAnalysis(title, category, overview) {
       const t = title.toLowerCase();
       let importance = "";
@@ -810,11 +809,11 @@
       }).join('');
     }
 
-    /* 🔥 섹터별 갤러리 생성 및 로직 */
+    /* 섹터별 갤러리 관리 */
     function getSectorFolders() {
       try {
         let raw = localStorage.getItem('redbull_sector_folders');
-        if (!raw) {
+        if (!raw || raw === '[]' || raw === 'null') {
           const defaultFolders = [
             { id: 1700000000001, title: "💻 AI 반도체 & HBM 밸류체인", images: [] },
             { id: 1700000000002, title: "🔋 2차전지 & 핵심 소재", images: [] },
@@ -823,7 +822,10 @@
           localStorage.setItem('redbull_sector_folders', JSON.stringify(defaultFolders));
           return defaultFolders;
         }
-        return JSON.parse(raw);
+        let parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) parsed = Object.values(parsed);
+        parsed.forEach(f => { if (!f.images) f.images = []; });
+        return parsed;
       } catch(e) { return []; }
     }
     
@@ -878,6 +880,8 @@
       const folder = folders.find(f => f.id === folderId);
       if (!folder) return;
 
+      if (!folder.images) folder.images = [];
+
       let loadedCount = 0;
       Array.from(files).forEach(file => {
         compressAndBase64(file, (compressedBase64) => {
@@ -917,7 +921,7 @@
     function deleteImageFromFolder(folderId, imgIndex) {
       let folders = getSectorFolders();
       const folder = folders.find(f => f.id === folderId);
-      if (!folder) return;
+      if (!folder || !folder.images) return;
 
       folder.images.splice(imgIndex, 1);
       saveSectorFolders(folders);
@@ -939,8 +943,10 @@
       const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
       let folders = getSectorFolders();
 
+      if (!Array.isArray(folders)) folders = [];
+
       if (query) {
-        folders = folders.filter(f => f.title.toLowerCase().includes(query));
+        folders = folders.filter(f => f.title && f.title.toLowerCase().includes(query));
       }
 
       if (folders.length === 0) {
@@ -957,7 +963,8 @@
       }
 
       container.innerHTML = folders.map(folder => {
-        const imagesHtml = folder.images.length > 0 ? folder.images.map((imgSrc, idx) => `
+        const folderImages = folder.images || [];
+        const imagesHtml = folderImages.length > 0 ? folderImages.map((imgSrc, idx) => `
           <div class="relative group rounded-xl overflow-hidden border border-gray-200 shadow-sm bg-gray-50">
             <img src="${imgSrc}" onclick="openLightbox('${imgSrc}')" class="w-full h-auto max-h-[600px] object-contain cursor-pointer hover:opacity-95 transition" alt="${folder.title}">
             <button onclick="deleteImageFromFolder(${folder.id}, ${idx})" class="absolute top-2 right-2 bg-red-600 text-white p-1.5 rounded-lg text-xs opacity-0 group-hover:opacity-100 transition shadow">
@@ -976,7 +983,7 @@
               <div class="flex items-center gap-2">
                 <span class="text-indigo-600 font-extrabold text-lg"><i class="fa-solid fa-folder-open"></i></span>
                 <h4 class="text-lg font-bold text-gray-900">${folder.title}</h4>
-                <span class="text-xs font-semibold bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">${folder.images.length}장</span>
+                <span class="text-xs font-semibold bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">${folderImages.length}장</span>
               </div>
               <div class="flex gap-2">
                 <input type="file" id="file-input-${folder.id}" multiple accept="image/*" class="hidden" onchange="handleImagesUpload(event, ${folder.id})">
@@ -1130,7 +1137,6 @@
         const resp = await fetch('us_market.json?v=' + new Date().getTime());
         const data = await resp.json();
 
-        /* 상단 6대 매크로 카드 */
         document.getElementById('macro-container').innerHTML = data.macro_indicators.map(m => `
           <div class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm">
             <div class="text-xs font-bold text-gray-500">${m.name}</div>
@@ -1139,7 +1145,6 @@
           </div>
         `).join('');
 
-        /* 5대 지수 동향 */
         document.getElementById('indices-container').innerHTML = data.indices.map(idx => `
           <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 text-center">
             <div class="text-xs font-bold text-gray-500">${idx.name}</div>
@@ -1148,7 +1153,6 @@
           </div>
         `).join('');
 
-        /* 국채 금리 동향 */
         document.getElementById('bonds-container').innerHTML = data.bonds_detailed.map(b => `
           <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-1 text-center">
             <div class="text-xs font-bold text-gray-600">${b.tenor}</div>
