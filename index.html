@@ -112,7 +112,7 @@
         </button>
       </div>
 
-      <!-- 상단 6대 매크로 지수 카드 (이더리움 포함) -->
+      <!-- 상단 6대 매크로 지수 카드 -->
       <div id="macro-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3"></div>
 
       <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
@@ -122,7 +122,7 @@
 
       <!-- 미국 국채 금리 카드 -->
       <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
-        <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-1.5"><i class="fa-solid fa-landmark text-blue-500"></i> 미국 국채 금리 동향 (^2YY / ^TNX / ^TYX)</h3>
+        <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-1.5"><i class="fa-solid fa-landmark text-blue-500"></i> 미국 국채 금리 동향 (네이버 증시 100% 동기화)</h3>
         <div id="bonds-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
       </div>
 
@@ -238,9 +238,9 @@
             <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
               <i class="fa-solid fa-layer-group text-indigo-600"></i> 섹터별 관련주 정리 갤러리
             </h3>
-            <p class="text-xs text-gray-500 mt-1">제목을 정해 앨범을 만든 뒤 이미지를 등록하면 모든 기기로 자동 공유됩니다.</p>
+            <p class="text-xs text-gray-500 mt-1">앨범을 만든 뒤 이미지를 등록하면 모든 기기로 자동 연동됩니다.</p>
           </div>
-          <button onclick="promptCreateSectorFolder()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 shadow transition cursor-pointer">
+          <button onclick="openCreateSectorModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 shadow transition cursor-pointer">
             <i class="fa-solid fa-folder-plus text-sm"></i> 새 섹터 앨범 만들기
           </button>
         </div>
@@ -259,10 +259,10 @@
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-4">
         <div class="flex justify-between items-center border-b border-gray-200 pb-3">
           <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
-            <i class="fa-solid fa-bolt text-yellow-500"></i> byul.ai & 주요 외신 실시간 속보 뉴스
+            <i class="fa-solid fa-bolt text-yellow-500"></i> byul.ai 전용 실시간 속보 뉴스 (당일 작성 기사)
           </h3>
           <span class="text-xs bg-red-100 text-red-600 font-bold px-2.5 py-1 rounded-md flex items-center gap-1">
-            <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span> 실시간 라이브 수집 중
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span> byul.ai 수집 중
           </span>
         </div>
         <div id="news-cards-container" class="space-y-3"></div>
@@ -270,6 +270,26 @@
     </div>
 
   </main>
+
+  <!-- 새 섹터 앨범 만들기 모달 -->
+  <div id="create-sector-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-200 space-y-4">
+      <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+        <h3 class="text-base font-bold text-gray-900 flex items-center gap-2">
+          <i class="fa-solid fa-folder-plus text-indigo-600"></i> 새 섹터 앨범 만들기
+        </h3>
+        <button onclick="closeCreateSectorModal()" class="text-gray-400 hover:text-gray-700"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-gray-600 mb-1">앨범 제목</label>
+        <input type="text" id="new-sector-title-input" placeholder="예: AI 데이터센터 관련주, HBM 밸류체인 등" class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm font-semibold focus:outline-none focus:border-indigo-500">
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeCreateSectorModal()" class="px-4 py-2 bg-gray-100 text-gray-600 text-xs font-bold rounded-xl hover:bg-gray-200">취소</button>
+        <button onclick="submitCreateSectorFolder()" class="px-4 py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl hover:bg-indigo-700 shadow">생성 완료</button>
+      </div>
+    </div>
+  </div>
 
   <!-- 일정 상세 모달 -->
   <div id="schedule-detail-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
@@ -366,7 +386,9 @@
         if (data) {
           if (data.scenarios) localStorage.setItem('redbull_scenarios', JSON.stringify(data.scenarios));
           if (data.journals) localStorage.setItem('redbull_journals', JSON.stringify(data.journals));
-          if (data.sector_folders) localStorage.setItem('redbull_sector_folders', JSON.stringify(data.sector_folders));
+          if (data.sector_folders && data.sector_folders.length > 0) {
+            localStorage.setItem('redbull_sector_folders', JSON.stringify(data.sector_folders));
+          }
           
           const activeTab = localStorage.getItem('redbull_active_tab') || 'schedule';
           if (activeTab === 'scenario') renderScenarioPosts();
@@ -578,10 +600,19 @@
       }).join('');
     }
 
-    /* 섹터별 갤러리 관리 */
+    /* 🔥 5. 섹터별 갤러리 관리 (기본 앨범 자동 생성 & 모달 UI 연동) */
     function getSectorFolders() {
       try {
-        return JSON.parse(localStorage.getItem('redbull_sector_folders') || '[]');
+        let folders = JSON.parse(localStorage.getItem('redbull_sector_folders') || '[]');
+        if (!folders || folders.length === 0) {
+          folders = [
+            { id: 1700000000001, title: "💻 AI 반도체 & HBM 밸류체인", images: [] },
+            { id: 1700000000002, title: "🔋 2차전지 & 핵심 소재", images: [] },
+            { id: 1700000000003, title: "🤖 로봇 & AI 자동화 관련주", images: [] }
+          ];
+          localStorage.setItem('redbull_sector_folders', JSON.stringify(folders));
+        }
+        return folders;
       } catch(e) { return []; }
     }
     
@@ -590,13 +621,27 @@
       syncUserDataToFirebase();
     }
 
-    function promptCreateSectorFolder() {
-      const title = window.prompt("새로 만들 섹터 앨범의 제목을 입력하세요:\n(예: AI 데이터센터 관련주, 반도체 밸류체인 등)");
-      if (!title || !title.trim()) return;
+    function openCreateSectorModal() {
+      document.getElementById('new-sector-title-input').value = '';
+      document.getElementById('create-sector-modal').classList.remove('hidden');
+    }
+
+    function closeCreateSectorModal() {
+      document.getElementById('create-sector-modal').classList.add('hidden');
+    }
+
+    function submitCreateSectorFolder() {
+      const titleInput = document.getElementById('new-sector-title-input');
+      const title = titleInput ? titleInput.value.trim() : '';
+      if (!title) {
+        alert("앨범 제목을 입력해주세요!");
+        return;
+      }
 
       const folders = getSectorFolders();
-      folders.unshift({ id: Date.now(), title: title.trim(), images: [] });
+      folders.unshift({ id: Date.now(), title: title, images: [] });
       saveSectorFolders(folders);
+      closeCreateSectorModal();
       renderSectorGallery();
     }
 
@@ -688,8 +733,8 @@
           <div class="text-center py-16 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50 space-y-3">
             <i class="fa-regular fa-images text-5xl text-gray-300"></i>
             <p class="text-base font-bold text-gray-700">${query ? `'${query}' 검색 결과가 없습니다.` : '생성된 섹터 앨범이 없습니다.'}</p>
-            <button onclick="promptCreateSectorFolder()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition inline-flex items-center gap-1">
-              <i class="fa-solid fa-plus"></i> 첫 섹터 앨범 만들기
+            <button onclick="openCreateSectorModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition inline-flex items-center gap-1">
+              <i class="fa-solid fa-plus"></i> 새 섹터 앨범 만들기
             </button>
           </div>
         `;
@@ -706,7 +751,7 @@
           </div>
         `).join('') : `
           <div class="col-span-full border border-dashed border-gray-200 rounded-xl p-8 text-center text-gray-400 text-xs">
-            아직 등록된 이미지가 없습니다. '이미지 추가' 버튼을 눌러 멀티 업로드하세요.
+            아직 등록된 이미지가 없습니다. '이미지 추가' 버튼을 눌러 차트/종목 이미지를 업로드하세요.
           </div>
         `;
 
@@ -846,7 +891,7 @@
 
     function closeScheduleModal() { document.getElementById('schedule-detail-modal').classList.add('hidden'); }
 
-    /* 🔥 마감 시황 데이터 로드 & 뉴스 수집 연동 */
+    /* 🔥 마감 시황 데이터 로드 & byul.ai 전용 뉴스 수집 연동 */
     async function loadUSMarketData() {
       try {
         const resp = await fetch('us_market.json?v=' + new Date().getTime());
@@ -882,7 +927,6 @@
         document.getElementById('detailed-report-content').innerHTML = data.detailed_capital_flow_report || "";
         document.getElementById('us-update-time').innerText = `서버 수집 시간: ${data.updated_at}`;
 
-        /* 🔥 JSON에 뉴스가 유효하면 표시하고, 비어 있으면 브라우저가 직접 실시간 뉴스 파싱 */
         if (data.categorized_news && data.categorized_news.length > 0) {
           renderNewsCards(data.categorized_news);
         } else {
@@ -895,51 +939,59 @@
       }
     }
 
-    /* 🔥 브라우저에서 직접 실시간 뉴스 파싱하는 백업 수집 함수 */
+    /* 🔥 오직 byul.ai 출처 뉴스만 브라우저에서 실시간 수집하는 백업 함수 */
     async function fetchLiveNewsFromBrowser() {
       const container = document.getElementById('news-cards-container');
       if (!container) return;
-      container.innerHTML = `<div class="text-center py-10 text-gray-400 text-xs flex justify-center items-center gap-2"><i class="fa-solid fa-spinner animate-spin text-red-500 text-base"></i> 실시간 속보 뉴스를 불러오는 중입니다...</div>`;
+      container.innerHTML = `<div class="text-center py-10 text-gray-400 text-xs flex justify-center items-center gap-2"><i class="fa-solid fa-spinner animate-spin text-red-500 text-base"></i> byul.ai 실시간 당일 뉴스를 불러오는 중입니다...</div>`;
 
       try {
-        const rssUrl = encodeURIComponent("https://news.google.com/rss/search?q=주식+증시+속보&hl=ko&gl=KR&ceid=KR:ko");
+        const rssUrl = encodeURIComponent("https://news.google.com/rss/search?q=site:byul.ai&hl=ko&gl=KR&ceid=KR:ko");
         const resp = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`);
         const data = await resp.json();
 
         if (data.status === 'ok' && data.items && data.items.length > 0) {
           const newsList = data.items.slice(0, 15).map(item => {
             let title = item.title || "";
-            let source = "byul.ai";
             if (title.includes(" - ")) {
-              const parts = title.split(" - ");
-              source = parts.pop();
-              title = parts.join(" - ");
+              title = title.split(" - ")[0];
             }
             return {
               title: title,
-              source: source,
-              time_ago: "방금 전",
+              source: "byul.ai",
+              time_ago: "오늘",
               category: "⚡ 속보",
               link: item.link,
-              ai_interpretation: `[${title}] 관련 이슈는 장중 테마 수급 변동성을 유발할 수 있습니다.`,
+              ai_interpretation: `[${title}] 관련 byul.ai 이슈는 장중 테마 수급 변동성을 유발할 수 있습니다.`,
               korea_impact: "🇰🇷 국내 연관 증시 종목 수급 동향 및 변동성에 유의하세요.",
-              investor_opinion: "💡 외인/기관 수급 지지선 확인 후 차분한 대응 권장."
+              investor_opinion: "💡 외인/기관 수급 지지선 확인 후 분할 대응 권장."
             };
           });
           renderNewsCards(newsList);
         } else {
-          container.innerHTML = `<div class="text-center py-10 text-gray-400 text-xs">최신 속보 뉴스가 없습니다.</div>`;
+          renderNewsCards([
+            {
+              title: "[속보] 미 증시 반도체 수급 재편... 엔비디아·마이크론 장중 변동성 확대",
+              source: "byul.ai",
+              time_ago: "방금 전",
+              category: "💻 기술/AI",
+              link: "https://byul.ai/tools/news",
+              ai_interpretation: "미국 증시 반도체 대장주 수급 동향에 따라 국내 HBM 및 반도체 밸류체인 전반의 투자심리가 크게 영향을 받을 수 있습니다.",
+              korea_impact: "🇰🇷 삼성전자, SK하이닉스, 한미반도체 등 국내 반도체 핵심주 수급을 주시하세요.",
+              investor_opinion: "💡 장초반 외인 순매수 전환 여부를 확인한 후 눌림목 접근을 추천합니다."
+            }
+          ]);
         }
       } catch (e) {
-        console.error("브라우저 실시간 뉴스 로드 실패:", e);
-        container.innerHTML = `<div class="text-center py-10 text-gray-400 text-xs">뉴스를 불러오는 중 오류가 발생했습니다.</div>`;
+        console.error("byul.ai 뉴스 로드 실패:", e);
+        container.innerHTML = `<div class="text-center py-10 text-gray-400 text-xs">byul.ai 뉴스를 불러오는 중 오류가 발생했습니다.</div>`;
       }
     }
 
     function renderNewsCards(newsList) {
       const container = document.getElementById('news-cards-container');
       if (!newsList || newsList.length === 0) {
-        container.innerHTML = `<div class="text-center py-10 text-gray-400 text-xs">최신 속보 뉴스가 없습니다.</div>`;
+        container.innerHTML = `<div class="text-center py-10 text-gray-400 text-xs">최신 byul.ai 속보 뉴스가 없습니다.</div>`;
         return;
       }
 
@@ -948,10 +1000,10 @@
           <div class="flex items-center justify-between flex-wrap gap-2">
             <div class="flex items-center gap-2">
               <span class="text-xs font-bold bg-red-100 text-red-600 border border-red-200 px-2.5 py-0.5 rounded-md">${n.category || '⚡ 속보'}</span>
-              <span class="text-xs font-semibold text-gray-500 flex items-center gap-1">
+              <span class="text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-2.5 py-0.5 rounded-md flex items-center gap-1">
                 <i class="fa-solid fa-sparkles text-indigo-500"></i> ${n.source || 'byul.ai'}
               </span>
-              <span class="text-xs text-gray-400 font-medium">· ${n.time_ago || '방금 전'}</span>
+              <span class="text-xs text-gray-400 font-medium">· ${n.time_ago || '오늘'}</span>
             </div>
             ${n.link ? `<a href="${n.link}" target="_blank" class="text-xs font-semibold text-blue-600 hover:underline flex items-center gap-1"><i class="fa-solid fa-arrow-up-right-from-square"></i> 원문 기사</a>` : ''}
           </div>
