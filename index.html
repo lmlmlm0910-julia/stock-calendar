@@ -9,12 +9,14 @@
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     .tab-active { border-bottom: 3px solid #ef4444; color: #ef4444; font-weight: bold; }
+    .card-hover { transition: all 0.2s ease-in-out; }
+    .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
   </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
   <!-- 상단 네비게이션 -->
-  <header class="bg-gray-900 text-white sticky top-0 z-20 shadow-md">
+  <header class="bg-gray-900 text-white sticky top-0 z-30 shadow-md">
     <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
       <h1 class="text-xl font-bold flex items-center gap-2">
         <span class="bg-red-600 text-white text-xs px-2.5 py-1 rounded font-extrabold tracking-wider">RED BULL</span>
@@ -59,7 +61,7 @@
       <div class="bg-gray-900 rounded-2xl p-6 text-white shadow-xl border border-gray-800">
         <div class="text-xs font-bold text-red-400 tracking-widest mb-1">RED BULL US MARKET DAILY WRAP-UP</div>
         <h2 class="text-2xl font-bold mb-2">🇺🇸 미국장 마감 종합 시황 & 핀비즈 맵</h2>
-        <p class="text-gray-400 text-sm" id="us-update-time">미국 5대 지수, 국채 금리, 환율, VIX, 원유 및 연준 발언 요약 리포트</p>
+        <p class="text-gray-400 text-sm" id="us-update-time">업데이트 수집 중...</p>
       </div>
 
       <!-- 환율 / VIX / 유가 주요 매크로 지표 -->
@@ -73,7 +75,7 @@
         <div id="indices-container" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
       </div>
 
-      <!-- 🗺️ S&P 500 실시간 주가 히트맵 섹션 (인터랙티브 위젯 연동) -->
+      <!-- S&P 500 실시간 주가 히트맵 -->
       <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
         <div class="flex justify-between items-center mb-3">
           <h3 class="text-sm font-bold text-gray-800 flex items-center gap-1.5">
@@ -83,8 +85,7 @@
             Finviz 원본 맵 보기 <i class="fa-solid fa-arrow-up-right-from-square"></i>
           </a>
         </div>
-        <div class="overflow-hidden rounded-lg border border-gray-200 bg-white" style="height: 500px;">
-          <!-- TradingView Heatmap Widget -->
+        <div class="overflow-hidden rounded-lg border border-gray-200 bg-white" style="height: 480px;">
           <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
             <div class="tradingview-widget-container__widget" style="height:100%; width:100%;"></div>
             <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js" async>
@@ -117,45 +118,95 @@
         <div id="bonds-container" class="grid grid-cols-1 md:grid-cols-3 gap-3"></div>
       </div>
 
-      <!-- 섹터 자금 흐름 & 연준 발언 분석 -->
-      <div class="space-y-4">
-        <!-- 강세 섹터 -->
-        <div class="bg-emerald-50 rounded-xl p-5 border border-emerald-200">
-          <h3 class="text-xs font-bold text-emerald-800 uppercase tracking-wider mb-2 flex items-center gap-1">
-            <i class="fa-solid fa-arrow-trend-up text-emerald-600"></i> 🔥 강한 자금 쏠림 섹터 & 관심 배경
+      <!-- 🔥 세이브티커 스타일 클릭 가능한 4대 심층 리포트 카드 세션 -->
+      <div class="space-y-3">
+        <div class="flex justify-between items-center px-1">
+          <h3 class="text-base font-extrabold text-gray-900 flex items-center gap-2">
+            <i class="fa-solid fa-newspaper text-red-500"></i> 오늘 주요 리포트 & 섹터 분석
           </h3>
-          <div id="strong-sectors" class="text-sm text-gray-800 leading-relaxed"></div>
+          <span class="text-xs text-gray-500">* 카드를 클릭하면 상세 심층 리포트가 열립니다.</span>
         </div>
 
-        <!-- 약세 섹터 -->
-        <div class="bg-rose-50 rounded-xl p-5 border border-rose-200">
-          <h3 class="text-xs font-bold text-rose-800 uppercase tracking-wider mb-2 flex items-center gap-1">
-            <i class="fa-solid fa-arrow-trend-down text-rose-600"></i> ❄️ 하방 압력 / 약세 섹터 & 요인 분석
-          </h3>
-          <div id="weak-sectors" class="text-sm text-gray-800 leading-relaxed"></div>
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- 강세 섹터 카드 -->
+          <div onclick="openReportModal('strong')" class="bg-white p-5 rounded-xl border border-emerald-200 shadow-sm cursor-pointer card-hover border-l-4 border-l-emerald-500">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full">SAVE REPORT</span>
+              <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+            </div>
+            <h4 class="font-bold text-gray-900 text-base mb-1">🔥 강한 자금 쏠림 섹터 & 관심 배경</h4>
+            <p class="text-xs text-gray-500 line-clamp-2" id="preview-strong">클릭하여 세부 분석 리포트 확인...</p>
+          </div>
 
-        <!-- 연준 인사 발언 -->
-        <div class="bg-purple-50 rounded-xl p-5 border border-purple-200">
-          <h3 class="text-xs font-bold text-purple-800 uppercase tracking-wider mb-2 flex items-center gap-1">
-            <i class="fa-solid fa-comments text-purple-600"></i> 🎙️ 연준(Fed) 인사 발언 및 금리 매크로 이슈
-          </h3>
-          <div id="fed-speeches" class="text-sm text-gray-800 leading-relaxed"></div>
-        </div>
+          <!-- 약세 섹터 카드 -->
+          <div onclick="openReportModal('weak')" class="bg-white p-5 rounded-xl border border-rose-200 shadow-sm cursor-pointer card-hover border-l-4 border-l-rose-500">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-bold bg-rose-100 text-rose-800 px-2.5 py-0.5 rounded-full">SAVE REPORT</span>
+              <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+            </div>
+            <h4 class="font-bold text-gray-900 text-base mb-1">❄️ 하방 압력 / 약세 섹터 & 요인 분석</h4>
+            <p class="text-xs text-gray-500 line-clamp-2" id="preview-weak">클릭하여 세부 분석 리포트 확인...</p>
+          </div>
 
-        <!-- 시황 총평 -->
-        <div class="bg-blue-50 rounded-xl p-5 border border-blue-200">
-          <h3 class="text-xs font-bold text-blue-800 uppercase tracking-wider mb-2 flex items-center gap-1">
-            <i class="fa-solid fa-file-contract text-blue-600"></i> 📊 미국장 마감 시황 요약
-          </h3>
-          <div id="market-summary" class="text-sm text-gray-800 leading-relaxed"></div>
+          <!-- 연준 발언 카드 -->
+          <div onclick="openReportModal('fed')" class="bg-white p-5 rounded-xl border border-purple-200 shadow-sm cursor-pointer card-hover border-l-4 border-l-purple-500">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-bold bg-purple-100 text-purple-800 px-2.5 py-0.5 rounded-full">FED & MACRO</span>
+              <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+            </div>
+            <h4 class="font-bold text-gray-900 text-base mb-1">🎙️ 연준(Fed) 인사 발언 & 주요 외신 요약</h4>
+            <p class="text-xs text-gray-500 line-clamp-2" id="preview-fed">클릭하여 세부 분석 리포트 확인...</p>
+          </div>
+
+          <!-- 마감 총평 카드 -->
+          <div onclick="openReportModal('summary')" class="bg-white p-5 rounded-xl border border-blue-200 shadow-sm cursor-pointer card-hover border-l-4 border-l-blue-500">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-bold bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full">DAILY SUMMARY</span>
+              <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+            </div>
+            <h4 class="font-bold text-gray-900 text-base mb-1">📊 미 증시 마감 종합 총평 리포트</h4>
+            <p class="text-xs text-gray-500 line-clamp-2" id="preview-summary">클릭하여 세부 분석 리포트 확인...</p>
+          </div>
         </div>
       </div>
     </div>
 
   </main>
 
+  <!-- 팝업 모달 레이어 (SaveTicker 스타일) -->
+  <div id="report-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl border border-gray-200 relative">
+      <!-- 모달 헤더 -->
+      <div class="sticky top-0 bg-white px-6 py-4 border-b border-gray-100 flex justify-between items-center z-10">
+        <div>
+          <span id="modal-badge" class="text-xs font-bold bg-red-100 text-red-700 px-2.5 py-0.5 rounded-md">RED BULL PICK</span>
+          <span id="modal-date" class="text-xs text-gray-400 ml-2">2026.08.28</span>
+        </div>
+        <button onclick="closeReportModal()" class="text-gray-400 hover:text-gray-700 p-1">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+
+      <!-- 모달 본문 리포트 -->
+      <div class="p-6 space-y-4">
+        <h3 id="modal-title" class="text-xl font-bold text-gray-900 leading-snug">리포트 제목</h3>
+        <div id="modal-content" class="text-sm text-gray-800 leading-relaxed space-y-3">
+          <!-- 심층 분석 내용이 들어갑니다 -->
+        </div>
+      </div>
+
+      <!-- 모달 푸터 -->
+      <div class="bg-gray-50 px-6 py-3 border-t border-gray-100 text-right">
+        <button onclick="closeReportModal()" class="px-4 py-2 bg-gray-900 text-white text-xs font-semibold rounded-lg hover:bg-gray-800">
+          닫기
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    let globalMarketData = null;
+
     function switchTab(tabName) {
       const scheduleContent = document.getElementById('tab-content-schedule');
       const usContent = document.getElementById('tab-content-us');
@@ -206,37 +257,30 @@
                 </h3>
                 <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <span class="font-bold text-gray-900 block mb-1 text-xs text-gray-500 flex items-center gap-1">
-                    <i class="fa-solid fa-circle-info text-blue-500"></i> 어떤 일정인가요? (개요)
+                    <i class="fa-solid fa-circle-info text-blue-500"></i> 개요
                   </span>
                   <p class="leading-relaxed text-gray-800">${item.overview || ''}</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
                     <span class="font-bold text-yellow-900 block mb-1 text-xs flex items-center gap-1">
-                      <i class="fa-solid fa-triangle-exclamation text-yellow-600"></i> 왜 중요한가요?
+                      <i class="fa-solid fa-triangle-exclamation text-yellow-600"></i> 중요성
                     </span>
                     <p class="leading-relaxed text-gray-800 text-xs">${item.importance || ''}</p>
                   </div>
                   <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
                     <span class="font-bold text-blue-900 block mb-1 text-xs flex items-center gap-1">
-                      <i class="fa-solid fa-eye text-blue-600"></i> 핵심 관전 포인트
+                      <i class="fa-solid fa-eye text-blue-600"></i> 관전 포인트
                     </span>
                     <p class="leading-relaxed text-gray-800 text-xs">${item.key_points || ''}</p>
                   </div>
                 </div>
-                <div class="space-y-2 pt-2 border-t border-gray-100">
-                  <div class="flex items-start gap-2">
-                    <span class="text-xs font-bold bg-gray-100 text-gray-800 px-2 py-1 rounded shrink-0">🇰🇷 한국 증시 영향</span>
-                    <p class="text-xs text-gray-700 leading-relaxed pt-0.5">${item.korea_impact || ''}</p>
-                  </div>
-                  ${item.us_impact ? `
-                  <div class="flex items-start gap-2">
-                    <span class="text-xs font-bold bg-gray-100 text-gray-800 px-2 py-1 rounded shrink-0">🇺🇸 미국 증시 영향</span>
-                    <p class="text-xs text-gray-700 leading-relaxed pt-0.5">${item.us_impact}</p>
-                  </div>` : ''}
+                <div class="space-y-2 pt-2 border-t border-gray-100 text-xs">
+                  <div><b>🇰🇷 한국 영향:</b> ${item.korea_impact || ''}</div>
+                  <div><b>🇺🇸 미국 영향:</b> ${item.us_impact || ''}</div>
                 </div>
                 <div class="mt-4 bg-red-50 p-4 rounded-xl border border-red-100">
-                  <strong class="text-red-600 font-bold text-xs block mb-2">🤖 Gemini AI 수혜주 & 관련 종목 분석</strong>
+                  <strong class="text-red-600 font-bold text-xs block mb-2">🤖 Gemini AI 수혜주 분석</strong>
                   <div class="mb-2">${stocksList}</div>
                   <p class="text-xs text-gray-700 leading-relaxed mt-2 pt-2 border-t border-red-200">${item.stock_reasons || ''}</p>
                 </div>
@@ -254,11 +298,11 @@
       try {
         const response = await fetch('us_market.json?v=' + new Date().getTime());
         const data = await response.json();
+        globalMarketData = data;
 
-        // 1. 환율/VIX/유가
+        // 1. 매크로
         document.getElementById('macro-container').innerHTML = data.macro_indicators.map(m => {
           const isDown = m.change.startsWith('-');
-          const colorClass = isDown ? 'text-blue-600' : 'text-red-600';
           return `
             <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center">
               <div>
@@ -266,7 +310,7 @@
                 <div class="text-xl font-black text-gray-900 mt-1">${m.value}</div>
               </div>
               <div class="text-right">
-                <div class="text-xs font-bold ${colorClass}">${m.change}</div>
+                <div class="text-xs font-bold ${isDown ? 'text-blue-600' : 'text-red-600'}">${m.change}</div>
                 <div class="text-xs text-gray-400 mt-1">${m.status}</div>
               </div>
             </div>
@@ -276,12 +320,11 @@
         // 2. 5대 지수
         document.getElementById('indices-container').innerHTML = data.indices.map(idx => {
           const isDown = idx.change.startsWith('-');
-          const colorClass = isDown ? 'text-blue-600' : 'text-red-600';
           return `
             <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 text-center">
               <div class="text-xs font-bold text-gray-500">${idx.name}</div>
               <div class="text-base font-black text-gray-900 mt-0.5">${idx.value}</div>
-              <div class="text-xs font-bold ${colorClass}">${idx.change}</div>
+              <div class="text-xs font-bold ${isDown ? 'text-blue-600' : 'text-red-600'}">${idx.change}</div>
             </div>
           `;
         }).join('');
@@ -289,7 +332,6 @@
         // 3. 국채 금리
         document.getElementById('bonds-container').innerHTML = data.treasury_yields.map(b => {
           const isDown = b.change.startsWith('-');
-          const colorClass = isDown ? 'text-blue-600' : 'text-red-600';
           return `
             <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 flex justify-between items-center">
               <div>
@@ -297,22 +339,70 @@
                 <div class="text-base font-black text-gray-900">${b.yield_rate}</div>
               </div>
               <div class="text-right">
-                <div class="text-xs font-bold ${colorClass}">${b.change}</div>
+                <div class="text-xs font-bold ${isDown ? 'text-blue-600' : 'text-red-600'}">${b.change}</div>
                 <div class="text-xs text-gray-400">${b.status}</div>
               </div>
             </div>
           `;
         }).join('');
 
-        document.getElementById('strong-sectors').innerHTML = data.strong_sectors_analysis;
-        document.getElementById('weak-sectors').innerHTML = data.weak_sectors_analysis;
-        document.getElementById('fed-speeches').innerHTML = data.fed_speeches_summary;
-        document.getElementById('market-summary').innerHTML = data.overall_market_summary;
+        // 4. 프리뷰 텍스트 설정
+        document.getElementById('preview-strong').innerText = stripHtml(data.strong_sectors_analysis).substring(0, 70) + "...";
+        document.getElementById('preview-weak').innerText = stripHtml(data.weak_sectors_analysis).substring(0, 70) + "...";
+        document.getElementById('preview-fed').innerText = stripHtml(data.fed_speeches_summary).substring(0, 70) + "...";
+        document.getElementById('preview-summary').innerText = stripHtml(data.overall_market_summary).substring(0, 70) + "...";
+
         document.getElementById('us-update-time').innerText = `업데이트: ${data.updated_at}`;
 
       } catch (err) {
         console.error("미국 시황 로드 실패:", err);
       }
+    }
+
+    function stripHtml(html) {
+      let tmp = document.createElement("DIV");
+      tmp.innerHTML = html;
+      return tmp.textContent || tmp.innerText || "";
+    }
+
+    function openReportModal(type) {
+      if (!globalMarketData) return;
+      
+      const modal = document.getElementById('report-modal');
+      const title = document.getElementById('modal-title');
+      const badge = document.getElementById('modal-badge');
+      const date = document.getElementById('modal-date');
+      const content = document.getElementById('modal-content');
+
+      date.innerText = globalMarketData.updated_at || "2026.08.28";
+
+      if (type === 'strong') {
+        badge.className = "text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-md";
+        badge.innerText = "강세 섹터 리포트";
+        title.innerText = "🔥 강한 자금 쏠림 섹터 및 관심 배경";
+        content.innerHTML = globalMarketData.strong_sectors_analysis;
+      } else if (type === 'weak') {
+        badge.className = "text-xs font-bold bg-rose-100 text-rose-800 px-2.5 py-0.5 rounded-md";
+        badge.innerText = "약세 섹터 리포트";
+        title.innerText = "❄️ 하방 압력 / 약세 섹터 요인 분석";
+        content.innerHTML = globalMarketData.weak_sectors_analysis;
+      } else if (type === 'fed') {
+        badge.className = "text-xs font-bold bg-purple-100 text-purple-800 px-2.5 py-0.5 rounded-md";
+        badge.innerText = "연준 & 외신 리포트";
+        title.innerText = "🎙️ 연준(Fed) 인사 발언 및 주요 외신 핵심 요약";
+        content.innerHTML = globalMarketData.fed_speeches_summary;
+      } else if (type === 'summary') {
+        badge.className = "text-xs font-bold bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-md";
+        badge.innerText = "마감 시황 리포트";
+        title.innerText = "📊 미국 증시 마감 종합 총평";
+        content.innerHTML = globalMarketData.overall_market_summary;
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeReportModal() {
+      document.getElementById('report-modal').classList.add('hidden');
     }
 
     fetchCalendarData();
