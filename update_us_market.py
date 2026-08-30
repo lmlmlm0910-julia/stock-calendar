@@ -156,7 +156,7 @@ def fetch_upbit_crypto():
         print(f"업비트 API 파싱 에러: {e}")
     return crypto_data
 
-def fetch_yahoo_full_detail(symbols):
+def fetch_yahoo_full_detail(symbols, is_bond=False):
     if isinstance(symbols, str):
         symbols = [symbols]
         
@@ -181,6 +181,10 @@ def fetch_yahoo_full_detail(symbols):
                     prev_close = meta.get('regularMarketPreviousClose') or meta.get('previousClose')
 
                 if price is not None and prev_close is not None and prev_close > 0:
+                    if is_bond and price > 10:
+                        price = price / 10.0
+                        prev_close = prev_close / 10.0
+                    
                     change_val = price - prev_close
                     change_pct = (change_val / prev_close) * 100
                     return {
@@ -200,15 +204,15 @@ def get_all_market_data():
 
     bond_configs = {
         "미국 2년물": {
-            "naver": ["IRD_BUS2Y", "IRD_US2Y", "BUS2Y"],
+            "naver": ["IRD_US2Y", "IRD_BUS2Y", "BUS2Y"],
             "yahoo": ["2YY=F", "^2YY", "^US2Y"]
         },
         "미국 10년물": {
-            "naver": ["IRD_BUS10Y", "IRD_US10Y", "BUS10Y"],
+            "naver": ["IRD_US10Y", "IRD_BUS10Y", "BUS10Y"],
             "yahoo": ["^TNX", "10Y=F"]
         },
         "미국 30년물": {
-            "naver": ["IRD_BUS30Y", "IRD_US30Y", "BUS30Y"],
+            "naver": ["IRD_US30Y", "IRD_BUS30Y", "BUS30Y"],
             "yahoo": ["^TYX", "30Y=F"]
         }
     }
@@ -218,12 +222,12 @@ def get_all_market_data():
         if bond_data:
             results[name] = bond_data
         else:
-            yf = fetch_yahoo_full_detail(cfg["yahoo"])
+            yf = fetch_yahoo_full_detail(cfg["yahoo"], is_bond=True)
             if yf:
-                p = yf["price"] / 10.0 if yf["price"] > 10 else yf["price"]
+                p = yf["price"]
                 results[name] = {"price": f"{p:.3f}%", "change": f"{yf['change_pct']:+.2f}%", "raw_pct": yf['change_pct']}
             else:
-                fallback_defaults = {"미국 2년물": "3.910%", "미국 10년물": "4.720%", "미국 30년물": "5.206%"}
+                fallback_defaults = {"미국 2년물": "3.910%", "미국 10년물": "4.220%", "미국 30년물": "4.510%"}
                 results[name] = {"price": fallback_defaults.get(name, "4.250%"), "change": "0.00%", "raw_pct": 0.0}
 
     kpi200 = fetch_naver_mobile_index("KPI200")
