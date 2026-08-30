@@ -600,7 +600,7 @@
       }).join('');
     }
 
-    /* 🔥 5. 섹터별 갤러리 관리 (기본 앨범 자동 생성 & 모달 UI 연동) */
+    /* 섹터별 갤러리 관리 */
     function getSectorFolders() {
       try {
         let folders = JSON.parse(localStorage.getItem('redbull_sector_folders') || '[]');
@@ -891,13 +891,13 @@
 
     function closeScheduleModal() { document.getElementById('schedule-detail-modal').classList.add('hidden'); }
 
-    /* 🔥 마감 시황 데이터 로드 & byul.ai 전용 뉴스 수집 연동 */
+    /* 마감 시황 데이터 로드 & byul.ai 전용 뉴스 수집 연동 */
     async function loadUSMarketData() {
       try {
         const resp = await fetch('us_market.json?v=' + new Date().getTime());
         const data = await resp.json();
 
-        /* 상단 6대 매크로 카드 (이더리움 포함) */
+        /* 상단 6대 매크로 카드 (이더리움 및 동적 컬러 반영) */
         document.getElementById('macro-container').innerHTML = data.macro_indicators.map(m => `
           <div class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm">
             <div class="text-xs font-bold text-gray-500">${m.name}</div>
@@ -939,7 +939,7 @@
       }
     }
 
-    /* 🔥 오직 byul.ai 출처 뉴스만 브라우저에서 실시간 수집하는 백업 함수 */
+    /* 오직 byul.ai 출처 뉴스만 브라우저에서 실시간 수집하는 백업 함수 */
     async function fetchLiveNewsFromBrowser() {
       const container = document.getElementById('news-cards-container');
       if (!container) return;
