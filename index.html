@@ -15,7 +15,7 @@
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-  <!-- 상단 네비게이션 -->
+  <!-- 상단 헤더 -->
   <header class="bg-gray-900 text-white sticky top-0 z-30 shadow-md">
     <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
       <h1 class="text-xl font-bold flex items-center gap-2">
@@ -40,7 +40,7 @@
 
   <main class="max-w-4xl mx-auto px-4 py-6">
 
-    <!-- 탭 1: 증시 주요 일정 세션 -->
+    <!-- 탭 1: 증시 주요 일정 -->
     <div id="tab-content-schedule" class="space-y-6">
       <div class="bg-gradient-to-r from-red-600 to-indigo-800 rounded-2xl p-6 text-white shadow-xl">
         <div class="text-xs font-bold text-red-200 tracking-widest mb-1">RED BULL STOCK ANALYTICS</div>
@@ -56,26 +56,26 @@
       </div>
     </div>
 
-    <!-- 탭 2: 미장 마감 시황 & 핀비즈 맵 세션 -->
+    <!-- 탭 2: 미장 마감 시황 & 핀비즈 맵 -->
     <div id="tab-content-us" class="space-y-6 hidden">
       <div class="bg-gray-900 rounded-2xl p-6 text-white shadow-xl border border-gray-800">
         <div class="text-xs font-bold text-red-400 tracking-widest mb-1">RED BULL US MARKET DAILY WRAP-UP</div>
         <h2 class="text-2xl font-bold mb-2">🇺🇸 미국장 마감 종합 시황 & 핀비즈 맵</h2>
-        <p class="text-gray-400 text-sm" id="us-update-time">업데이트 수집 중...</p>
+        <p class="text-gray-400 text-sm" id="us-update-time">업데이트 데이터 로딩 중...</p>
       </div>
 
-      <!-- 환율 / VIX / 유가 주요 매크로 지표 -->
-      <div id="macro-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+      <!-- 1. 지율 지표 (환율 / 암호화폐 / VIX / 유가) -->
+      <div id="macro-container" class="grid grid-cols-2 md:grid-cols-5 gap-3"></div>
 
-      <!-- 5대 주요 지수 -->
+      <!-- 2. 미국 5대 주요 지수 -->
       <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
-        <h3 class="text-sm font-bold text-gray-700 mb-3 flex items-center gap-1.5">
+        <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-1.5">
           <i class="fa-solid fa-chart-line text-red-500"></i> 미국 5대 주요 지수 동향
         </h3>
         <div id="indices-container" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
       </div>
 
-      <!-- S&P 500 실시간 주가 히트맵 -->
+      <!-- 3. S&P 500 실시간 주가 히트맵 -->
       <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
         <div class="flex justify-between items-center mb-3">
           <h3 class="text-sm font-bold text-gray-800 flex items-center gap-1.5">
@@ -85,7 +85,7 @@
             Finviz 원본 맵 보기 <i class="fa-solid fa-arrow-up-right-from-square"></i>
           </a>
         </div>
-        <div class="overflow-hidden rounded-lg border border-gray-200 bg-white" style="height: 480px;">
+        <div class="overflow-hidden rounded-lg border border-gray-200 bg-white" style="height: 460px;">
           <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
             <div class="tradingview-widget-container__widget" style="height:100%; width:100%;"></div>
             <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js" async>
@@ -110,92 +110,62 @@
         </div>
       </div>
 
-      <!-- 국채 금리 추이 -->
+      <!-- 4. 미국 국채 상세 수익률 카드 (전일종가, 시가, 고가, 저가 표기) -->
       <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
-        <h3 class="text-sm font-bold text-gray-700 mb-3 flex items-center gap-1.5">
-          <i class="fa-solid fa-landmark text-blue-500"></i> 미국 국채 금리 동향
+        <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-1.5">
+          <i class="fa-solid fa-landmark text-blue-500"></i> 미국 국채 금리 상세 동향
         </h3>
-        <div id="bonds-container" class="grid grid-cols-1 md:grid-cols-3 gap-3"></div>
+        <div id="bonds-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
       </div>
 
-      <!-- 🔥 세이브티커 스타일 클릭 가능한 4대 심층 리포트 카드 세션 -->
-      <div class="space-y-3">
+      <!-- 5. byul.ai 및 주요 외신 실시간 뉴스 & AI 3단계 분석 세션 -->
+      <div class="space-y-4">
         <div class="flex justify-between items-center px-1">
           <h3 class="text-base font-extrabold text-gray-900 flex items-center gap-2">
-            <i class="fa-solid fa-newspaper text-red-500"></i> 오늘 주요 리포트 & 섹터 분석
+            <i class="fa-solid fa-bolt text-yellow-500"></i> byul.ai 실시간 뉴스 & AI 심층 분석
           </h3>
-          <span class="text-xs text-gray-500">* 카드를 클릭하면 상세 심층 리포트가 열립니다.</span>
+          <span class="text-xs text-gray-500">* 카드를 클릭하면 3단계 상세 리포트가 열립니다.</span>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- 강세 섹터 카드 -->
-          <div onclick="openReportModal('strong')" class="bg-white p-5 rounded-xl border border-emerald-200 shadow-sm cursor-pointer card-hover border-l-4 border-l-emerald-500">
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full">SAVE REPORT</span>
-              <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
-            </div>
-            <h4 class="font-bold text-gray-900 text-base mb-1">🔥 강한 자금 쏠림 섹터 & 관심 배경</h4>
-            <p class="text-xs text-gray-500 line-clamp-2" id="preview-strong">클릭하여 세부 분석 리포트 확인...</p>
-          </div>
-
-          <!-- 약세 섹터 카드 -->
-          <div onclick="openReportModal('weak')" class="bg-white p-5 rounded-xl border border-rose-200 shadow-sm cursor-pointer card-hover border-l-4 border-l-rose-500">
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-bold bg-rose-100 text-rose-800 px-2.5 py-0.5 rounded-full">SAVE REPORT</span>
-              <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
-            </div>
-            <h4 class="font-bold text-gray-900 text-base mb-1">❄️ 하방 압력 / 약세 섹터 & 요인 분석</h4>
-            <p class="text-xs text-gray-500 line-clamp-2" id="preview-weak">클릭하여 세부 분석 리포트 확인...</p>
-          </div>
-
-          <!-- 연준 발언 카드 -->
-          <div onclick="openReportModal('fed')" class="bg-white p-5 rounded-xl border border-purple-200 shadow-sm cursor-pointer card-hover border-l-4 border-l-purple-500">
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-bold bg-purple-100 text-purple-800 px-2.5 py-0.5 rounded-full">FED & MACRO</span>
-              <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
-            </div>
-            <h4 class="font-bold text-gray-900 text-base mb-1">🎙️ 연준(Fed) 인사 발언 & 주요 외신 요약</h4>
-            <p class="text-xs text-gray-500 line-clamp-2" id="preview-fed">클릭하여 세부 분석 리포트 확인...</p>
-          </div>
-
-          <!-- 마감 총평 카드 -->
-          <div onclick="openReportModal('summary')" class="bg-white p-5 rounded-xl border border-blue-200 shadow-sm cursor-pointer card-hover border-l-4 border-l-blue-500">
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-bold bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full">DAILY SUMMARY</span>
-              <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
-            </div>
-            <h4 class="font-bold text-gray-900 text-base mb-1">📊 미 증시 마감 종합 총평 리포트</h4>
-            <p class="text-xs text-gray-500 line-clamp-2" id="preview-summary">클릭하여 세부 분석 리포트 확인...</p>
-          </div>
-        </div>
+        <div id="news-cards-container" class="grid grid-cols-1 gap-4"></div>
       </div>
     </div>
 
   </main>
 
-  <!-- 팝업 모달 레이어 (SaveTicker 스타일) -->
+  <!-- 뉴스 팝업 모달 -->
   <div id="report-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl border border-gray-200 relative">
-      <!-- 모달 헤더 -->
       <div class="sticky top-0 bg-white px-6 py-4 border-b border-gray-100 flex justify-between items-center z-10">
-        <div>
-          <span id="modal-badge" class="text-xs font-bold bg-red-100 text-red-700 px-2.5 py-0.5 rounded-md">RED BULL PICK</span>
-          <span id="modal-date" class="text-xs text-gray-400 ml-2">2026.08.28</span>
+        <div class="flex items-center gap-2">
+          <span id="modal-badge" class="text-xs font-bold bg-red-100 text-red-700 px-2.5 py-0.5 rounded-md">속보</span>
+          <span id="modal-source" class="text-xs font-bold bg-gray-100 text-gray-700 border border-gray-200 px-2.5 py-0.5 rounded-md">출처: byul.ai</span>
         </div>
         <button onclick="closeReportModal()" class="text-gray-400 hover:text-gray-700 p-1">
           <i class="fa-solid fa-xmark text-xl"></i>
         </button>
       </div>
 
-      <!-- 모달 본문 리포트 -->
       <div class="p-6 space-y-4">
-        <h3 id="modal-title" class="text-xl font-bold text-gray-900 leading-snug">리포트 제목</h3>
-        <div id="modal-content" class="text-sm text-gray-800 leading-relaxed space-y-3">
-          <!-- 심층 분석 내용이 들어갑니다 -->
+        <h3 id="modal-title" class="text-xl font-bold text-gray-900 leading-snug">뉴스 제목</h3>
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+          <strong class="text-xs text-gray-500 block mb-1">📰 뉴스 내용 요약</strong>
+          <p id="modal-summary" class="text-sm text-gray-800 leading-relaxed"></p>
+        </div>
+        <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+          <strong class="text-xs text-blue-900 block mb-1">🧠 AI 뉴스의미 심층 해석</strong>
+          <p id="modal-interpretation" class="text-sm text-blue-900 leading-relaxed"></p>
+        </div>
+        <div class="bg-rose-50 p-4 rounded-xl border border-rose-200">
+          <strong class="text-xs text-rose-900 block mb-1">🇰🇷 한국 증시 및 경제 미칠 영향</strong>
+          <p id="modal-korea" class="text-sm text-rose-900 leading-relaxed"></p>
+        </div>
+        <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+          <strong class="text-xs text-emerald-900 block mb-1">💡 증시 투자자 대응 의견</strong>
+          <p id="modal-opinion" class="text-sm text-emerald-900 leading-relaxed"></p>
         </div>
       </div>
 
-      <!-- 모달 푸터 -->
       <div class="bg-gray-50 px-6 py-3 border-t border-gray-100 text-right">
         <button onclick="closeReportModal()" class="px-4 py-2 bg-gray-900 text-white text-xs font-semibold rounded-lg hover:bg-gray-800">
           닫기
@@ -205,7 +175,7 @@
   </div>
 
   <script>
-    let globalMarketData = null;
+    let globalNewsData = [];
 
     function switchTab(tabName) {
       const scheduleContent = document.getElementById('tab-content-schedule');
@@ -298,21 +268,15 @@
       try {
         const response = await fetch('us_market.json?v=' + new Date().getTime());
         const data = await response.json();
-        globalMarketData = data;
 
-        // 1. 매크로
+        // 1. 매크로 & 암호화폐 지표 (파란색: 마이너스 / 빨간색: 플러스)
         document.getElementById('macro-container').innerHTML = data.macro_indicators.map(m => {
           const isDown = m.change.startsWith('-');
           return `
-            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex justify-between items-center">
-              <div>
-                <div class="text-xs font-bold text-gray-500">${m.name}</div>
-                <div class="text-xl font-black text-gray-900 mt-1">${m.value}</div>
-              </div>
-              <div class="text-right">
-                <div class="text-xs font-bold ${isDown ? 'text-blue-600' : 'text-red-600'}">${m.change}</div>
-                <div class="text-xs text-gray-400 mt-1">${m.status}</div>
-              </div>
+            <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm">
+              <div class="text-xs font-bold text-gray-500">${m.name}</div>
+              <div class="text-base font-black text-gray-900 mt-1">${m.value}</div>
+              <div class="text-xs font-bold ${isDown ? 'text-blue-600' : 'text-red-600'} mt-0.5">${m.change}</div>
             </div>
           `;
         }).join('');
@@ -329,76 +293,64 @@
           `;
         }).join('');
 
-        // 3. 국채 금리
-        document.getElementById('bonds-container').innerHTML = data.treasury_yields.map(b => {
+        // 3. 국채 금리 상세 카드
+        document.getElementById('bonds-container').innerHTML = data.bonds_detailed.map(b => {
           const isDown = b.change.startsWith('-');
           return `
-            <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 flex justify-between items-center">
-              <div>
-                <div class="text-xs font-bold text-gray-500">${b.tenor}</div>
-                <div class="text-base font-black text-gray-900">${b.yield_rate}</div>
+            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 space-y-2">
+              <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+                <span class="text-xs font-bold text-gray-600">${b.tenor}</span>
+                <span class="text-xs font-bold ${isDown ? 'text-blue-600' : 'text-red-600'}">${b.change}</span>
               </div>
-              <div class="text-right">
-                <div class="text-xs font-bold ${isDown ? 'text-blue-600' : 'text-red-600'}">${b.change}</div>
-                <div class="text-xs text-gray-400">${b.status}</div>
+              <div class="text-2xl font-black text-gray-900">${b.yield_rate}</div>
+              <div class="grid grid-cols-2 gap-1 text-xs text-gray-500 pt-1 border-t border-gray-100">
+                <div>전일: <b class="text-gray-800">${b.prev_close}</b></div>
+                <div>시가: <b class="text-gray-800">${b.open}</b></div>
+                <div>고가: <b class="text-red-600">${b.high}</b></div>
+                <div>저가: <b class="text-blue-600">${b.low}</b></div>
               </div>
             </div>
           `;
         }).join('');
 
-        // 4. 프리뷰 텍스트 설정
-        document.getElementById('preview-strong').innerText = stripHtml(data.strong_sectors_analysis).substring(0, 70) + "...";
-        document.getElementById('preview-weak').innerText = stripHtml(data.weak_sectors_analysis).substring(0, 70) + "...";
-        document.getElementById('preview-fed').innerText = stripHtml(data.fed_speeches_summary).substring(0, 70) + "...";
-        document.getElementById('preview-summary').innerText = stripHtml(data.overall_market_summary).substring(0, 70) + "...";
+        // 4. byul.ai 뉴스 카드 및 출처 렌더링
+        globalNewsData = data.categorized_news || [];
+        document.getElementById('news-cards-container').innerHTML = globalNewsData.map((item, idx) => `
+          <div onclick="openReportModal(${idx})" class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm cursor-pointer card-hover border-l-4 border-l-red-500 flex justify-between items-center">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold bg-red-100 text-red-800 px-2.5 py-0.5 rounded-full">${item.category}</span>
+                <span class="text-xs font-bold bg-gray-100 text-gray-700 border border-gray-200 px-2 py-0.5 rounded flex items-center gap-1">
+                  <i class="fa-solid fa-newspaper text-gray-400"></i> 출처: ${item.source || 'byul.ai'}
+                </span>
+              </div>
+              <h4 class="font-bold text-gray-900 text-base mb-1">${item.title}</h4>
+              <p class="text-xs text-gray-500 line-clamp-1">${item.summary}</p>
+            </div>
+            <i class="fa-solid fa-chevron-right text-gray-400 text-sm ml-4"></i>
+          </div>
+        `).join('');
 
         document.getElementById('us-update-time').innerText = `업데이트: ${data.updated_at}`;
 
       } catch (err) {
-        console.error("미국 시황 로드 실패:", err);
+        console.error("데이터 로드 실패:", err);
       }
     }
 
-    function stripHtml(html) {
-      let tmp = document.createElement("DIV");
-      tmp.innerHTML = html;
-      return tmp.textContent || tmp.innerText || "";
-    }
+    function openReportModal(idx) {
+      const item = globalNewsData[idx];
+      if (!item) return;
 
-    function openReportModal(type) {
-      if (!globalMarketData) return;
-      
-      const modal = document.getElementById('report-modal');
-      const title = document.getElementById('modal-title');
-      const badge = document.getElementById('modal-badge');
-      const date = document.getElementById('modal-date');
-      const content = document.getElementById('modal-content');
+      document.getElementById('modal-badge').innerText = item.category;
+      document.getElementById('modal-source').innerText = "출처: " + (item.source || "byul.ai");
+      document.getElementById('modal-title').innerText = item.title;
+      document.getElementById('modal-summary').innerText = item.summary;
+      document.getElementById('modal-interpretation').innerText = item.ai_interpretation;
+      document.getElementById('modal-korea').innerText = item.korea_impact;
+      document.getElementById('modal-opinion').innerText = item.investor_opinion;
 
-      date.innerText = globalMarketData.updated_at || "2026.08.28";
-
-      if (type === 'strong') {
-        badge.className = "text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-md";
-        badge.innerText = "강세 섹터 리포트";
-        title.innerText = "🔥 강한 자금 쏠림 섹터 및 관심 배경";
-        content.innerHTML = globalMarketData.strong_sectors_analysis;
-      } else if (type === 'weak') {
-        badge.className = "text-xs font-bold bg-rose-100 text-rose-800 px-2.5 py-0.5 rounded-md";
-        badge.innerText = "약세 섹터 리포트";
-        title.innerText = "❄️ 하방 압력 / 약세 섹터 요인 분석";
-        content.innerHTML = globalMarketData.weak_sectors_analysis;
-      } else if (type === 'fed') {
-        badge.className = "text-xs font-bold bg-purple-100 text-purple-800 px-2.5 py-0.5 rounded-md";
-        badge.innerText = "연준 & 외신 리포트";
-        title.innerText = "🎙️ 연준(Fed) 인사 발언 및 주요 외신 핵심 요약";
-        content.innerHTML = globalMarketData.fed_speeches_summary;
-      } else if (type === 'summary') {
-        badge.className = "text-xs font-bold bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-md";
-        badge.innerText = "마감 시황 리포트";
-        title.innerText = "📊 미국 증시 마감 종합 총평";
-        content.innerHTML = globalMarketData.overall_market_summary;
-      }
-
-      modal.classList.remove('hidden');
+      document.getElementById('report-modal').classList.remove('hidden');
     }
 
     function closeReportModal() {
