@@ -554,9 +554,13 @@
       } catch (e) { console.log("업비트 에러:", e); }
     }
 
-    /* 🔥 다각화된 스마트 초보자용 분석 파서 */
-    function generateAIScheduleAnalysis(title, category, overview) {
-      const t = title.toLowerCase();
+    /* 🔥 완전 개편된 고성능 AI 일정 분석 정밀 파서 */
+    function generateAIScheduleAnalysis(rawTitle, category, overview) {
+      // 1. 접두사 (예: "7월", "8월", "9월", "[실적발표]" 등) 정제
+      let cleanTitle = rawTitle.replace(/^(\d+월|\d+월\s*|\d+일|\[.*?\])\s*/gi, '').trim();
+      if (!cleanTitle) cleanTitle = rawTitle;
+
+      const t = cleanTitle.toLowerCase();
       let importance = "";
       let key_points = "";
       let korea_impact = "";
@@ -564,16 +568,25 @@
       let stocks = [];
       let stock_reasons = "";
 
-      // 1. 제조업 및 경기 지표 (PMI, ISM 등)
-      if (t.includes("pmi") || t.includes("제조업") || t.includes("ism")) {
+      // 1. 고용 및 노동 지표 (JOLTS, ADP, 비농업, 취업자, 실업수당, 구인인원 등)
+      if (t.includes("jolts") || t.includes("구인") || t.includes("adp") || t.includes("고용") || t.includes("실업") || t.includes("비농업") || t.includes("취업자") || t.includes("노동") || t.includes("payrolls")) {
+        importance = "미국 기업들의 구인건수(JOLTS) 및 실제 민간 채용 열기를 통해 노동시장의 과열/냉각을 측정하는 핵심 지표입니다.";
+        key_points = "구인건수 및 채용 축소 시 인플레 압력 해소로 금리 인하 기대감 상승, 단 급격한 고용 둔화는 경기 침체 우려 자극.";
+        korea_impact = "🇰🇷 미국 고용 안정을 통한 내수 소비 체력 유지가 한국산 자동차·전자제품 대미 수출 실적을 견인합니다.";
+        us_impact = "🇺🇸 연준(Fed)이 통화정책 결정 시 유심히 관찰하는 노동시장 수급 밸런스 점검 지표.";
+        stocks = ["현대차", "기아", "삼성전자", "Amazon", "미국 국채"];
+        stock_reasons = "탄탄한 노동시장은 미국 내수 소비재 구매력을 유지시켜 수출 대장주 실적의 단단한 버팀목이 됩니다.";
+
+      // 2. 제조업 및 경기 지표 (PMI, ISM 등)
+      } else if (t.includes("pmi") || t.includes("제조업") || t.includes("ism") || t.includes("서비스업")) {
         importance = "미국 공장 사장님들에게 '요즘 장사 잘되냐'고 물어보고 점수를 매긴 '실물 경기 건강검진표'입니다.";
-        key_points = "50 초과 시 경기 확장(호재), 50 미만 시 경기 위축. 너무 높으면 금리인하 지연, 너무 낮으면 침체 우려.";
+        key_points = "50 초과 시 경기 확장(호재), 50 미만 시 경기 위축. 적정 수준 유지 시 경기 연착륙(골디락스) 기대감 촉진.";
         korea_impact = "🇰🇷 한국은 미국으로 물건을 파는 수출 국가이므로, 공장이 잘 돌아가야 반도체·자동차 수출이 늘어납니다.";
         us_impact = "🇺🇸 연준(Fed)의 금리인하 명분 및 미국 경제의 연착륙(Soft Landing) 여부를 결정하는 가늠자.";
         stocks = ["삼성전자", "SK하이닉스", "현대차", "S-Oil", "미국 국채"];
         stock_reasons = "공장 가동률이 상승하면 반도체, 부품, 원자재 및 석유화학 제품 수요가 함께 늘어납니다.";
 
-      // 2. 물가 / 인플레이션 지표 (CPI, PPI, PCE 등)
+      // 3. 물가 / 인플레이션 지표 (CPI, PPI, PCE 등)
       } else if (t.includes("cpi") || t.includes("ppi") || t.includes("pce") || t.includes("물가")) {
         importance = "마트 장바구니 물가가 얼마나 올랐는지 측정하여 '연준이 금리를 올릴지 내릴지' 결정하는 지표입니다.";
         key_points = "예상보다 높으면 '고금리 장기화' 우려로 주가 하락, 예상보다 낮으면 '금리 인하' 기대감으로 주가 상승.";
@@ -582,26 +595,26 @@
         stocks = ["NAVER", "카카오", "삼성전자", "미국 10년물 국채", "KODEX 200"];
         stock_reasons = "물가가 안정되어 금리가 내려가면 성장주와 기술주로 유동성 자금이 강하게 쏠립니다.";
 
-      // 3. 고용 및 노동 지표 (비농업 고용, 실업률, 신규 실업수당 등)
-      } else if (t.includes("고용") || t.includes("실업") || t.includes("노동") || t.includes("payrolls")) {
-        importance = "미국 사람들이 일자리를 잘 얻고 월급을 잘 받는지 확인하는 '소비 체력 측정 지표'입니다.";
-        key_points = "실업률이 너무 올라가면 '경기 침체' 공포 작동, 너무 튼튼하면 '물가 재상승' 우려로 금리 지연.";
-        korea_impact = "🇰🇷 미국 소비자들이 돈을 잘 써야 한국산 스마트폰, 자동차, 가전제품 구매가 이어집니다.";
-        us_impact = "🇺🇸 미국 경제의 70%를 차지하는 내수 소비의 지속 가능성을 검증하는 핵심 발표.";
-        stocks = ["현대차", "기아", "LG전자", "삼성전자", "Amazon"];
-        stock_reasons = "탄탄한 고용 지표는 미국 소비재 구매력 증가로 이어져 수출 기업 실적을 뒷받침합니다.";
-
       // 4. 금리 / 통화정책 (FOMC, 금통위, 파월, 기준금리, 점도표)
-      } else if (t.includes("fomc") || t.includes("금리") || t.includes("파월") || t.includes("금통위") || t.includes("의사록")) {
+      } else if (t.includes("fomc") || t.includes("금리") || t.includes("파월") || t.includes("금통위") || t.includes("의사록") || t.includes("베이지북")) {
         importance = "돈의 값(이자율)을 결정하는 이벤트로, 주식시장 전체의 물대포(유동성) 입구를 열고 닫는 발표입니다.";
         key_points = "기준금리 동결/인하 여부 및 파월 의장의 입에서 나오는 힌트(매파적=보수적, 비둘기파적=친시장적).";
         korea_impact = "🇰🇷 한미 금리 차이에 따른 원/달러 환율 안정을 좌우하며 한국은행의 금리 결정에 직결.";
         us_impact = "🇺🇸 뉴욕 증시 3대 지수의 방향성을 가르는 거시경제 최상위 모멘텀.";
-        stocks = ["KB금융", "신한지주", "삼성전자", "NAVER", "바이오 테마주"];
+        stocks = ["KB금융", "신한지주", "삼성전자", "NAVER", "삼성바이오로직스"];
         stock_reasons = "금리 인하 시 성장주/바이오 수혜, 금리 인상/고금리 유지 시 은행·금융주 수혜.";
 
-      // 5. 엔비디아 / AI / 반도체 (NVDA, TSMC, HBM 등)
-      } else if (t.includes("엔비디아") || t.includes("nvda") || t.includes("반도체") || t.includes("hbm") || t.includes("tsmc")) {
+      // 5. 실물 경제 / GDP / 소매판매
+      } else if (t.includes("gdp") || t.includes("소매판매") || t.includes("소비") || t.includes("무역수지")) {
+        importance = "미국 경제 전체의 성장 성과표 및 내수 소비 체력을 한눈에 검증하는 실물 경제 지표입니다.";
+        key_points = "경기가 너무 뜨겁지도 차갑지도 않은 적정 성장을 유지하는지 여부를 체크.";
+        korea_impact = "🇰🇷 한국 대미 수출 대장주들의 실적 안정성을 뒷받침해 주는 주력 지표.";
+        us_impact = "🇺🇸 기업들의 이익 추정치(EPS) 및 경기 관련 대형주 주가 향방 결정.";
+        stocks = ["현대차", "기아", "LG전자", "삼성전자", "KODEX 200"];
+        stock_reasons = "탄탄한 내수 소비 지표는 한국 수출 대장주들의 영업이익 증가로 이어집니다.";
+
+      // 6. 엔비디아 / AI / 반도체 (NVDA, TSMC, HBM 등)
+      } else if (t.includes("엔비디아") || t.includes("nvda") || t.includes("반도체") || t.includes("hbm") || t.includes("tsmc") || t.includes("마이크론") || t.includes("델") || t.includes("dell")) {
         importance = "전 세계 AI 혁명과 빅테크 기업들의 인프라 투자 규모를 한눈에 파악하는 'AI 붐 총지휘 지표'입니다.";
         key_points = "데이터센터 매출 성장폭, 차세대 AI GPU 칩 출하 가이던스, HBM 메모리 공급 부족 해소 여부.";
         korea_impact = "🇰🇷 SK하이닉스, 한미반도체, 삼성전자 등 국장 반도체 밸류체인 시가총액을 통째로 흔듦.";
@@ -609,7 +622,7 @@
         stocks = ["SK하이닉스", "한미반도체", "삼성전자", "테크윙", "이수페타시스"];
         stock_reasons = "AI GPU 출하 증가 시 필수 탑재 부품인 HBM 메모리 및 장비 제조사의 매출이 폭발합니다.";
 
-      // 6. 테슬라 / 2차전지 / 전기차 (Tesla, 이차전지, 배터리)
+      // 7. 테슬라 / 2차전지 / 전기차 (Tesla, 이차전지, 배터리)
       } else if (t.includes("테슬라") || t.includes("tsla") || t.includes("2차전지") || t.includes("전기차") || t.includes("배터리")) {
         importance = "글로벌 전기차 인도량 및 자율주행(FSD), 로보택시 등 차세대 모빌리티 상용화 진행 지표입니다.";
         key_points = "전기차 판매 차량 마진율, 자율주행 데이터 축적량 및 배터리 셀 제조 원가 절감 수준.";
@@ -618,15 +631,15 @@
         stocks = ["LG에너지솔루션", "POSCO홀딩스", "에코프로비엠", "엘앤에프", "TSLA"];
         stock_reasons = "전기차 판매량 가이던스 상승 시 배터리 팩 및 양극재 소재 납품 기업들의 주가 반등 주도.";
 
-      // 7. 기타 일반 기업/일정 (자동 추론 파서)
+      // 8. 기타 일반 지표 및 종목
       } else {
-        const cleanName = title.split(" ")[0];
-        importance = `'${cleanName}' 관련 주요 이슈로, 초보자도 관련 산업의 매출 흐름과 시장 반응을 주시해야 하는 일정입니다.`;
-        key_points = "증권가 예상치(컨센서스) 상회 여부 및 경영진이 발표하는 향후 사업 계획(가이던스).";
-        korea_impact = `🇰🇷 국내 동종 업계 대장주 및 부품/소재 수혜주로 외국인·기관 수급 유입 여부 확인.`;
+        const targetSubject = cleanTitle.split(" ")[0] || rawTitle;
+        importance = `'${targetSubject}' 관련 주요 증시 일정으로, 관련 업황의 수급 및 시장 반응을 주시해야 하는 지표/이벤트입니다.`;
+        key_points = "증권가 예상치(컨센서스) 상회 여부 및 향후 가이던스 제시 방향성.";
+        korea_impact = `🇰🇷 국내 연관 섹터 대장주 및 소재/부품 수혜주로 외국인·기관 자금 유입 여부 확인.`;
         us_impact = `🇺🇸 글로벌 연관 빅테크 및 경쟁 기업들의 주가 밸류에이션 재평가 계기 제공.`;
-        stocks = [cleanName, "국내 동종 대장주", "관련 테마주"];
-        stock_reasons = "발표 직후 시장의 호평 여부에 따라 억눌렸던 주가의 단기 눌림목 반등 타점이 형성될 수 있습니다.";
+        stocks = [targetSubject, "국내 동종 대장주", "관련 테마주"];
+        stock_reasons = "발표 결과 및 시장 평가에 따라 눌림목 형성 후 단기 수급 몰림 현상이 발생할 수 있습니다.";
       }
 
       return { importance, key_points, korea_impact, us_impact, stocks, stock_reasons };
