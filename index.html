@@ -15,7 +15,6 @@
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-  <!-- 상단 네비게이션 헤더 -->
   <header class="bg-gray-900 text-white sticky top-0 z-30 shadow-md">
     <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
       <h1 class="text-xl font-bold flex items-center gap-2">
@@ -32,26 +31,30 @@
       </div>
     </div>
 
-    <!-- 4대 탭 메뉴 -->
-    <div class="max-w-6xl mx-auto px-4 flex border-t border-gray-800 text-sm">
-      <button id="tab-btn-schedule" onclick="switchTab('schedule')" class="flex-1 py-3 text-center text-gray-400 hover:text-white tab-active">
-        🗓️ 주요 증시 캘린더 일정
+    <div class="max-w-6xl mx-auto px-4 flex border-t border-gray-800 text-xs sm:text-sm overflow-x-auto">
+      <button id="tab-btn-schedule" onclick="switchTab('schedule')" class="flex-1 py-3 px-2 text-center text-gray-400 hover:text-white whitespace-nowrap tab-active">
+        🗓️ 주요 증시 일정
       </button>
-      <button id="tab-btn-us" onclick="switchTab('us')" class="flex-1 py-3 text-center text-gray-400 hover:text-white">
-        📊 미장 마감 시황 & 자금 흐름
+      <button id="tab-btn-us" onclick="switchTab('us')" class="flex-1 py-3 px-2 text-center text-gray-400 hover:text-white whitespace-nowrap">
+        📊 미장 마감 시황
       </button>
-      <button id="tab-btn-stocks" onclick="switchTab('stocks')" class="flex-1 py-3 text-center text-gray-400 hover:text-white">
-        🖼️ 섹터별 관련주 정리 갤러리
+      <button id="tab-btn-scenario" onclick="switchTab('scenario')" class="flex-1 py-3 px-2 text-center text-gray-400 hover:text-white whitespace-nowrap">
+        📝 시나리오 메모장
       </button>
-      <button id="tab-btn-news" onclick="switchTab('news')" class="flex-1 py-3 text-center text-gray-400 hover:text-white">
-        ⚡ byul.ai 실시간 속보 뉴스
+      <button id="tab-btn-journal" onclick="switchTab('journal')" class="flex-1 py-3 px-2 text-center text-gray-400 hover:text-white whitespace-nowrap">
+        📓 매매일지 노트
+      </button>
+      <button id="tab-btn-stocks" onclick="switchTab('stocks')" class="flex-1 py-3 px-2 text-center text-gray-400 hover:text-white whitespace-nowrap">
+        🖼️ 관련주 갤러리
+      </button>
+      <button id="tab-btn-news" onclick="switchTab('news')" class="flex-1 py-3 px-2 text-center text-gray-400 hover:text-white whitespace-nowrap">
+        ⚡ byul.ai 속보
       </button>
     </div>
   </header>
 
   <main class="max-w-6xl mx-auto px-4 py-6">
 
-    <!-- 탭 1: 세이브티커 스타일 달력 & 전체 일정 -->
     <div id="tab-content-schedule" class="space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
         <div class="md:col-span-5 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
@@ -82,7 +85,6 @@
       </div>
     </div>
 
-    <!-- 탭 2: 미장 마감 시황 -->
     <div id="tab-content-us" class="space-y-6 hidden">
       <div class="bg-gray-900 rounded-2xl p-6 text-white shadow-xl border border-gray-800 flex justify-between items-center">
         <div>
@@ -110,7 +112,97 @@
       </div>
     </div>
 
-    <!-- 탭 3: 섹터별 관련주 멀티 갤러리 맵 -->
+    <div id="tab-content-scenario" class="space-y-6 hidden">
+      <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-6">
+        <div class="border-b border-gray-200 pb-4 flex justify-between items-center">
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <i class="fa-solid fa-pen-to-square text-red-600"></i> 매일 작성하는 투자 시나리오 노트
+            </h3>
+            <p class="text-xs text-gray-500 mt-1">시장 변동에 대비한 나만의 일간 매수/매도 시나리오 및 분석글을 블로그 형태로 작성하세요.</p>
+          </div>
+        </div>
+
+        <form onsubmit="handleSaveScenario(event)" class="bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <input type="text" id="sc-title" required placeholder="시나리오 제목 (예: 9월 FOMC 대비 반도체 수급 대응 시나리오)" class="sm:col-span-2 px-4 py-2.5 bg-white border border-gray-300 rounded-xl text-sm font-semibold focus:outline-none focus:border-red-500">
+            <select id="sc-category" class="px-3 py-2.5 bg-white border border-gray-300 rounded-xl text-sm font-semibold focus:outline-none">
+              <option value="증시 대응전략">📈 증시 대응전략</option>
+              <option value="종목 매수 시나리오">🔴 종목 매수 시나리오</option>
+              <option value="종목 매도/리스크 관리">🔵 리스크 관리 시나리오</option>
+              <option value="거시경제/매크로">🌐 매크로/경제지표 분석</option>
+            </select>
+          </div>
+
+          <textarea id="sc-content" rows="4" required placeholder="상세 시나리오 및 투자 계획을 작성하세요..." class="w-full p-4 bg-white border border-gray-300 rounded-xl text-sm leading-relaxed focus:outline-none focus:border-red-500"></textarea>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input type="url" id="sc-url" placeholder="🔗 참고 URL 링크 (https://...)" class="px-4 py-2 bg-white border border-gray-300 rounded-xl text-xs focus:outline-none">
+            <label class="cursor-pointer bg-white border border-gray-300 rounded-xl px-4 py-2 text-xs font-semibold text-gray-600 flex items-center justify-between hover:bg-gray-100">
+              <span id="sc-image-label"><i class="fa-solid fa-image text-indigo-500"></i> 차트/자료 이미지 첨부</span>
+              <input type="file" id="sc-image-file" accept="image/*" class="hidden" onchange="updateFileNameLabel(event, 'sc-image-label')">
+            </label>
+          </div>
+
+          <div class="text-right">
+            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow">
+              <i class="fa-solid fa-paper-plane mr-1"></i> 시나리오 게시글 등록
+            </button>
+          </div>
+        </form>
+
+        <div id="scenario-posts-feed" class="space-y-4 pt-2"></div>
+      </div>
+    </div>
+
+    <div id="tab-content-journal" class="space-y-6 hidden">
+      <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-6">
+        <div class="border-b border-gray-200 pb-4 flex justify-between items-center">
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <i class="fa-solid fa-book-bookmark text-emerald-600"></i> 매일 기록하는 매매일지 노트
+            </h3>
+            <p class="text-xs text-gray-500 mt-1">당일 진행한 매매 타점, 매수가, 매도가, 손익률 및 복기 레슨을 정교하게 기록하세요.</p>
+          </div>
+        </div>
+
+        <form onsubmit="handleSaveJournal(event)" class="bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+            <input type="text" id="jo-stock" required placeholder="종목명/제목 (예: 엔비디아 NVDA 매매 복기)" class="sm:col-span-2 px-4 py-2.5 bg-white border border-gray-300 rounded-xl text-sm font-semibold focus:outline-none focus:border-emerald-500">
+            <select id="jo-type" class="px-3 py-2.5 bg-white border border-gray-300 rounded-xl text-sm font-semibold focus:outline-none">
+              <option value="매도완료">🔴 매도완료 (수익/손실 확정)</option>
+              <option value="신규매수">🟢 신규매수 (보유 시작)</option>
+              <option value="관망/복기">⚪ 관망/타점 복기</option>
+            </select>
+            <input type="text" id="jo-return" placeholder="손익률 % (예: +5.2% 또는 -2.1%)" class="px-4 py-2.5 bg-white border border-gray-300 rounded-xl text-sm font-semibold focus:outline-none">
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-2 gap-3">
+            <input type="text" id="jo-buy-price" placeholder="매수가 (예: $125.50 또는 75,000원)" class="px-4 py-2 bg-white border border-gray-300 rounded-xl text-xs focus:outline-none">
+            <input type="text" id="jo-sell-price" placeholder="매도가 (예: $132.00 또는 79,000원)" class="px-4 py-2 bg-white border border-gray-300 rounded-xl text-xs focus:outline-none">
+          </div>
+
+          <textarea id="jo-content" rows="4" required placeholder="매매 원인, 진입 타점 이유, 잘한 점 및 실수한 복기 레슨을 기록하세요..." class="w-full p-4 bg-white border border-gray-300 rounded-xl text-sm leading-relaxed focus:outline-none focus:border-emerald-500"></textarea>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input type="url" id="jo-url" placeholder="🔗 관련 뉴스/공시 URL (https://...)" class="px-4 py-2 bg-white border border-gray-300 rounded-xl text-xs focus:outline-none">
+            <label class="cursor-pointer bg-white border border-gray-300 rounded-xl px-4 py-2 text-xs font-semibold text-gray-600 flex items-center justify-between hover:bg-gray-100">
+              <span id="jo-image-label"><i class="fa-solid fa-chart-line text-emerald-500"></i> 매매 차트/캡처 이미지 첨부</span>
+              <input type="file" id="jo-image-file" accept="image/*" class="hidden" onchange="updateFileNameLabel(event, 'jo-image-label')">
+            </label>
+          </div>
+
+          <div class="text-right">
+            <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow">
+              <i class="fa-solid fa-check mr-1"></i> 매매일지 노트 저장
+            </button>
+          </div>
+        </form>
+
+        <div id="journal-posts-feed" class="space-y-4 pt-2"></div>
+      </div>
+    </div>
+
     <div id="tab-content-stocks" class="space-y-6 hidden">
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-6">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-gray-200 pb-4 gap-3">
@@ -125,12 +217,10 @@
           </button>
         </div>
 
-        <!-- 갤러리 섹션 바디 -->
         <div id="sector-folders-container" class="space-y-8"></div>
       </div>
     </div>
 
-    <!-- 탭 4: 뉴스 -->
     <div id="tab-content-news" class="space-y-6 hidden">
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-4">
         <h3 class="text-lg font-bold text-gray-900 border-b border-gray-200 pb-3 flex items-center gap-2"><i class="fa-solid fa-bolt text-yellow-500"></i> byul.ai & 주요 외신 실시간 속보 뉴스</h3>
@@ -140,7 +230,6 @@
 
   </main>
 
-  <!-- 일정 상세 모달 -->
   <div id="schedule-detail-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl border border-gray-200 relative">
       <div class="sticky top-0 bg-white px-6 py-4 border-b border-gray-100 flex justify-between items-center z-10">
@@ -184,7 +273,6 @@
     </div>
   </div>
 
-  <!-- 이미지 크게 보기 라이트박스 모달 -->
   <div id="image-lightbox-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4 hidden" onclick="closeLightbox()">
     <div class="relative max-w-4xl w-full max-h-[90vh] flex justify-center items-center">
       <img id="lightbox-img" class="max-w-full max-h-[85vh] rounded-lg shadow-2xl object-contain">
@@ -202,7 +290,7 @@
     function refreshDashboard() { location.reload(true); }
 
     function switchTab(tabName) {
-      ['schedule', 'us', 'stocks', 'news'].forEach(t => {
+      ['schedule', 'us', 'scenario', 'journal', 'stocks', 'news'].forEach(t => {
         document.getElementById(`tab-content-${t}`).classList.add('hidden');
         document.getElementById(`tab-btn-${t}`).classList.remove('tab-active');
       });
@@ -210,28 +298,222 @@
       document.getElementById(`tab-btn-${tabName}`).classList.add('tab-active');
 
       if (tabName === 'us') loadUSMarketData();
+      if (tabName === 'scenario') renderScenarioPosts();
+      if (tabName === 'journal') renderJournalPosts();
       if (tabName === 'stocks') renderSectorGallery();
     }
 
-    /* --- 섹터별 갤러리 관리 로직 --- */
-    function getSectorFolders() {
-      return JSON.parse(localStorage.getItem('redbull_sector_folders') || '[]');
+    function updateFileNameLabel(e, labelId) {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById(labelId).innerHTML = `<i class="fa-solid fa-check text-emerald-500"></i> ${file.name}`;
+      }
     }
 
-    function saveSectorFolders(folders) {
-      localStorage.setItem('redbull_sector_folders', JSON.stringify(folders));
+    /* --- 1. 시나리오 메모장 관리 --- */
+    function getScenarioPosts() {
+      return JSON.parse(localStorage.getItem('redbull_scenarios') || '[]');
     }
+
+    function handleSaveScenario(e) {
+      e.preventDefault();
+      const title = document.getElementById('sc-title').value.trim();
+      const category = document.getElementById('sc-category').value;
+      const content = document.getElementById('sc-content').value.trim();
+      const url = document.getElementById('sc-url').value.trim();
+      const imageFile = document.getElementById('sc-image-file').files[0];
+
+      const savePost = (imgBase64) => {
+        const posts = getScenarioPosts();
+        posts.unshift({
+          id: Date.now(),
+          date: new Date().toLocaleString('ko-KR'),
+          title, category, content, url,
+          image: imgBase64 || null
+        });
+        localStorage.setItem('redbull_scenarios', JSON.stringify(posts));
+        e.target.reset();
+        document.getElementById('sc-image-label').innerHTML = `<i class="fa-solid fa-image text-indigo-500"></i> 차트/자료 이미지 첨부`;
+        renderScenarioPosts();
+      };
+
+      if (imageFile) {
+        compressAndBase64(imageFile, (base64) => savePost(base64));
+      } else {
+        savePost(null);
+      }
+    }
+
+    function deleteScenarioPost(id) {
+      if (!confirm("이 시나리오 노트를 삭제하시겠습니까?")) return;
+      let posts = getScenarioPosts();
+      posts = posts.filter(p => p.id !== id);
+      localStorage.setItem('redbull_scenarios', JSON.stringify(posts));
+      renderScenarioPosts();
+    }
+
+    function renderScenarioPosts() {
+      const container = document.getElementById('scenario-posts-feed');
+      const posts = getScenarioPosts();
+
+      if (posts.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50 text-gray-400 text-xs">
+            작성된 시나리오가 없습니다. 위 폼을 작성해 나만의 매매 시나리오 포스트를 남겨보세요.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = posts.map(post => `
+        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-3 relative group">
+          <div class="flex justify-between items-start">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold bg-red-100 text-red-700 px-2.5 py-0.5 rounded-full">${post.category}</span>
+                <span class="text-xs text-gray-400">${post.date}</span>
+              </div>
+              <h4 class="text-base font-bold text-gray-900">${post.title}</h4>
+            </div>
+            <button onclick="deleteScenarioPost(${post.id})" class="text-gray-400 hover:text-red-600 p-1 text-xs">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+
+          <p class="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap bg-white p-4 rounded-xl border border-gray-200">${post.content}</p>
+
+          ${post.url ? `
+            <div class="text-xs">
+              <a href="${post.url}" target="_blank" class="text-blue-600 font-semibold hover:underline inline-flex items-center gap-1">
+                <i class="fa-solid fa-link text-gray-400"></i> ${post.url}
+              </a>
+            </div>
+          ` : ''}
+
+          ${post.image ? `
+            <div class="mt-2">
+              <img src="${post.image}" onclick="openLightbox('${post.image}')" class="max-h-80 rounded-xl border border-gray-200 cursor-pointer object-contain" alt="시나리오 이미지">
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    /* --- 2. 매매일지 노트 관리 --- */
+    function getJournalPosts() {
+      return JSON.parse(localStorage.getItem('redbull_journals') || '[]');
+    }
+
+    function handleSaveJournal(e) {
+      e.preventDefault();
+      const stock = document.getElementById('jo-stock').value.trim();
+      const type = document.getElementById('jo-type').value;
+      const ret = document.getElementById('jo-return').value.trim();
+      const buyPrice = document.getElementById('jo-buy-price').value.trim();
+      const sellPrice = document.getElementById('jo-sell-price').value.trim();
+      const content = document.getElementById('jo-content').value.trim();
+      const url = document.getElementById('jo-url').value.trim();
+      const imageFile = document.getElementById('jo-image-file').files[0];
+
+      const savePost = (imgBase64) => {
+        const posts = getJournalPosts();
+        posts.unshift({
+          id: Date.now(),
+          date: new Date().toLocaleString('ko-KR'),
+          stock, type, returnPct: ret, buyPrice, sellPrice, content, url,
+          image: imgBase64 || null
+        });
+        localStorage.setItem('redbull_journals', JSON.stringify(posts));
+        e.target.reset();
+        document.getElementById('jo-image-label').innerHTML = `<i class="fa-solid fa-chart-line text-emerald-500"></i> 매매 차트/캡처 이미지 첨부`;
+        renderJournalPosts();
+      };
+
+      if (imageFile) {
+        compressAndBase64(imageFile, (base64) => savePost(base64));
+      } else {
+        savePost(null);
+      }
+    }
+
+    function deleteJournalPost(id) {
+      if (!confirm("이 매매일지 노트를 삭제하시겠습니까?")) return;
+      let posts = getJournalPosts();
+      posts = posts.filter(p => p.id !== id);
+      localStorage.setItem('redbull_journals', JSON.stringify(posts));
+      renderJournalPosts();
+    }
+
+    function renderJournalPosts() {
+      const container = document.getElementById('journal-posts-feed');
+      const posts = getJournalPosts();
+
+      if (posts.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50 text-gray-400 text-xs">
+            작성된 매매일지가 없습니다. 매일 매매 결과와 복기 레슨을 정교하게 남겨보세요.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = posts.map(post => {
+        const isLoss = post.returnPct && post.returnPct.includes('-');
+        const returnBadgeClass = isLoss ? 'bg-blue-100 text-blue-700 border-blue-200' : 'bg-red-100 text-red-700 border-red-200';
+
+        return `
+          <div class="bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-3 relative group">
+            <div class="flex justify-between items-start">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-bold bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-full">${post.type}</span>
+                  ${post.returnPct ? `<span class="text-xs font-extrabold px-2.5 py-0.5 rounded-full border ${returnBadgeClass}">${post.returnPct}</span>` : ''}
+                  <span class="text-xs text-gray-400">${post.date}</span>
+                </div>
+                <h4 class="text-base font-bold text-gray-900">${post.stock}</h4>
+              </div>
+              <button onclick="deleteJournalPost(${post.id})" class="text-gray-400 hover:text-red-600 p-1 text-xs">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+
+            ${(post.buyPrice || post.sellPrice) ? `
+              <div class="flex gap-4 text-xs font-semibold text-gray-600 bg-white p-2.5 rounded-lg border border-gray-200">
+                ${post.buyPrice ? `<div>매수가: <b class="text-gray-900">${post.buyPrice}</b></div>` : ''}
+                ${post.sellPrice ? `<div>매도가: <b class="text-gray-900">${post.sellPrice}</b></div>` : ''}
+              </div>
+            ` : ''}
+
+            <p class="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap bg-white p-4 rounded-xl border border-gray-200">${post.content}</p>
+
+            ${post.url ? `
+              <div class="text-xs">
+                <a href="${post.url}" target="_blank" class="text-blue-600 font-semibold hover:underline inline-flex items-center gap-1">
+                  <i class="fa-solid fa-link text-gray-400"></i> ${post.url}
+                </a>
+              </div>
+            ` : ''}
+
+            ${post.image ? `
+              <div class="mt-2">
+                <img src="${post.image}" onclick="openLightbox('${post.image}')" class="max-h-80 rounded-xl border border-gray-200 cursor-pointer object-contain" alt="매매 차트 이미지">
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    /* --- 3. 섹터별 갤러리 관리 --- */
+    function getSectorFolders() { return JSON.parse(localStorage.getItem('redbull_sector_folders') || '[]'); }
+    function saveSectorFolders(folders) { localStorage.setItem('redbull_sector_folders', JSON.stringify(folders)); }
 
     function promptCreateSectorFolder() {
       const title = prompt("새로 만들 섹터 앨범의 제목을 입력하세요:\n(예: AI 데이터센터 관련주, 반도체 밸류체인 등)");
       if (!title || !title.trim()) return;
 
       const folders = getSectorFolders();
-      folders.unshift({
-        id: Date.now(),
-        title: title.trim(),
-        images: []
-      });
+      folders.unshift({ id: Date.now(), title: title.trim(), images: [] });
       saveSectorFolders(folders);
       renderSectorGallery();
     }
@@ -244,9 +526,7 @@
       renderSectorGallery();
     }
 
-    function triggerImageUpload(folderId) {
-      document.getElementById(`file-input-${folderId}`).click();
-    }
+    function triggerImageUpload(folderId) { document.getElementById(`file-input-${folderId}`).click(); }
 
     function handleImagesUpload(event, folderId) {
       const files = event.target.files;
@@ -365,7 +645,6 @@
               </div>
             </div>
 
-            <!-- 갤러리 형태로 이미지들이 화면에 펼쳐짐 -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               ${imagesHtml}
             </div>
@@ -381,9 +660,7 @@
         globalSchedules = await resp.json();
         renderCalendarGrid();
         renderScheduleList();
-      } catch (e) {
-        console.error("일정 데이터 로드 실패:", e);
-      }
+      } catch (e) { console.error("일정 데이터 로드 실패:", e); }
     }
 
     function renderCalendarGrid() {
@@ -481,9 +758,7 @@
       document.getElementById('schedule-detail-modal').classList.remove('hidden');
     }
 
-    function closeScheduleModal() {
-      document.getElementById('schedule-detail-modal').classList.add('hidden');
-    }
+    function closeScheduleModal() { document.getElementById('schedule-detail-modal').classList.add('hidden'); }
 
     async function loadUSMarketData() {
       try {
