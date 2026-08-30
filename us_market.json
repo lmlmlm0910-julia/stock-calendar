@@ -1,11 +1,11 @@
 {
-  "updated_at": "2026년 08월 30일(일) 12:05:10 KST",
+  "updated_at": "2026년 08월 30일(일) 12:30:22 KST",
   "macro_indicators": [
     {
       "name": "원/달러 환율",
-      "value": "1,371.50원",
-      "change": "-0.65%",
-      "status": "외환시세"
+      "value": "1,380.00원",
+      "change": "0.00%",
+      "status": "네이버 시세"
     },
     {
       "name": "나스닥 선물",
@@ -14,15 +14,21 @@
       "status": "NQ=F"
     },
     {
-      "name": "코스피 야간선물",
-      "value": "6,788.88",
-      "change": "-1.79%",
-      "status": "KM=F"
+      "name": "코스피 200 선물",
+      "value": "N/A",
+      "change": "0.00%",
+      "status": "KOSPI 200"
     },
     {
       "name": "비트코인 (BTC)",
-      "value": "108,548,000원 ($78,658)",
-      "change": "-0.18%",
+      "value": "108,542,000원 ($78,654)",
+      "change": "-0.19%",
+      "status": "업비트/KRW"
+    },
+    {
+      "name": "이더리움 (ETH)",
+      "value": "3,415,000원 ($2,475)",
+      "change": "-0.03%",
       "status": "업비트/KRW"
     },
     {
@@ -62,32 +68,20 @@
   "bonds_detailed": [
     {
       "tenor": "미국 2년물 국채금리 (^2YY)",
-      "yield_rate": "3.730%",
-      "change": "+1.41%",
-      "prev_close": "3.678",
-      "open": "3.675",
-      "high": "3.735",
-      "low": "3.660"
+      "yield_rate": "N/A",
+      "change": "0.00%"
     },
     {
       "tenor": "미국 10년물 국채금리 (^TNX)",
       "yield_rate": "4.720%",
-      "change": "+1.03%",
-      "prev_close": "4.672",
-      "open": "4.688",
-      "high": "4.730",
-      "low": "4.654"
+      "change": "+1.03%"
     },
     {
       "tenor": "미국 30년물 국채금리 (^TYX)",
       "yield_rate": "5.206%",
-      "change": "+0.29%",
-      "prev_close": "5.191",
-      "open": "5.206",
-      "high": "5.214",
-      "low": "5.155"
+      "change": "+0.29%"
     }
   ],
-  "detailed_capital_flow_report": "<div style='font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 24px; background-color: #0f172a; color: #f8fafc; border-radius: 16px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);'><header style='border-bottom: 1px solid #334155; padding-bottom: 16px; margin-bottom: 24px;'><div style='display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;'><span style='background-color: #1e293b; color: #38bdf8; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; border: 1px solid #0284c7;'>월가 마감 시황 보고서</span><span style='color: #94a3b8; font-size: 13px;'>업데이트: 2026년 08월 30일(일) 12:05 KST</span></div><h1 style='font-size: 26px; font-weight: 700; margin: 16px 0 8px 0; color: #ffffff; letter-spacing: -0.5px;'>국채 금리 상방 압력 속 반도체·중소형주 약세… 필라델피아 반도체 3.47% 급락</h1><p style='color: #94a3b8; font-size: 15px; margin: 0; line-height: 1.5;'>미 국채 금리가 상승세를 나타낸 가운데 기술주 및 반도체 섹터를 중심으로 차익실현 매물이 출현하며 3대 지수가 하락 마감했습니다.</p></header><section style='margin-bottom: 32px;'><h2 style='font-size: 18px; font-weight: 600; color: #38bdf8; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;'><span style='display: inline-block; width: 4px; height: 18px; background-color: #38bdf8; border-radius: 2px;'></span> 주요 글로벌 지수 및 자산 현황</h2><div style='overflow-x: auto;'><table style='width: 100%; border-collapse: collapse; font-size: 14px; text-align: left;'><thead style='background-color: #1e293b; color: #94a3b8; text-transform: uppercase; font-size: 12px;'><tr style='border-bottom: 1px solid #334155;'><th style='padding: 12px 16px;'>자산군</th><th style='padding: 12px 16px;'>종가</th><th style='padding: 12px 16px;'>변동률</th><th style='padding: 12px 16px;'>시가 / 고가 / 저가</th></tr></thead><tbody style='divide-y divide-slate-800;'><tr style='border-bottom: 1px solid #1e293b;'><td style='padding: 12px 16px; font-weight: 600; color: #f1f5f9;'>S&P 500</td><td style='padding: 12px 16px; color: #f8fafc;'>7,711.76</td><td style='padding: 12px 16px; color: #f87171; font-weight: 600;'>-0.25%</td><td style='padding: 12px 16px; color: #64748b; font-size: 13px;'>7,735.17 / 7,771.48 / 7,700.91</td></tr><tr style='border-bottom: 1px solid #1e293b;'><td style='padding: 12px 16px; font-weight: 600; color: #f1f5f9;'>다우존스</td><td style='padding: 12px 16px; color: #f8fafc;'>53,559.99</td><td style='padding: 12px 16px; color: #f87171; font-weight: 600;'>-0.02%</td><td style='padding: 12px 16px; color: #64748b; font-size: 13px;'>53,611.94 / 53,819.65 / 53,489.41</td></tr><tr style='border-bottom: 1px solid #1e293b;'><td style='padding: 12px 16px; font-weight: 600; color: #f1f5f9;'>나스닥</td><td style='padding: 12px 16px; color: #f8fafc;'>26,402.42</td><td style='padding: 12px 16px; color: #f87171; font-weight: 600;'>-0.52%</td><td style='padding: 12px 16px; color: #64748b; font-size: 13px;'>26,515.99 / 26,700.68 / 26,359.27</td></tr><tr style='border-bottom: 1px solid #1e293b;'><td style='padding: 12px 16px; font-weight: 600; color: #f1f5f9;'>필라델피아 반도체</td><td style='padding: 12px 16px; color: #f8fafc;'>11,469.66</td><td style='padding: 12px 16px; color: #ef4444; font-weight: 700;'>-3.47%</td><td style='padding: 12px 16px; color: #64748b; font-size: 13px;'>11,731.58 / 11,794.28 / 11,435.70</td></tr><tr style='border-bottom: 1px solid #1e293b;'><td style='padding: 12px 16px; font-weight: 600; color: #f1f5f9;'>러셀 2000</td><td style='padding: 12px 16px; color: #f8fafc;'>2,972.37</td><td style='padding: 12px 16px; color: #f87171; font-weight: 600;'>-1.39%</td><td style='padding: 12px 16px; color: #64748b; font-size: 13px;'>3,014.15 / 3,017.04 / 2,972.37</td></tr><tr style='border-bottom: 1px solid #1e293b;'><td style='padding: 12px 16px; font-weight: 600; color: #f1f5f9;'>코스피 야간선물</td><td style='padding: 12px 16px; color: #f8fafc;'>6,788.88</td><td style='padding: 12px 16px; color: #ef4444; font-weight: 600;'>-1.79%</td><td style='padding: 12px 16px; color: #64748b; font-size: 13px;'>6,846.54 / 6,901.78 / 6,780.13</td></tr></tbody></table></div></section><div style='grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); display: grid; gap: 16px; margin-bottom: 32px;'><div style='background-color: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155;'><h3 style='font-size: 15px; color: #94a3b8; margin: 0 0 12px 0; font-weight: 500;'>채권 및 환율</h3><div style='display: flex; justify-content: space-between; margin-bottom: 8px;'><span style='color: #cbd5e1;'>미 2년물 금리</span><span style='color: #4ade80; font-weight: 600;'>3.730% (+1.41%)</span></div><div style='display: flex; justify-content: space-between; margin-bottom: 8px;'><span style='color: #cbd5e1;'>미 10년물 금리</span><span style='color: #4ade80; font-weight: 600;'>4.720% (+1.03%)</span></div><div style='display: flex; justify-content: space-between; margin-bottom: 8px;'><span style='color: #cbd5e1;'>미 30년물 금리</span><span style='color: #4ade80; font-weight: 600;'>5.206% (+0.29%)</span></div><div style='display: flex; justify-content: space-between;'><span style='color: #cbd5e1;'>원/달러 환율</span><span style='color: #38bdf8; font-weight: 600;'>1,371.50원 (-0.65%)</span></div></div><div style='background-color: #1e293b; padding: 20px; border-radius: 12px; border: 1px solid #334155;'><h3 style='font-size: 15px; color: #94a3b8; margin: 0 0 12px 0; font-weight: 500;'>원자재 및 변동성</h3><div style='display: flex; justify-content: space-between; margin-bottom: 8px;'><span style='color: #cbd5e1;'>WTI 국제유가</span><span style='color: #f87171; font-weight: 600;'>$83.40 (-0.16%)</span></div><div style='display: flex; justify-content: space-between; margin-bottom: 8px;'><span style='color: #cbd5e1;'>VIX 변동성지수</span><span style='color: #f87171; font-weight: 600;'>14.43 (-0.55%)</span></div><div style='display: flex; justify-content: space-between; margin-bottom: 8px;'><span style='color: #cbd5e1;'>비트코인 (BTC)</span><span style='color: #cbd5e1; font-weight: 600;'>$78,658 (-0.18%)</span></div><div style='display: flex; justify-content: space-between;'><span style='color: #cbd5e1;'>이더리움 (ETH)</span><span style='color: #cbd5e1; font-weight: 600;'>$2,473 (-0.09%)</span></div></div></div><section style='margin-bottom: 32px;'><h2 style='font-size: 18px; font-weight: 600; color: #38bdf8; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;'><span style='display: inline-block; width: 4px; height: 18px; background-color: #38bdf8; border-radius: 2px;'></span> 핵심 심층 분석</h2><div style='background-color: #1e293b; padding: 20px; border-radius: 12px; border-left: 4px solid #ef4444; margin-bottom: 16px;'><h3 style='font-size: 16px; font-weight: 600; color: #f8fafc; margin: 0 0 8px 0;'>1. 국채 금리 반등과 반도체 섹터 급락 (SOX -3.47%)</h3><p style='color: #cbd5e1; font-size: 14px; line-height: 1.6; margin: 0;'>미 국채 10년물 금리가 4.720%(+1.03%), 2년물 금리가 3.730%(+1.41%)로 각각 상승세를 보이며 기술주 벨류에이션에 부담을 가했습니다. 특히 필라델피아 반도체 지수가 3.47% 급락하며 나스닥(-0.52%)의 하락세를 견인했습니다. 고금리 환경 지속 우려 및 단기 밸류에이션 부담에 따른 고단가 성장주의 차익실현 물량이 집중된 것으로 풀이됩니다.</p></div><div style='background-color: #1e293b; padding: 20px; border-radius: 12px; border-left: 4px solid #f59e0b; margin-bottom: 16px;'><h3 style='font-size: 16px; font-weight: 600; color: #f8fafc; margin: 0 0 8px 0;'>2. 중소형주 상대적 약세 및 위험자산 숨고르기</h3><p style='color: #cbd5e1; font-size: 14px; line-height: 1.6; margin: 0;'>금리 상승 여파로 자금 조달 비용 압박이 큰 러셀 2000 지수가 1.39% 하락해 대형주(다우 -0.02%, S&P500 -0.25%) 대비 큰 폭의 조정을 받았습니다. 가상자산 시장 역시 비트코인($78,658, -0.18%)과 이더리움($2,473, -0.09%)이 뚜렷한 모멘텀 없이 소폭 하락하며 횡보세를 유지하고 있습니다.</p></div><div style='background-color: #1e293b; padding: 20px; border-radius: 12px; border-left: 4px solid #06b6d4;'><h3 style='font-size: 16px; font-weight: 600; color: #f8fafc; margin: 0 0 8px 0;'>3. 원/달러 환율 안정 및 국내 증시 우려</h3><p style='color: #cbd5e1; font-size: 14px; line-height: 1.6; margin: 0;'>원/달러 환율은 1,371.50원(-0.65%)으로 안정을 되찾았으나, 미 반도체 지수 폭락의 여파로 코스피 야간선물이 1.79% 하락 마감했습니다. 월요일 국내 개장 시 반도체 대형주 중심의 외국인 매도세 출회 가능성에 유의할 필요가 있습니다.</p></div></section><footer style='background-color: #1e293b; padding: 16px; border-radius: 12px; border: 1px solid #334155; text-align: center;'><p style='color: #94a3b8; font-size: 13px; margin: 0;'>본 보고서는 글로벌 금융 시장 데이터를 바탕으로 생성된 분석 리포트이며, 투자 권유 목적이 아닙니다.</p></footer></div>",
+  "detailed_capital_flow_report": "\n        <div class=\"bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-4\">\n          <h4 class=\"text-base font-bold text-gray-900 border-b border-gray-200 pb-2\">🔥 1. 월가 자금 유입 섹터 & 배경 원인 분석</h4>\n          <p class=\"text-sm text-gray-700 leading-relaxed\">대형 기술주 및 AI 모멘텀 섹터 중심으로 저가 매수세 및 기관 수급 유입이 지속되고 있습니다.</p>\n          <h4 class=\"text-base font-bold text-gray-900 border-b border-gray-200 pb-2 pt-2\">🔵 2. 하방 압력 섹터 & 유출 원인 분석</h4>\n          <p class=\"text-sm text-gray-700 leading-relaxed\">금리 변동성으로 인해 고밸류 성장주 및 일부 소형주 섹터에서 차익 실현 물량이 출회되었습니다.</p>\n          <h4 class=\"text-base font-bold text-gray-900 border-b border-gray-200 pb-2 pt-2\">🇰🇷 3. 한국 증시 연계 심층 대응 전략</h4>\n          <p class=\"text-sm text-gray-700 leading-relaxed\">나스닥 선물 및 코스피 200 선물 연동성을 주시하며 반도체/대장주 중심 외인 수급을 확인 후 대응하세요.</p>\n        </div>\n        ",
   "categorized_news": []
 }
