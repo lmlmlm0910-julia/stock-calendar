@@ -6,6 +6,11 @@
   <title>레드불 증시 통합 AI 대시보드</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <!-- Firebase SDK 연동 (실시간 자동 연동 클라우드) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
   <style>
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     .tab-active { border-bottom: 3px solid #ef4444; color: #ef4444; font-weight: bold; }
@@ -24,21 +29,13 @@
       </h1>
       
       <div class="flex items-center gap-2 flex-wrap">
-        <!-- 데이터 백업/복원 기능 (PC <-> Phone 기기연동 해결책) -->
-        <button onclick="exportAllUserData()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-2.5 py-1.5 rounded-lg font-semibold flex items-center gap-1 transition">
-          <i class="fa-solid fa-download text-indigo-400"></i> 백업
-        </button>
-        <label class="cursor-pointer text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-2.5 py-1.5 rounded-lg font-semibold flex items-center gap-1 transition">
-          <i class="fa-solid fa-upload text-emerald-400"></i> 복원
-          <input type="file" accept=".json" class="hidden" onchange="importAllUserData(event)">
-        </label>
-        
+        <span id="sync-status-badge" class="text-xs bg-emerald-950 text-emerald-400 border border-emerald-700 px-2.5 py-1.5 rounded-full font-semibold flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> 🟢 기기 간 실시간 연동 중
+        </span>
+
         <button onclick="refreshDashboard()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition">
           <i class="fa-solid fa-rotate-right text-red-500"></i> 실시간 새로고침
         </button>
-        <span class="text-xs bg-red-900 text-red-300 border border-red-700 font-semibold px-2.5 py-1.5 rounded-full flex items-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> AI ON
-        </span>
       </div>
     </div>
 
@@ -127,7 +124,6 @@
         <div id="bonds-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
       </div>
 
-      <!-- 복원된 S&P 500 섹터별 히트맵 (TradingView Embed) -->
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-3">
         <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
           <i class="fa-solid fa-fire text-red-600"></i> 🔥 S&P 500 섹터별 전일 종가 히트맵
@@ -151,7 +147,7 @@
             <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
               <i class="fa-solid fa-pen-to-square text-red-600"></i> 매일 작성하는 투자 시나리오 노트
             </h3>
-            <p class="text-xs text-gray-500 mt-1">시장 변동에 대비한 나만의 일간 매수/매도 시나리오 및 분석글을 블로그 형태로 작성하세요.</p>
+            <p class="text-xs text-gray-500 mt-1">작성하는 순간 모든 핸드폰/태블릿으로 실시간 자동 연동됩니다.</p>
           </div>
         </div>
 
@@ -236,7 +232,7 @@
       </div>
     </div>
 
-    <!-- 탭 5: 섹터별 관련주 정리 갤러리 (검색기능 추가) -->
+    <!-- 탭 5: 섹터별 관련주 정리 갤러리 -->
     <div id="tab-content-stocks" class="space-y-6 hidden">
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-6">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-gray-200 pb-4 gap-3">
@@ -244,14 +240,13 @@
             <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
               <i class="fa-solid fa-layer-group text-indigo-600"></i> 섹터별 관련주 정리 갤러리
             </h3>
-            <p class="text-xs text-gray-500 mt-1">제목을 정해 앨범을 만든 뒤 이미지를 등록하면 한눈에 펼쳐지는 갤러리로 보관됩니다.</p>
+            <p class="text-xs text-gray-500 mt-1">제목을 정해 앨범을 만든 뒤 이미지를 등록하면 모든 기기로 자동 공유됩니다.</p>
           </div>
           <button onclick="promptCreateSectorFolder()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 shadow transition">
             <i class="fa-solid fa-folder-plus text-sm"></i> 새 섹터 앨범 만들기
           </button>
         </div>
 
-        <!-- 관련주 갤러리 실시간 검색바 -->
         <div class="relative">
           <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400 text-sm"></i>
           <input type="text" id="gallery-search-input" oninput="renderSectorGallery()" placeholder="🔍 검색하고 싶은 섹터명을 입력하세요 (예: AI, 보안, 반도체 등)..." class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm font-semibold focus:outline-none focus:border-indigo-500">
@@ -326,13 +321,59 @@
   </div>
 
   <script>
+    /* 🔥 Firebase 설정 및 실시간 클라우드 연동 */
+    const firebaseConfig = {
+      apiKey: "AIzaSyCwp7Vj-sJH34byZT3tUzMl8fhbTwTvJ70",
+      authDomain: "redbull-dashboard.firebaseapp.com",
+      projectId: "redbull-dashboard",
+      storageBucket: "redbull-dashboard.firebasestorage.app",
+      messagingSenderId: "584317107027",
+      appId: "1:584317107027:web:5025598733bf3337487fa6",
+      measurementId: "G-N175V1LJ4S",
+      databaseURL: "https://redbull-dashboard-default-rtdb.firebaseio.com"
+    };
+
+    let firebaseDb = null;
+    try {
+      firebase.initializeApp(firebaseConfig);
+      firebaseDb = firebase.database();
+    } catch(e) { console.error("Firebase 초기화 에러:", e); }
+
     let globalSchedules = [];
     let selectedDate = null;
     let currentFilterMode = "all";
 
     function refreshDashboard() { location.reload(true); }
 
-    /* 탭 상태 유지 로직 (#hash 및 localStorage) */
+    /* 클라우드 DB로 데이터 실시간 푸시 */
+    function syncUserDataToFirebase() {
+      if (!firebaseDb) return;
+      const data = {
+        scenarios: JSON.parse(localStorage.getItem('redbull_scenarios') || '[]'),
+        journals: JSON.parse(localStorage.getItem('redbull_journals') || '[]'),
+        sector_folders: JSON.parse(localStorage.getItem('redbull_sector_folders') || '[]')
+      };
+      firebaseDb.ref('redbull_user_data').set(data);
+    }
+
+    /* 다른 기기(폰/태블릿)에서 수정 시 실시간 자동 수신 */
+    function initFirebaseRealtimeSync() {
+      if (!firebaseDb) return;
+      firebaseDb.ref('redbull_user_data').on('value', (snapshot) => {
+        const data = snapshot.val();
+        if (data) {
+          if (data.scenarios) localStorage.setItem('redbull_scenarios', JSON.stringify(data.scenarios));
+          if (data.journals) localStorage.setItem('redbull_journals', JSON.stringify(data.journals));
+          if (data.sector_folders) localStorage.setItem('redbull_sector_folders', JSON.stringify(data.sector_folders));
+          
+          const activeTab = localStorage.getItem('redbull_active_tab') || 'schedule';
+          if (activeTab === 'scenario') renderScenarioPosts();
+          if (activeTab === 'journal') renderJournalPosts();
+          if (activeTab === 'stocks') renderSectorGallery();
+        }
+      });
+    }
+
     function switchTab(tabName) {
       ['schedule', 'us', 'scenario', 'journal', 'stocks', 'news'].forEach(t => {
         document.getElementById(`tab-content-${t}`).classList.add('hidden');
@@ -365,40 +406,6 @@
       }
     }
 
-    /* 백업 / 복원 기능 (PC <-> 스마트폰 데이터 공유) */
-    function exportAllUserData() {
-      const data = {
-        scenarios: JSON.parse(localStorage.getItem('redbull_scenarios') || '[]'),
-        journals: JSON.parse(localStorage.getItem('redbull_journals') || '[]'),
-        sector_folders: JSON.parse(localStorage.getItem('redbull_sector_folders') || '[]')
-      };
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `redbull_dashboard_backup_${new Date().toISOString().slice(0,10)}.json`;
-      a.click();
-    }
-
-    function importAllUserData(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        try {
-          const imported = JSON.parse(evt.target.result);
-          if (imported.scenarios) localStorage.setItem('redbull_scenarios', JSON.stringify(imported.scenarios));
-          if (imported.journals) localStorage.setItem('redbull_journals', JSON.stringify(imported.journals));
-          if (imported.sector_folders) localStorage.setItem('redbull_sector_folders', JSON.stringify(imported.sector_folders));
-          alert("데이터 복원이 완벽히 완료되었습니다!");
-          location.reload();
-        } catch (err) {
-          alert("올바르지 않은 백업 파일 형식입니다.");
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    /* 브라우저 실시간 시계 & 업비트 암호화폐 실시간 수집 */
     function startLiveClockAndUpbit() {
       setInterval(() => {
         const now = new Date();
@@ -415,18 +422,15 @@
         coins.forEach(c => {
           const priceMan = (c.trade_price / 10000).toLocaleString('ko-KR', { maximumFractionDigits: 1 });
           const usdApprox = (c.trade_price / 1380).toLocaleString('en-US', { maximumFractionDigits: 0 });
-          const pct = (c.signed_change_rate * 100).toFixed(2);
-          const pctStr = (pct >= 0 ? '+' : '') + pct + '%';
-
           if (c.market === "KRW-BTC") {
             const el = document.getElementById('btc-live-val');
             if (el) el.innerText = `${c.trade_price.toLocaleString()}원 ($${usdApprox})`;
           }
         });
-      } catch (e) { console.log("업비트 실시간 에러:", e); }
+      } catch (e) { console.log("업비트 에러:", e); }
     }
 
-    /* 1. 시나리오 메모장 관리 */
+    /* 1. 시나리오 메모장 */
     function getScenarioPosts() { return JSON.parse(localStorage.getItem('redbull_scenarios') || '[]'); }
 
     function handleSaveScenario(e) {
@@ -446,6 +450,7 @@
           image: imgBase64 || null
         });
         localStorage.setItem('redbull_scenarios', JSON.stringify(posts));
+        syncUserDataToFirebase();
         e.target.reset();
         document.getElementById('sc-image-label').innerHTML = `<i class="fa-solid fa-image text-indigo-500"></i> 차트/자료 이미지 첨부`;
         renderScenarioPosts();
@@ -460,6 +465,7 @@
       let posts = getScenarioPosts();
       posts = posts.filter(p => p.id !== id);
       localStorage.setItem('redbull_scenarios', JSON.stringify(posts));
+      syncUserDataToFirebase();
       renderScenarioPosts();
     }
 
@@ -491,7 +497,7 @@
       `).join('');
     }
 
-    /* 2. 매매일지 노트 관리 */
+    /* 2. 매매일지 노트 */
     function getJournalPosts() { return JSON.parse(localStorage.getItem('redbull_journals') || '[]'); }
 
     function handleSaveJournal(e) {
@@ -514,6 +520,7 @@
           image: imgBase64 || null
         });
         localStorage.setItem('redbull_journals', JSON.stringify(posts));
+        syncUserDataToFirebase();
         e.target.reset();
         document.getElementById('jo-image-label').innerHTML = `<i class="fa-solid fa-chart-line text-emerald-500"></i> 매매 차트/캡처 이미지 첨부`;
         renderJournalPosts();
@@ -528,6 +535,7 @@
       let posts = getJournalPosts();
       posts = posts.filter(p => p.id !== id);
       localStorage.setItem('redbull_journals', JSON.stringify(posts));
+      syncUserDataToFirebase();
       renderJournalPosts();
     }
 
@@ -566,9 +574,12 @@
       }).join('');
     }
 
-    /* 3. 섹터별 갤러리 관리 (라이브 검색기능 포함) */
+    /* 3. 섹터별 갤러리 관리 */
     function getSectorFolders() { return JSON.parse(localStorage.getItem('redbull_sector_folders') || '[]'); }
-    function saveSectorFolders(folders) { localStorage.setItem('redbull_sector_folders', JSON.stringify(folders)); }
+    function saveSectorFolders(folders) {
+      localStorage.setItem('redbull_sector_folders', JSON.stringify(folders));
+      syncUserDataToFirebase();
+    }
 
     function promptCreateSectorFolder() {
       const title = prompt("새로 만들 섹터 앨범의 제목을 입력하세요:\n(예: AI 데이터센터 관련주, 반도체 밸류체인 등)");
@@ -819,7 +830,6 @@
 
     function closeScheduleModal() { document.getElementById('schedule-detail-modal').classList.add('hidden'); }
 
-    /* 미장 마감 시황 및 속보 뉴스 렌더링 복원 */
     async function loadUSMarketData() {
       try {
         const resp = await fetch('us_market.json?v=' + new Date().getTime());
@@ -858,7 +868,6 @@
         document.getElementById('detailed-report-content').innerHTML = data.detailed_capital_flow_report || "";
         document.getElementById('us-update-time').innerText = `서버 수집 시간: ${data.updated_at}`;
 
-        /* 속보 뉴스 카드가 정상 렌더링되도록 구현 복원 */
         renderNewsCards(data.categorized_news);
 
       } catch (err) { console.error("마감 데이터 로드 실패:", err); }
@@ -892,6 +901,7 @@
     initActiveTab();
     loadScheduleCalendarData();
     startLiveClockAndUpbit();
+    initFirebaseRealtimeSync();
   </script>
 </body>
 </html>
