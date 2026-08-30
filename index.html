@@ -15,22 +15,34 @@
 </head>
 <body class="bg-gray-100 text-gray-800">
 
+  <!-- 상단 네비게이션 헤더 -->
   <header class="bg-gray-900 text-white sticky top-0 z-30 shadow-md">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+    <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-wrap justify-between items-center gap-2">
       <h1 class="text-xl font-bold flex items-center gap-2">
         <span class="bg-red-600 text-white text-xs px-2.5 py-1 rounded font-extrabold tracking-wider">RED BULL</span>
         <span>증시 AI 종합 대시보드</span>
       </h1>
-      <div class="flex items-center gap-3">
+      
+      <div class="flex items-center gap-2 flex-wrap">
+        <!-- 데이터 백업/복원 기능 (PC <-> Phone 기기연동 해결책) -->
+        <button onclick="exportAllUserData()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-2.5 py-1.5 rounded-lg font-semibold flex items-center gap-1 transition">
+          <i class="fa-solid fa-download text-indigo-400"></i> 백업
+        </button>
+        <label class="cursor-pointer text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-2.5 py-1.5 rounded-lg font-semibold flex items-center gap-1 transition">
+          <i class="fa-solid fa-upload text-emerald-400"></i> 복원
+          <input type="file" accept=".json" class="hidden" onchange="importAllUserData(event)">
+        </label>
+        
         <button onclick="refreshDashboard()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition">
           <i class="fa-solid fa-rotate-right text-red-500"></i> 실시간 새로고침
         </button>
         <span class="text-xs bg-red-900 text-red-300 border border-red-700 font-semibold px-2.5 py-1.5 rounded-full flex items-center gap-1">
-          <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> AI 분석 연동 ON
+          <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> AI ON
         </span>
       </div>
     </div>
 
+    <!-- 6대 탭 메뉴 -->
     <div class="max-w-6xl mx-auto px-4 flex border-t border-gray-800 text-xs sm:text-sm overflow-x-auto">
       <button id="tab-btn-schedule" onclick="switchTab('schedule')" class="flex-1 py-3 px-2 text-center text-gray-400 hover:text-white whitespace-nowrap tab-active">
         🗓️ 주요 증시 일정
@@ -55,6 +67,7 @@
 
   <main class="max-w-6xl mx-auto px-4 py-6">
 
+    <!-- 탭 1: 주요 증시 일정 -->
     <div id="tab-content-schedule" class="space-y-6">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
         <div class="md:col-span-5 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
@@ -85,12 +98,17 @@
       </div>
     </div>
 
+    <!-- 탭 2: 미장 마감 시황 -->
     <div id="tab-content-us" class="space-y-6 hidden">
       <div class="bg-gray-900 rounded-2xl p-6 text-white shadow-xl border border-gray-800 flex justify-between items-center">
         <div>
           <div class="text-xs font-bold text-red-400 tracking-widest mb-1">RED BULL US MARKET DAILY WRAP-UP</div>
           <h2 class="text-2xl font-bold mb-1">🇺🇸 미국장 마감 종합 시황 & 돈의 흐름 심층 리포트</h2>
-          <p class="text-gray-400 text-xs" id="us-update-time">업데이트 시간 수집 중...</p>
+          <div class="flex items-center gap-3 text-xs text-gray-400 mt-1">
+            <p id="us-update-time">서버 수집 시간: 로딩 중...</p>
+            <span>|</span>
+            <p id="browser-live-clock" class="text-emerald-400 font-semibold">브라우저 시각: --:--:--</p>
+          </div>
         </div>
         <button onclick="refreshDashboard()" class="hidden md:flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow">
           <i class="fa-solid fa-arrows-rotate"></i> 실시간 업데이트
@@ -98,20 +116,34 @@
       </div>
 
       <div id="macro-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3"></div>
+
       <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
         <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-1.5"><i class="fa-solid fa-chart-line text-red-500"></i> 미국 5대 주요 지수 동향</h3>
         <div id="indices-container" class="grid grid-cols-2 md:grid-cols-5 gap-2"></div>
       </div>
+
       <div class="bg-white rounded-xl p-5 border border-gray-200 shadow-sm">
         <h3 class="text-sm font-bold text-gray-800 mb-3 flex items-center gap-1.5"><i class="fa-solid fa-landmark text-blue-500"></i> 미국 국채 금리 상세 동향 (^2YY / ^TNX / ^TYX)</h3>
         <div id="bonds-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
       </div>
+
+      <!-- 복원된 S&P 500 섹터별 히트맵 (TradingView Embed) -->
+      <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-3">
+        <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+          <i class="fa-solid fa-fire text-red-600"></i> 🔥 S&P 500 섹터별 전일 종가 히트맵
+        </h3>
+        <div class="w-full h-[550px] rounded-xl overflow-hidden border border-gray-200">
+          <iframe src="https://s.tradingview.com/embed-widget/stock-heatmap/?locale=kr#%7B%22dataSource%22%3A%22SPX500%22%2C%22blockSize%22%3A%22market_cap_basic%22%2C%22blockColor%22%3A%22change%22%2C%22grouping%22%3A%22sector%22%2C%22hasTopBar%22%3Afalse%2C%22isDataSetEnabled%22%3Afalse%2C%22colorTheme%22%3A%22light%22%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%7D" style="width: 100%; height: 100%; border: none;"></iframe>
+        </div>
+      </div>
+
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-4">
         <h3 class="text-lg font-bold text-gray-900 border-b border-gray-200 pb-3 flex items-center gap-2"><i class="fa-solid fa-file-invoice-dollar text-red-600"></i> 🔥 일간 섹터별 자금 흐름(Money Flow) 심층 보고서</h3>
         <div id="detailed-report-content" class="pt-2"></div>
       </div>
     </div>
 
+    <!-- 탭 3: 시나리오 메모장 -->
     <div id="tab-content-scenario" class="space-y-6 hidden">
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-6">
         <div class="border-b border-gray-200 pb-4 flex justify-between items-center">
@@ -155,6 +187,7 @@
       </div>
     </div>
 
+    <!-- 탭 4: 매매일지 노트 -->
     <div id="tab-content-journal" class="space-y-6 hidden">
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-6">
         <div class="border-b border-gray-200 pb-4 flex justify-between items-center">
@@ -203,6 +236,7 @@
       </div>
     </div>
 
+    <!-- 탭 5: 섹터별 관련주 정리 갤러리 (검색기능 추가) -->
     <div id="tab-content-stocks" class="space-y-6 hidden">
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-6">
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-gray-200 pb-4 gap-3">
@@ -217,10 +251,17 @@
           </button>
         </div>
 
+        <!-- 관련주 갤러리 실시간 검색바 -->
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-gray-400 text-sm"></i>
+          <input type="text" id="gallery-search-input" oninput="renderSectorGallery()" placeholder="🔍 검색하고 싶은 섹터명을 입력하세요 (예: AI, 보안, 반도체 등)..." class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm font-semibold focus:outline-none focus:border-indigo-500">
+        </div>
+
         <div id="sector-folders-container" class="space-y-8"></div>
       </div>
     </div>
 
+    <!-- 탭 6: 뉴스 -->
     <div id="tab-content-news" class="space-y-6 hidden">
       <div class="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm space-y-4">
         <h3 class="text-lg font-bold text-gray-900 border-b border-gray-200 pb-3 flex items-center gap-2"><i class="fa-solid fa-bolt text-yellow-500"></i> byul.ai & 주요 외신 실시간 속보 뉴스</h3>
@@ -230,6 +271,7 @@
 
   </main>
 
+  <!-- 일정 상세 모달 -->
   <div id="schedule-detail-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl border border-gray-200 relative">
       <div class="sticky top-0 bg-white px-6 py-4 border-b border-gray-100 flex justify-between items-center z-10">
@@ -273,6 +315,7 @@
     </div>
   </div>
 
+  <!-- 이미지 크게 보기 모달 -->
   <div id="image-lightbox-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4 hidden" onclick="closeLightbox()">
     <div class="relative max-w-4xl w-full max-h-[90vh] flex justify-center items-center">
       <img id="lightbox-img" class="max-w-full max-h-[85vh] rounded-lg shadow-2xl object-contain">
@@ -289,6 +332,7 @@
 
     function refreshDashboard() { location.reload(true); }
 
+    /* 탭 상태 유지 로직 (#hash 및 localStorage) */
     function switchTab(tabName) {
       ['schedule', 'us', 'scenario', 'journal', 'stocks', 'news'].forEach(t => {
         document.getElementById(`tab-content-${t}`).classList.add('hidden');
@@ -297,10 +341,21 @@
       document.getElementById(`tab-content-${tabName}`).classList.remove('hidden');
       document.getElementById(`tab-btn-${tabName}`).classList.add('tab-active');
 
+      localStorage.setItem('redbull_active_tab', tabName);
+      window.location.hash = tabName;
+
       if (tabName === 'us') loadUSMarketData();
       if (tabName === 'scenario') renderScenarioPosts();
       if (tabName === 'journal') renderJournalPosts();
       if (tabName === 'stocks') renderSectorGallery();
+      if (tabName === 'news') loadUSMarketData();
+    }
+
+    function initActiveTab() {
+      const hash = window.location.hash.replace('#', '');
+      const savedTab = localStorage.getItem('redbull_active_tab');
+      const targetTab = hash || savedTab || 'schedule';
+      switchTab(targetTab);
     }
 
     function updateFileNameLabel(e, labelId) {
@@ -310,10 +365,69 @@
       }
     }
 
-    /* --- 1. 시나리오 메모장 관리 --- */
-    function getScenarioPosts() {
-      return JSON.parse(localStorage.getItem('redbull_scenarios') || '[]');
+    /* 백업 / 복원 기능 (PC <-> 스마트폰 데이터 공유) */
+    function exportAllUserData() {
+      const data = {
+        scenarios: JSON.parse(localStorage.getItem('redbull_scenarios') || '[]'),
+        journals: JSON.parse(localStorage.getItem('redbull_journals') || '[]'),
+        sector_folders: JSON.parse(localStorage.getItem('redbull_sector_folders') || '[]')
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `redbull_dashboard_backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
     }
+
+    function importAllUserData(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const imported = JSON.parse(evt.target.result);
+          if (imported.scenarios) localStorage.setItem('redbull_scenarios', JSON.stringify(imported.scenarios));
+          if (imported.journals) localStorage.setItem('redbull_journals', JSON.stringify(imported.journals));
+          if (imported.sector_folders) localStorage.setItem('redbull_sector_folders', JSON.stringify(imported.sector_folders));
+          alert("데이터 복원이 완벽히 완료되었습니다!");
+          location.reload();
+        } catch (err) {
+          alert("올바르지 않은 백업 파일 형식입니다.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    /* 브라우저 실시간 시계 & 업비트 암호화폐 실시간 수집 */
+    function startLiveClockAndUpbit() {
+      setInterval(() => {
+        const now = new Date();
+        document.getElementById('browser-live-clock').innerText = `브라우저 시각: ${now.toLocaleTimeString('ko-KR')}`;
+      }, 1000);
+
+      fetchUpbitLive();
+    }
+
+    async function fetchUpbitLive() {
+      try {
+        const resp = await fetch("https://api.upbit.com/v1/ticker?markets=KRW-BTC,KRW-ETH");
+        const coins = await resp.json();
+        coins.forEach(c => {
+          const priceMan = (c.trade_price / 10000).toLocaleString('ko-KR', { maximumFractionDigits: 1 });
+          const usdApprox = (c.trade_price / 1380).toLocaleString('en-US', { maximumFractionDigits: 0 });
+          const pct = (c.signed_change_rate * 100).toFixed(2);
+          const pctStr = (pct >= 0 ? '+' : '') + pct + '%';
+
+          if (c.market === "KRW-BTC") {
+            const el = document.getElementById('btc-live-val');
+            if (el) el.innerText = `${c.trade_price.toLocaleString()}원 ($${usdApprox})`;
+          }
+        });
+      } catch (e) { console.log("업비트 실시간 에러:", e); }
+    }
+
+    /* 1. 시나리오 메모장 관리 */
+    function getScenarioPosts() { return JSON.parse(localStorage.getItem('redbull_scenarios') || '[]'); }
 
     function handleSaveScenario(e) {
       e.preventDefault();
@@ -337,11 +451,8 @@
         renderScenarioPosts();
       };
 
-      if (imageFile) {
-        compressAndBase64(imageFile, (base64) => savePost(base64));
-      } else {
-        savePost(null);
-      }
+      if (imageFile) compressAndBase64(imageFile, (base64) => savePost(base64));
+      else savePost(null);
     }
 
     function deleteScenarioPost(id) {
@@ -357,11 +468,7 @@
       const posts = getScenarioPosts();
 
       if (posts.length === 0) {
-        container.innerHTML = `
-          <div class="text-center py-12 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50 text-gray-400 text-xs">
-            작성된 시나리오가 없습니다. 위 폼을 작성해 나만의 매매 시나리오 포스트를 남겨보세요.
-          </div>
-        `;
+        container.innerHTML = `<div class="text-center py-12 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50 text-gray-400 text-xs">작성된 시나리오가 없습니다.</div>`;
         return;
       }
 
@@ -375,34 +482,17 @@
               </div>
               <h4 class="text-base font-bold text-gray-900">${post.title}</h4>
             </div>
-            <button onclick="deleteScenarioPost(${post.id})" class="text-gray-400 hover:text-red-600 p-1 text-xs">
-              <i class="fa-solid fa-trash"></i>
-            </button>
+            <button onclick="deleteScenarioPost(${post.id})" class="text-gray-400 hover:text-red-600 p-1 text-xs"><i class="fa-solid fa-trash"></i></button>
           </div>
-
           <p class="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap bg-white p-4 rounded-xl border border-gray-200">${post.content}</p>
-
-          ${post.url ? `
-            <div class="text-xs">
-              <a href="${post.url}" target="_blank" class="text-blue-600 font-semibold hover:underline inline-flex items-center gap-1">
-                <i class="fa-solid fa-link text-gray-400"></i> ${post.url}
-              </a>
-            </div>
-          ` : ''}
-
-          ${post.image ? `
-            <div class="mt-2">
-              <img src="${post.image}" onclick="openLightbox('${post.image}')" class="max-h-80 rounded-xl border border-gray-200 cursor-pointer object-contain" alt="시나리오 이미지">
-            </div>
-          ` : ''}
+          ${post.url ? `<div class="text-xs"><a href="${post.url}" target="_blank" class="text-blue-600 font-semibold hover:underline inline-flex items-center gap-1"><i class="fa-solid fa-link text-gray-400"></i> ${post.url}</a></div>` : ''}
+          ${post.image ? `<div class="mt-2"><img src="${post.image}" onclick="openLightbox('${post.image}')" class="max-h-80 rounded-xl border border-gray-200 cursor-pointer object-contain" alt="시나리오 이미지"></div>` : ''}
         </div>
       `).join('');
     }
 
-    /* --- 2. 매매일지 노트 관리 --- */
-    function getJournalPosts() {
-      return JSON.parse(localStorage.getItem('redbull_journals') || '[]');
-    }
+    /* 2. 매매일지 노트 관리 */
+    function getJournalPosts() { return JSON.parse(localStorage.getItem('redbull_journals') || '[]'); }
 
     function handleSaveJournal(e) {
       e.preventDefault();
@@ -429,11 +519,8 @@
         renderJournalPosts();
       };
 
-      if (imageFile) {
-        compressAndBase64(imageFile, (base64) => savePost(base64));
-      } else {
-        savePost(null);
-      }
+      if (imageFile) compressAndBase64(imageFile, (base64) => savePost(base64));
+      else savePost(null);
     }
 
     function deleteJournalPost(id) {
@@ -449,11 +536,7 @@
       const posts = getJournalPosts();
 
       if (posts.length === 0) {
-        container.innerHTML = `
-          <div class="text-center py-12 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50 text-gray-400 text-xs">
-            작성된 매매일지가 없습니다. 매일 매매 결과와 복기 레슨을 정교하게 남겨보세요.
-          </div>
-        `;
+        container.innerHTML = `<div class="text-center py-12 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50 text-gray-400 text-xs">작성된 매매일지가 없습니다.</div>`;
         return;
       }
 
@@ -472,39 +555,18 @@
                 </div>
                 <h4 class="text-base font-bold text-gray-900">${post.stock}</h4>
               </div>
-              <button onclick="deleteJournalPost(${post.id})" class="text-gray-400 hover:text-red-600 p-1 text-xs">
-                <i class="fa-solid fa-trash"></i>
-              </button>
+              <button onclick="deleteJournalPost(${post.id})" class="text-gray-400 hover:text-red-600 p-1 text-xs"><i class="fa-solid fa-trash"></i></button>
             </div>
-
-            ${(post.buyPrice || post.sellPrice) ? `
-              <div class="flex gap-4 text-xs font-semibold text-gray-600 bg-white p-2.5 rounded-lg border border-gray-200">
-                ${post.buyPrice ? `<div>매수가: <b class="text-gray-900">${post.buyPrice}</b></div>` : ''}
-                ${post.sellPrice ? `<div>매도가: <b class="text-gray-900">${post.sellPrice}</b></div>` : ''}
-              </div>
-            ` : ''}
-
+            ${(post.buyPrice || post.sellPrice) ? `<div class="flex gap-4 text-xs font-semibold text-gray-600 bg-white p-2.5 rounded-lg border border-gray-200">${post.buyPrice ? `<div>매수가: <b class="text-gray-900">${post.buyPrice}</b></div>` : ''}${post.sellPrice ? `<div>매도가: <b class="text-gray-900">${post.sellPrice}</b></div>` : ''}</div>` : ''}
             <p class="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap bg-white p-4 rounded-xl border border-gray-200">${post.content}</p>
-
-            ${post.url ? `
-              <div class="text-xs">
-                <a href="${post.url}" target="_blank" class="text-blue-600 font-semibold hover:underline inline-flex items-center gap-1">
-                  <i class="fa-solid fa-link text-gray-400"></i> ${post.url}
-                </a>
-              </div>
-            ` : ''}
-
-            ${post.image ? `
-              <div class="mt-2">
-                <img src="${post.image}" onclick="openLightbox('${post.image}')" class="max-h-80 rounded-xl border border-gray-200 cursor-pointer object-contain" alt="매매 차트 이미지">
-              </div>
-            ` : ''}
+            ${post.url ? `<div class="text-xs"><a href="${post.url}" target="_blank" class="text-blue-600 font-semibold hover:underline inline-flex items-center gap-1"><i class="fa-solid fa-link text-gray-400"></i> ${post.url}</a></div>` : ''}
+            ${post.image ? `<div class="mt-2"><img src="${post.image}" onclick="openLightbox('${post.image}')" class="max-h-80 rounded-xl border border-gray-200 cursor-pointer object-contain" alt="매매 차트 이미지"></div>` : ''}
           </div>
         `;
       }).join('');
     }
 
-    /* --- 3. 섹터별 갤러리 관리 --- */
+    /* 3. 섹터별 갤러리 관리 (라이브 검색기능 포함) */
     function getSectorFolders() { return JSON.parse(localStorage.getItem('redbull_sector_folders') || '[]'); }
     function saveSectorFolders(folders) { localStorage.setItem('redbull_sector_folders', JSON.stringify(folders)); }
 
@@ -561,16 +623,10 @@
           let height = img.height;
           const maxDim = 1200;
           if (width > maxDim || height > maxDim) {
-            if (width > height) {
-              height = Math.round((height * maxDim) / width);
-              width = maxDim;
-            } else {
-              width = Math.round((width * maxDim) / height);
-              height = maxDim;
-            }
+            if (width > height) { height = Math.round((height * maxDim) / width); width = maxDim; }
+            else { width = Math.round((width * maxDim) / height); height = maxDim; }
           }
-          canvas.width = width;
-          canvas.height = height;
+          canvas.width = width; canvas.height = height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
           callback(canvas.toDataURL('image/jpeg', 0.8));
@@ -593,20 +649,23 @@
       document.getElementById('image-lightbox-modal').classList.remove('hidden');
     }
 
-    function closeLightbox() {
-      document.getElementById('image-lightbox-modal').classList.add('hidden');
-    }
+    function closeLightbox() { document.getElementById('image-lightbox-modal').classList.add('hidden'); }
 
     function renderSectorGallery() {
       const container = document.getElementById('sector-folders-container');
-      const folders = getSectorFolders();
+      const searchInput = document.getElementById('gallery-search-input');
+      const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+      let folders = getSectorFolders();
+
+      if (query) {
+        folders = folders.filter(f => f.title.toLowerCase().includes(query));
+      }
 
       if (folders.length === 0) {
         container.innerHTML = `
           <div class="text-center py-16 border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50 space-y-3">
             <i class="fa-regular fa-images text-5xl text-gray-300"></i>
-            <p class="text-base font-bold text-gray-700">생성된 섹터 앨범이 없습니다.</p>
-            <p class="text-xs text-gray-400">우측 상단 '새 섹터 앨범 만들기' 버튼을 눌러 제목을 등록하고 이미지를 채워보세요.</p>
+            <p class="text-base font-bold text-gray-700">${query ? `'${query}' 검색 결과가 없습니다.` : '생성된 섹터 앨범이 없습니다.'}</p>
           </div>
         `;
         return;
@@ -653,7 +712,7 @@
       }).join('');
     }
 
-    /* --- 증시 일정 로직 --- */
+    /* 증시 일정 로직 */
     async function loadScheduleCalendarData() {
       try {
         const resp = await fetch('data.json?v=' + new Date().getTime());
@@ -760,6 +819,7 @@
 
     function closeScheduleModal() { document.getElementById('schedule-detail-modal').classList.add('hidden'); }
 
+    /* 미장 마감 시황 및 속보 뉴스 렌더링 복원 */
     async function loadUSMarketData() {
       try {
         const resp = await fetch('us_market.json?v=' + new Date().getTime());
@@ -768,7 +828,7 @@
         document.getElementById('macro-container').innerHTML = data.macro_indicators.map(m => `
           <div class="bg-white p-3.5 rounded-xl border border-gray-200 shadow-sm">
             <div class="text-xs font-bold text-gray-500">${m.name}</div>
-            <div class="text-sm font-black text-gray-900 mt-1 leading-snug">${m.value}</div>
+            <div id="${m.name.includes('비트코인') ? 'btc-live-val' : ''}" class="text-sm font-black text-gray-900 mt-1 leading-snug">${m.value}</div>
             <div class="text-xs font-bold ${m.change.startsWith('-') ? 'text-blue-600' : 'text-red-600'} mt-0.5">${m.change}</div>
           </div>
         `).join('');
@@ -796,12 +856,42 @@
         `).join('');
 
         document.getElementById('detailed-report-content').innerHTML = data.detailed_capital_flow_report || "";
-        document.getElementById('us-update-time').innerText = `업데이트: ${data.updated_at}`;
+        document.getElementById('us-update-time').innerText = `서버 수집 시간: ${data.updated_at}`;
+
+        /* 속보 뉴스 카드가 정상 렌더링되도록 구현 복원 */
+        renderNewsCards(data.categorized_news);
 
       } catch (err) { console.error("마감 데이터 로드 실패:", err); }
     }
 
+    function renderNewsCards(newsList) {
+      const container = document.getElementById('news-cards-container');
+      if (!newsList || newsList.length === 0) {
+        container.innerHTML = `<div class="text-center py-10 text-gray-400 text-xs">최신 속보 뉴스가 없습니다.</div>`;
+        return;
+      }
+
+      container.innerHTML = newsList.map(n => `
+        <div class="bg-gray-50 p-5 rounded-2xl border border-gray-200 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold bg-red-600 text-white px-2.5 py-0.5 rounded-md">${n.category || '속보'}</span>
+            <span class="text-xs font-semibold text-gray-500"><i class="fa-regular fa-newspaper mr-1"></i>${n.source || 'byul.ai'}</span>
+          </div>
+          <h4 class="text-base font-bold text-gray-900 leading-snug">${n.title}</h4>
+          <p class="text-xs text-gray-700 leading-relaxed bg-white p-3 rounded-xl border border-gray-200">${n.summary}</p>
+          <div class="space-y-1 text-xs bg-indigo-50 p-3 rounded-xl border border-indigo-100">
+            <div><b>🤖 AI 해설:</b> <span class="text-gray-800">${n.ai_interpretation}</span></div>
+            <div><b>🇰🇷 한국 영향:</b> <span class="text-gray-800">${n.korea_impact}</span></div>
+            <div><b>💡 대응 의견:</b> <span class="text-indigo-950 font-semibold">${n.investor_opinion}</span></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* 초기화 */
+    initActiveTab();
     loadScheduleCalendarData();
+    startLiveClockAndUpbit();
   </script>
 </body>
 </html>
