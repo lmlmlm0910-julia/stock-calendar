@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026년 09월 08일(화) 19:00:03 KST",
+  "updated_at": "2026년 09월 08일(화) 23:25:55 KST",
   "macro_indicators": [
     {
       "name": "원/달러 환율",
@@ -9,8 +9,8 @@
     },
     {
       "name": "나스닥 선물",
-      "value": "29,584.50",
-      "change": "+0.07%",
+      "value": "29,482.25",
+      "change": "-0.28%",
       "status": "NQ=F"
     },
     {
@@ -21,48 +21,48 @@
     },
     {
       "name": "비트코인 (BTC)",
-      "value": "106,876,000원 ($77,446)",
-      "change": "-0.78%",
+      "value": "106,445,000원 ($77,134)",
+      "change": "-1.18%",
       "status": "업비트/KRW"
     },
     {
       "name": "이더리움 (ETH)",
-      "value": "3,379,000원 ($2,449)",
-      "change": "-0.32%",
+      "value": "3,365,000원 ($2,438)",
+      "change": "-0.74%",
       "status": "업비트/KRW"
     },
     {
       "name": "VIX 지수 (공포지수)",
-      "value": "15.60",
-      "change": "+1.96%",
+      "value": "15.72",
+      "change": "+2.75%",
       "status": "변동성 지수"
     }
   ],
   "indices": [
     {
       "name": "S&P 500",
-      "value": "7,718.60",
-      "change": "-0.38%"
+      "value": "7,685.13",
+      "change": "-0.43%"
     },
     {
       "name": "다우존스",
-      "value": "53,414.25",
-      "change": "-0.51%"
+      "value": "52,779.59",
+      "change": "-1.19%"
     },
     {
       "name": "나스닥",
-      "value": "26,506.99",
-      "change": "-0.29%"
+      "value": "26,402.70",
+      "change": "-0.39%"
     },
     {
       "name": "필라델피아 반도체",
-      "value": "11,735.26",
-      "change": "+3.37%"
+      "value": "11,928.26",
+      "change": "+1.64%"
     },
     {
       "name": "러셀 2000",
-      "value": "2,975.65",
-      "change": "+0.25%"
+      "value": "2,962.48",
+      "change": "-0.44%"
     }
   ],
   "bonds_detailed": [
@@ -73,16 +73,16 @@
     },
     {
       "tenor": "미국 10년물 국채금리 (^TNX)",
-      "yield_rate": "4.784%",
-      "change": "+0.46%"
+      "yield_rate": "4.788%",
+      "change": "+0.08%"
     },
     {
       "tenor": "미국 30년물 국채금리 (^TYX)",
-      "yield_rate": "5.246%",
-      "change": "+0.06%"
+      "yield_rate": "5.242%",
+      "change": "-0.08%"
     }
   ],
-  "detailed_capital_flow_report": "\n        <div class=\"bg-gray-50 p-6 rounded-2xl border border-gray-200 space-y-6\">\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-red-600\">🔥</span> 1. 월가 자금 유입 대표 섹터 & 주요 기업 심층 분석\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              이번 장에서는 엔비디아(NVDA), 마이크로소프트(MSFT), 메타(META) 등 AI 핵심 빅테크 기업들로 대규모 기관 자금 매수세가 강하게 유입되었습니다. 차세대 AI 클라우드 데이터센터 투자 확대 호재에 힘입어 관련 하드웨어 밸류체인이 강세를 이끌었습니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-blue-600\">🔵</span> 2. 하방 압력 섹터 & 차익실현 유출 원인 분석\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              미 국채 10년물 금리가 4.784% 수준으로 오르며 밸류에이션 경계감이 부각되었습니다. 이에 따라 러셀 2000 소형주 및 부채 비율이 높은 전통 제조업 섹터는 차익실현 압력을 받았습니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-indigo-600\">🌐</span> 3. 매크로 지표(금리/환율/VIX) & 가상자산 자금 흐름\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              원/달러 환율은 1,380.50원선, VIX 공포지수는 15.60를 기록하고 있습니다. 가상자산 시장에서는 비트코인(106,876,000원 ($77,446))이 범주 내 박스권 흐름을 유지 중입니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-emerald-600\">🇰🇷</span> 4. 한국 증시(국장) 연계 심층 대응 & 개별 수혜주 전략\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              미장 AI 반도체 강세에 연동되어 국내 삼성전자, SK하이닉스, 한미반도체 등 HBM 및 반도체 장비 밸류체인으로의 외국인 수급 유입이 기대됩니다. 장초반 외국인 수급 지지를 확인한 뒤 대안 섹터와 함께 분할 대응하는 전략이 유효합니다.\n            </p>\n          </div>\n        </div>\n        ",
+  "detailed_capital_flow_report": "\n        <div class=\"bg-gray-50 p-6 rounded-2xl border border-gray-200 space-y-6\">\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-red-600\">🔥</span> 1. 월가 자금 유입 대표 섹터 & 주요 기업 심층 분석\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              이번 장에서는 엔비디아(NVDA), 마이크로소프트(MSFT), 메타(META) 등 AI 핵심 빅테크 기업들로 대규모 기관 자금 매수세가 강하게 유입되었습니다. 차세대 AI 클라우드 데이터센터 투자 확대 호재에 힘입어 관련 하드웨어 밸류체인이 강세를 이끌었습니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-blue-600\">🔵</span> 2. 하방 압력 섹터 & 차익실현 유출 원인 분석\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              미 국채 10년물 금리가 4.788% 수준으로 오르며 밸류에이션 경계감이 부각되었습니다. 이에 따라 러셀 2000 소형주 및 부채 비율이 높은 전통 제조업 섹터는 차익실현 압력을 받았습니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-indigo-600\">🌐</span> 3. 매크로 지표(금리/환율/VIX) & 가상자산 자금 흐름\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              원/달러 환율은 1,380.50원선, VIX 공포지수는 15.72를 기록하고 있습니다. 가상자산 시장에서는 비트코인(106,445,000원 ($77,134))이 범주 내 박스권 흐름을 유지 중입니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-emerald-600\">🇰🇷</span> 4. 한국 증시(국장) 연계 심층 대응 & 개별 수혜주 전략\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              미장 AI 반도체 강세에 연동되어 국내 삼성전자, SK하이닉스, 한미반도체 등 HBM 및 반도체 장비 밸류체인으로의 외국인 수급 유입이 기대됩니다. 장초반 외국인 수급 지지를 확인한 뒤 대안 섹터와 함께 분할 대응하는 전략이 유효합니다.\n            </p>\n          </div>\n        </div>\n        ",
   "categorized_news": [
     {
       "title": "실시간 뉴스",
@@ -109,7 +109,7 @@
     {
       "title": "뉴스 타임라인 - TSLA",
       "source": "byul.ai",
-      "time_ago": "189일 전",
+      "time_ago": "190일 전",
       "category": "⚡ 속보",
       "link": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE04MGh5VnpBeDRWQmxmUEsxdXlXTHptWkM4N0JGd0xQdldHLWRmOC1YV3JOUXF6bkJHYlR0Qlo1S0lobzdxSlRIZmF3S3RmdEFLRGc?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
@@ -131,7 +131,7 @@
     {
       "title": "AAPL 과거 유사 흐름",
       "source": "byul.ai",
-      "time_ago": "189일 전",
+      "time_ago": "190일 전",
       "category": "⚡ 속보",
       "link": "https://news.google.com/rss/articles/CBMiVEFVX3lxTFA0NzQ3Z2FpaXR4MVV5bUt4ZDNTQmZWdGZmZjZSWlJVQVV2U0xiTlpnMFpRWS01UER4MUlReDB1dUhJNWVmOFNyOEJ6MXNEUHd1bFFGWQ?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
@@ -175,7 +175,7 @@
     {
       "title": "개인정보처리방침 및 이용약관",
       "source": "byul.ai",
-      "time_ago": "521일 전",
+      "time_ago": "522일 전",
       "category": "⚡ 속보",
       "link": "https://news.google.com/rss/articles/CBMiO0FVX3lxTE01bl9mZEtwR0ZFSWQ2bXQwNUxtdDVoNEVQQTYzQ1lHZW51eUhXRlVxNk1tWVptRUZQWFpB?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
@@ -186,7 +186,7 @@
     {
       "title": "회사 소개",
       "source": "byul.ai",
-      "time_ago": "375일 전",
+      "time_ago": "376일 전",
       "category": "⚡ 속보",
       "link": "https://news.google.com/rss/articles/CBMiOEFVX3lxTE9adjM1VFpJaWoxWWtxZm1JaU80LTV2UE1iSFhIQmp1Mm9WSVVEU05QWEoycGJXdGlR?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
@@ -230,7 +230,7 @@
     {
       "title": "영상 판독 넘어 맞춤 치료로 … 환자별 AI 시대 열린다",
       "source": "byul.ai",
-      "time_ago": "10일 전",
+      "time_ago": "11일 전",
       "category": "💻 기술/AI",
       "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5sMzRKdk84alJsWnExWTJKSlludU82MWtGMHZsMENzOFRKc1dLWTBHUHdqaUctanY3X3daLUctbHVyYjRfZ0ZxeUpYNmVsRVVaN28xQnpBM3l5c3ZDYnExaUN6Rm1tRWNPbkE?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
