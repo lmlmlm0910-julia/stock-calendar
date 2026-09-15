@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026년 09월 15일(화) 08:23:44 KST",
+  "updated_at": "2026년 09월 15일(화) 10:48:09 KST",
   "macro_indicators": [
     {
       "name": "원/달러 환율",
@@ -9,8 +9,8 @@
     },
     {
       "name": "나스닥 선물",
-      "value": "29,465.25",
-      "change": "+0.27%",
+      "value": "29,447.25",
+      "change": "+0.21%",
       "status": "NQ=F"
     },
     {
@@ -22,13 +22,13 @@
     {
       "name": "비트코인 (BTC)",
       "value": "105,648,000원 ($76,557)",
-      "change": "+1.08%",
+      "change": "-0.04%",
       "status": "업비트/KRW"
     },
     {
       "name": "이더리움 (ETH)",
-      "value": "3,404,000원 ($2,467)",
-      "change": "+0.95%",
+      "value": "3,409,000원 ($2,470)",
+      "change": "+0.35%",
       "status": "업비트/KRW"
     },
     {
@@ -175,7 +175,7 @@
     {
       "title": "byul - 가장 빠른 경제 뉴스",
       "source": "byul.ai",
-      "time_ago": "18시간 전",
+      "time_ago": "20시간 전",
       "category": "⚡ 속보",
       "link": "https://news.google.com/rss/articles/CBMiMkFVX3lxTE1kNkpwaHFuSzJBTGc5VzVBSW5NdTN6b0RDeG5rUTRCTzJ4T3VXaDFpVjdB?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
