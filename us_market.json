@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026년 10월 10일(토) 00:07:43 KST",
+  "updated_at": "2026년 10월 10일(토) 05:16:16 KST",
   "macro_indicators": [
     {
       "name": "원/달러 환율",
@@ -9,8 +9,8 @@
     },
     {
       "name": "나스닥 선물",
-      "value": "31,089.50",
-      "change": "+0.39%",
+      "value": "31,111.75",
+      "change": "+0.46%",
       "status": "NQ=F"
     },
     {
@@ -21,48 +21,48 @@
     },
     {
       "name": "비트코인 (BTC)",
-      "value": "113,411,000원 ($82,182)",
-      "change": "+0.94%",
+      "value": "112,741,000원 ($81,696)",
+      "change": "+0.34%",
       "status": "업비트/KRW"
     },
     {
       "name": "이더리움 (ETH)",
-      "value": "3,406,000원 ($2,468)",
-      "change": "+0.09%",
+      "value": "3,392,000원 ($2,458)",
+      "change": "-0.32%",
       "status": "업비트/KRW"
     },
     {
       "name": "VIX 지수 (공포지수)",
-      "value": "14.99",
-      "change": "-2.73%",
+      "value": "14.80",
+      "change": "-3.96%",
       "status": "변동성 지수"
     }
   ],
   "indices": [
     {
       "name": "S&P 500",
-      "value": "7,795.97",
-      "change": "+0.39%"
+      "value": "7,811.54",
+      "change": "+0.59%"
     },
     {
       "name": "다우존스",
-      "value": "51,435.67",
-      "change": "+0.40%"
+      "value": "51,654.95",
+      "change": "+0.83%"
     },
     {
       "name": "나스닥",
-      "value": "27,318.18",
-      "change": "+0.46%"
+      "value": "27,366.17",
+      "change": "+0.64%"
     },
     {
       "name": "필라델피아 반도체",
-      "value": "12,586.32",
-      "change": "-0.30%"
+      "value": "12,572.42",
+      "change": "-0.41%"
     },
     {
       "name": "러셀 2000",
-      "value": "2,801.40",
-      "change": "+0.26%"
+      "value": "2,806.98",
+      "change": "+0.46%"
     }
   ],
   "bonds_detailed": [
@@ -73,28 +73,17 @@
     },
     {
       "tenor": "미국 10년물 국채금리 (^TNX)",
-      "yield_rate": "5.276%",
-      "change": "+0.86%"
+      "yield_rate": "5.244%",
+      "change": "+0.25%"
     },
     {
       "tenor": "미국 30년물 국채금리 (^TYX)",
-      "yield_rate": "5.633%",
-      "change": "+0.48%"
+      "yield_rate": "5.600%",
+      "change": "-0.11%"
     }
   ],
-  "detailed_capital_flow_report": "\n        <div class=\"bg-gray-50 p-6 rounded-2xl border border-gray-200 space-y-6\">\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-red-600\">🔥</span> 1. 월가 자금 유입 대표 섹터 & 주요 기업 심층 분석\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              이번 장에서는 필라델피아 반도체 지수가 -0.30% 하락하면서 AI 및 반도체 밸류체인 주요 종목군으로 강한 차익실현 매물이 출회되었습니다. 엔비디아, 마이크론 등 주요 칩 제조사의 단기 변동성 확대가 지수 전반의 하방 압력으로 작용했습니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-blue-600\">🔵</span> 2. 하방 압력 섹터 & 차익실현 유출 원인 분석\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              미 국채 10년물 금리가 5.276% 수준으로 오르며 밸류에이션 경계감이 부각되었습니다. 이에 따라 러셀 2000 소형주 및 부채 비율이 높은 전통 제조업 섹터는 차익실현 압력을 받았습니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-indigo-600\">🌐</span> 3. 매크로 지표(금리/환율/VIX) & 가상자산 자금 흐름\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              원/달러 환율은 1,380.50원선, VIX 공포지수는 14.99를 기록하고 있습니다. 가상자산 시장에서는 비트코인(113,411,000원 ($82,182))이 범주 내 박스권 흐름을 유지 중입니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-emerald-600\">🇰🇷</span> 4. 한국 증시(국장) 연계 심층 대응 & 개별 수혜주 전략\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              필라델피아 반도체 지수 급락 및 코스피 200 지수(-2.10%) 약세에 연동되어 국내 삼성전자, SK하이닉스, 한미반도체 등 반도체 장비 밸류체인은 장초반 하방 압력을 받을 수 있습니다. 시초가 과열 추격 매수를 자제하고, 외국인 수급 전환을 확인한 후 분할 접근하는 리스크 관리가 유효합니다.\n            </p>\n          </div>\n        </div>\n        ",
+  "detailed_capital_flow_report": "\n        <div class=\"bg-gray-50 p-6 rounded-2xl border border-gray-200 space-y-6\">\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-red-600\">🔥</span> 1. 월가 자금 유입 대표 섹터 & 주요 기업 심층 분석\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              이번 장에서는 필라델피아 반도체 지수가 -0.41% 하락하면서 AI 및 반도체 밸류체인 주요 종목군으로 강한 차익실현 매물이 출회되었습니다. 엔비디아, 마이크론 등 주요 칩 제조사의 단기 변동성 확대가 지수 전반의 하방 압력으로 작용했습니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-blue-600\">🔵</span> 2. 하방 압력 섹터 & 차익실현 유출 원인 분석\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              미 국채 10년물 금리가 5.244% 수준으로 오르며 밸류에이션 경계감이 부각되었습니다. 이에 따라 러셀 2000 소형주 및 부채 비율이 높은 전통 제조업 섹터는 차익실현 압력을 받았습니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-indigo-600\">🌐</span> 3. 매크로 지표(금리/환율/VIX) & 가상자산 자금 흐름\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              원/달러 환율은 1,380.50원선, VIX 공포지수는 14.80를 기록하고 있습니다. 가상자산 시장에서는 비트코인(112,741,000원 ($81,696))이 범주 내 박스권 흐름을 유지 중입니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-emerald-600\">🇰🇷</span> 4. 한국 증시(국장) 연계 심층 대응 & 개별 수혜주 전략\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              필라델피아 반도체 지수 급락 및 코스피 200 지수(-2.10%) 약세에 연동되어 국내 삼성전자, SK하이닉스, 한미반도체 등 반도체 장비 밸류체인은 장초반 하방 압력을 받을 수 있습니다. 시초가 과열 추격 매수를 자제하고, 외국인 수급 전환을 확인한 후 분할 접근하는 리스크 관리가 유효합니다.\n            </p>\n          </div>\n        </div>\n        ",
   "categorized_news": [
-    {
-      "title": "실시간 뉴스",
-      "source": "byul.ai",
-      "time_ago": "334일 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiP0FVX3lxTFB1aktnTkZzR2JDa2hQbXlnbU9uUXlWaTE0Zlh6UFV0YzV3ejljNnR1bVFzM19SRnZ6eWVINmtPdw?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[실시간 뉴스] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
     {
       "title": "개인정보처리방침 및 이용약관",
       "source": "byul.ai",
@@ -131,7 +120,7 @@
     {
       "title": "암호화폐 공포탐욕지수",
       "source": "byul.ai",
-      "time_ago": "101일 전",
+      "time_ago": "102일 전",
       "category": "🪙 가상자산",
       "link": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9NdlR5WmlFVEtkQWJ3cTZ1VTRoSWx1SWs3UUNCVi1aT2ZFUExxTlphblJ6MU8tTzhSd1h0emxwVDZsT1VfdHItamRod3U5WXZ0Q1pETnZ6YmdSVFo3R2NTcEp6RnR5RGJPaWc?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
@@ -184,17 +173,6 @@
       "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
     },
     {
-      "title": "코스피 공포탐욕지수",
-      "source": "byul.ai",
-      "time_ago": "113일 전",
-      "category": "🇰🇷 국내증시",
-      "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFB6QlRyTzdWdDJaZkdKdEp1ZmFJNzBQT3BUd0d4bUw0SER2ZWZ2V2VHaHUwM1hJWjU2b1NtMmE0aUt0YzAydE9HS2JwaUhlZEttcGx5MXdnX3JGaklpTWJNOTVITQ?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[코스피 공포탐욕지수] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
       "title": "공포탐욕지수",
       "source": "byul.ai",
       "time_ago": "114일 전",
@@ -228,6 +206,28 @@
       "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
     },
     {
+      "title": "실시간 뉴스",
+      "source": "byul.ai",
+      "time_ago": "334일 전",
+      "category": "⚡ 속보",
+      "link": "https://news.google.com/rss/articles/CBMiP0FVX3lxTFB1aktnTkZzR2JDa2hQbXlnbU9uUXlWaTE0Zlh6UFV0YzV3ejljNnR1bVFzM19SRnZ6eWVINmtPdw?oc=5",
+      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
+      "ai_interpretation": "[실시간 뉴스] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
+      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
+      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
+    },
+    {
+      "title": "코스피 공포탐욕지수",
+      "source": "byul.ai",
+      "time_ago": "113일 전",
+      "category": "🇰🇷 국내증시",
+      "link": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFB6QlRyTzdWdDJaZkdKdEp1ZmFJNzBQT3BUd0d4bUw0SER2ZWZ2V2VHaHUwM1hJWjU2b1NtMmE0aUt0YzAydE9HS2JwaUhlZEttcGx5MXdnX3JGaklpTWJNOTVITQ?oc=5",
+      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
+      "ai_interpretation": "[코스피 공포탐욕지수] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
+      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
+      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
+    },
+    {
       "title": "최신 경제 뉴스",
       "source": "byul.ai",
       "time_ago": "114일 전",
@@ -241,7 +241,7 @@
     {
       "title": "Overview",
       "source": "byul.ai",
-      "time_ago": "424일 전",
+      "time_ago": "425일 전",
       "category": "⚡ 속보",
       "link": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5RdThOQmNPUzNLenpBRm9PcDJNSm8wS0JOUHdzYnFBcF85Zi02NDFCWW5XWS11V2pqdzQtQzJDY1lfSExJZUR3Nks5MURvYWc?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
