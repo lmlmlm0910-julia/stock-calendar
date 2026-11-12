@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026년 11월 12일(목) 19:08:06 KST",
+  "updated_at": "2026년 11월 13일(금) 03:31:33 KST",
   "macro_indicators": [
     {
       "name": "원/달러 환율",
@@ -9,8 +9,8 @@
     },
     {
       "name": "나스닥 선물",
-      "value": "28,286.00",
-      "change": "-0.66%",
+      "value": "28,500.25",
+      "change": "+0.09%",
       "status": "NQ=F"
     },
     {
@@ -21,48 +21,48 @@
     },
     {
       "name": "비트코인 (BTC)",
-      "value": "99,048,000원 ($71,774)",
-      "change": "-1.29%",
+      "value": "97,540,000원 ($70,681)",
+      "change": "-2.79%",
       "status": "업비트/KRW"
     },
     {
       "name": "이더리움 (ETH)",
-      "value": "2,757,000원 ($1,998)",
-      "change": "-1.11%",
+      "value": "2,739,000원 ($1,985)",
+      "change": "-1.76%",
       "status": "업비트/KRW"
     },
     {
       "name": "VIX 지수 (공포지수)",
-      "value": "18.20",
-      "change": "+4.06%",
+      "value": "17.72",
+      "change": "+1.32%",
       "status": "변동성 지수"
     }
   ],
   "indices": [
     {
       "name": "S&P 500",
-      "value": "7,619.38",
-      "change": "+1.31%"
+      "value": "7,627.49",
+      "change": "+0.11%"
     },
     {
       "name": "다우존스",
-      "value": "52,486.49",
-      "change": "+0.49%"
+      "value": "52,593.90",
+      "change": "+0.20%"
     },
     {
       "name": "나스닥",
-      "value": "25,466.19",
-      "change": "+1.60%"
+      "value": "25,469.08",
+      "change": "+0.01%"
     },
     {
       "name": "필라델피아 반도체",
-      "value": "10,564.11",
-      "change": "+5.66%"
+      "value": "10,568.50",
+      "change": "+0.04%"
     },
     {
       "name": "러셀 2000",
-      "value": "2,846.26",
-      "change": "+0.88%"
+      "value": "2,819.02",
+      "change": "-0.96%"
     }
   ],
   "bonds_detailed": [
@@ -73,32 +73,32 @@
     },
     {
       "tenor": "미국 10년물 국채금리 (^TNX)",
-      "yield_rate": "4.998%",
-      "change": "+0.30%"
+      "yield_rate": "5.113%",
+      "change": "+2.30%"
     },
     {
       "tenor": "미국 30년물 국채금리 (^TYX)",
-      "yield_rate": "5.356%",
-      "change": "+0.11%"
+      "yield_rate": "5.444%",
+      "change": "+1.64%"
     }
   ],
-  "detailed_capital_flow_report": "\n        <div class=\"bg-gray-50 p-6 rounded-2xl border border-gray-200 space-y-6\">\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-red-600\">🔥</span> 1. 월가 자금 유입 대표 섹터 & 주요 기업 심층 분석\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              이번 장에서는 엔비디아(NVDA), 마이크로소프트(MSFT), 메타(META) 등 AI 핵심 빅테크 기업들로 대규모 기관 자금 매수세가 강하게 유입되었습니다. 차세대 AI 클라우드 데이터센터 투자 확대 호재에 힘입어 관련 하드웨어 밸류체인이 강세를 이끌었습니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-blue-600\">🔵</span> 2. 하방 압력 섹터 & 차익실현 유출 원인 분석\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              미 국채 10년물 금리가 4.998% 수준으로 오르며 밸류에이션 경계감이 부각되었습니다. 이에 따라 러셀 2000 소형주 및 부채 비율이 높은 전통 제조업 섹터는 차익실현 압력을 받았습니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-indigo-600\">🌐</span> 3. 매크로 지표(금리/환율/VIX) & 가상자산 자금 흐름\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              원/달러 환율은 1,380.50원선, VIX 공포지수는 18.20를 기록하고 있습니다. 가상자산 시장에서는 비트코인(99,048,000원 ($71,774))이 범주 내 박스권 흐름을 유지 중입니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-emerald-600\">🇰🇷</span> 4. 한국 증시(국장) 연계 심층 대응 & 개별 수혜주 전략\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              미장 AI 반도체 강세에 연동되어 국내 삼성전자, SK하이닉스, 한미반도체 등 HBM 및 반도체 장비 밸류체인으로의 외국인 수급 유입이 기대됩니다. 장초반 외국인 수급 지지를 확인한 뒤 대안 섹터와 함께 분할 대응하는 전략이 유효합니다.\n            </p>\n          </div>\n        </div>\n        ",
+  "detailed_capital_flow_report": "\n        <div class=\"bg-gray-50 p-6 rounded-2xl border border-gray-200 space-y-6\">\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-red-600\">🔥</span> 1. 월가 자금 유입 대표 섹터 & 주요 기업 심층 분석\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              이번 장에서는 엔비디아(NVDA), 마이크로소프트(MSFT), 메타(META) 등 AI 핵심 빅테크 기업들로 대규모 기관 자금 매수세가 강하게 유입되었습니다. 차세대 AI 클라우드 데이터센터 투자 확대 호재에 힘입어 관련 하드웨어 밸류체인이 강세를 이끌었습니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-blue-600\">🔵</span> 2. 하방 압력 섹터 & 차익실현 유출 원인 분석\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              미 국채 10년물 금리가 5.113% 수준으로 오르며 밸류에이션 경계감이 부각되었습니다. 이에 따라 러셀 2000 소형주 및 부채 비율이 높은 전통 제조업 섹터는 차익실현 압력을 받았습니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-indigo-600\">🌐</span> 3. 매크로 지표(금리/환율/VIX) & 가상자산 자금 흐름\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              원/달러 환율은 1,380.50원선, VIX 공포지수는 17.72를 기록하고 있습니다. 가상자산 시장에서는 비트코인(97,540,000원 ($70,681))이 범주 내 박스권 흐름을 유지 중입니다.\n            </p>\n          </div>\n\n          <div>\n            <h4 class=\"text-base font-extrabold text-gray-900 border-b border-gray-200 pb-2 flex items-center gap-2\">\n              <span class=\"text-emerald-600\">🇰🇷</span> 4. 한국 증시(국장) 연계 심층 대응 & 개별 수혜주 전략\n            </h4>\n            <p class=\"text-sm text-gray-800 leading-relaxed mt-2\">\n              미장 AI 반도체 강세에 연동되어 국내 삼성전자, SK하이닉스, 한미반도체 등 HBM 및 반도체 장비 밸류체인으로의 외국인 수급 유입이 기대됩니다. 장초반 외국인 수급 지지를 확인한 뒤 대안 섹터와 함께 분할 대응하는 전략이 유효합니다.\n            </p>\n          </div>\n        </div>\n        ",
   "categorized_news": [
     {
-      "title": "EU·영국, 전기차 관세 10% 적용 연기 계획 - FT",
+      "title": "백악관, 하워드 러트닉 상무장관 거취 논의 중 - 소식통",
       "source": "byul.ai",
-      "time_ago": "5시간 전",
+      "time_ago": "17분 전",
       "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5MZU9Ub3JaNFZxU0Y4cEZjVWF2eE1jTS1fWVdoeV9ZdWY5d2FvOTJNSk1GUWNDRVhlYm40OUNDWVNKb1ZjV0ZmUlJianRFOF9VQ0Y0V0JfcFg?oc=5",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBEUUFJMElZX25abjlpQ3ZkQ2lTcHJyVWlyR3A1UzlEQ1RJWVpJYTdxM21lVDBpQjYwTWFOblp6RVRLSk82NjBHRHYza2cyLWxySnJqNVhmQ00?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[EU·영국, 전기차 관세 10% 적용 연기 계획 - FT] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
+      "ai_interpretation": "[백악관, 하워드 러트닉 상무장관 거취 논의 중 - 소식통] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
       "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
       "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
     },
     {
       "title": "바이로어, 연간 전망 유지 뒷받침한 수요",
       "source": "byul.ai",
-      "time_ago": "12시간 전",
+      "time_ago": "20시간 전",
       "category": "⚡ 속보",
       "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE91Q3psMEhkR3EtbmhKTHBxbzV0aWlab1NwdGRjdmFBSm5xREhJSXhxV21SdHg1b241ekEwSHFfTTd2TWtYOERpRENqZE13NTdkQXdPal9TN3k?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
@@ -109,7 +109,7 @@
     {
       "title": "세계 부유층, 대체투자 비중 확대 나선 배경",
       "source": "byul.ai",
-      "time_ago": "6시간 전",
+      "time_ago": "14시간 전",
       "category": "⚡ 속보",
       "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5DMnVKakVWSWt3aUFfWjRfNG5jNXVfSzkwRzYzMkNUVVU3eWlDV1BjSU0ydk5rX3Flb0xLNG51ZmxKcFFFUFpsNkZjU2tTSlotTTR1TmhkOEE?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
@@ -118,9 +118,42 @@
       "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
     },
     {
-      "title": "UFORCE, 60억 달러 가치에 7억 달러 유치해 방산 생산 확대",
+      "title": "크라우스 함다니 K1000ULE, 미 육군 주요 사업 선정",
+      "source": "byul.ai",
+      "time_ago": "4시간 전",
+      "category": "⚡ 속보",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1WNHBaZWNwQm9wZ2c2cnhkVkhaWC1aYjh5R3dnTkVXRlYxOHRZSlV2OENpMGNTZkQ5V2pJVVJqenlTMDA3Z09ac0tDeHpwcG1LQm1jUi1KNkU?oc=5",
+      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
+      "ai_interpretation": "[크라우스 함다니 K1000ULE, 미 육군 주요 사업 선정] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
+      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
+      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
+    },
+    {
+      "title": "EIA 원유 재고 465.7만 배럴 증가, 예상 148.3만 배럴 감소",
       "source": "byul.ai",
       "time_ago": "1시간 전",
+      "category": "⚡ 속보",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBuekpidGFXMnVuMmRsclUxMFdSSnFLNzBXQ1FOR1BVa2Z4QlA3bHpOSTRYcXNhTmhWZFc3VUtuWDJhVHJTdGlOcGtDSFhVNlc5RmpUQnFZNVE?oc=5",
+      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
+      "ai_interpretation": "[EIA 원유 재고 465.7만 배럴 증가, 예상 148.3만 배럴 감소] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
+      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
+      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
+    },
+    {
+      "title": "코어위브, 웨이브에 엔비디아 GPU 클라우드 공급",
+      "source": "byul.ai",
+      "time_ago": "7시간 전",
+      "category": "💻 기술/AI",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5nOVFndm4tRFpmWGU4X1YwOE5HaHF2LTNpbjJtdWp6bjlzeVZ0dG5lVS05WXVySkFRZlJRNGZhWXBUVkZmWHpfOTR6RVRUbUZYTjJJeVF2WWo?oc=5",
+      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
+      "ai_interpretation": "[코어위브, 웨이브에 엔비디아 GPU 클라우드 공급] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
+      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
+      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
+    },
+    {
+      "title": "UFORCE, 60억 달러 가치에 7억 달러 유치해 방산 생산 확대",
+      "source": "byul.ai",
+      "time_ago": "9시간 전",
       "category": "⚡ 속보",
       "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9RQmFVZU41OU9rQ2xYZDAtWk8tUjZxQjFhcU00WnVMNERJWHl4YTlDMi1fTUptQ24yNFplQjl3QlVMNXYtdFNaTF9NUW03eXFEWm5CaGxwUW8?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
@@ -131,7 +164,7 @@
     {
       "title": "미국 회사채 떠받치는 베이비부머, 높은 수익 찾아 매수",
       "source": "byul.ai",
-      "time_ago": "17시간 전",
+      "time_ago": "1일 전",
       "category": "⚡ 속보",
       "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9oY21oa1l2dGhrc0w3QWtNMkVmNWtVYlhRLTFKNEt6ZGxRdVJ5bS1aWE5nQy1iQXBVb1l1aWNZYWREREJya2VXeXN4Q1JVZU1zU0I0YzlXRWQ?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
@@ -140,20 +173,9 @@
       "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
     },
     {
-      "title": "MSCI confirms Strategy’s removal from indexes at end of November",
-      "source": "byul.ai",
-      "time_ago": "9시간 전",
-      "category": "💻 기술/AI",
-      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1QN25UbV8xSWJzNUtQcmZZSG1RZlpLaDQxczF0a0Nwb2FMVUtobFc1d2dZTjY0Ykh3M2FzUExTXzhBd0xmb2xyYmRxcXhSMTBNWVAxTklWLTA?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[MSCI confirms Strategy’s removal from indexes at end of November] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
       "title": "청정기술, 에너지 회복력 높이지만 중국 의존도는 변수",
       "source": "byul.ai",
-      "time_ago": "1시간 전",
+      "time_ago": "10시간 전",
       "category": "⚡ 속보",
       "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5jejRjd1hrU21BY1RqQkRieEJWazVCVmsyM1gtTVNPaklhSlpRVl8wX3NHQVY3RXRpSFgwbkRNMVFwT213MmZUUXN6M0dGUnlGVW1qcUx4RFc?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
@@ -164,7 +186,7 @@
     {
       "title": "시진핑·트럼프 회담 앞두고 AI 협의체 제안한 칼럼니스트 웡",
       "source": "byul.ai",
-      "time_ago": "12시간 전",
+      "time_ago": "20시간 전",
       "category": "💻 기술/AI",
       "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBkU004RWpHNjlzNy1Nd200UUpYOW9Lbml2anVOSmVTTFA1bVJzNVJHTG5BdXBWM0RZNEgzUzVvTjhsNEpZWlRfWDgzWUszREI5R2R4VFhRdTI?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
@@ -173,9 +195,31 @@
       "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
     },
     {
+      "title": "청구 건수 57년 최저·심리 역대 최저 근접·채용률 3.4% 정체, 노동시장 삼중고에 매파적 기류",
+      "source": "byul.ai",
+      "time_ago": "4시간 전",
+      "category": "⚡ 속보",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBXTkdIR2MtTHlsdHZFQzB6TkcxRDJXb0x3amc2dXJjRm1pSVMxVjlyR2xyYVZIM2RRQTBrcWlnVF9QUDY5Zm92WnFjcTNqTk9CS0t5bDRGTDI?oc=5",
+      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
+      "ai_interpretation": "[청구 건수 57년 최저·심리 역대 최저 근접·채용률 3.4% 정체, 노동시장 삼중고에 매파적 기류] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
+      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
+      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
+    },
+    {
+      "title": "중국 SMIC 이익 두 배 넘게 늘어, AI 수혜로 매출 신기록",
+      "source": "byul.ai",
+      "time_ago": "8시간 전",
+      "category": "💻 기술/AI",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBOWTVxYjMxWUZRLURoZWl4MnpUZmxsUi1YTmxLaFhwekZWY08takdfZEd2YUxfQ1B1bHdleXNNZV9Md0RRN1lxQ0F5ejhISjdzM0J6Y2NuVDE?oc=5",
+      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
+      "ai_interpretation": "[중국 SMIC 이익 두 배 넘게 늘어, AI 수혜로 매출 신기록] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
+      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
+      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
+    },
+    {
       "title": "BAE시스템스, 잉여현금흐름 전망 또 상향한 배경",
       "source": "byul.ai",
-      "time_ago": "2시간 전",
+      "time_ago": "10시간 전",
       "category": "⚡ 속보",
       "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1LbVNCR2wzZUhIRkZEZjI0djRmT1pxTC1XNkhoV3FTdUJWTjhlems0eXBIT3ZMREJYakJaRTcweGNFSV9WUEtMTnRVMnpxXzcySEhReEJYS18?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
@@ -184,68 +228,24 @@
       "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
     },
     {
+      "title": "스페이스X 4.7% 상승",
+      "source": "byul.ai",
+      "time_ago": "3시간 전",
+      "category": "⚡ 속보",
+      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE02NG9WVDZPT25fSnFMUm4wSktucnZkRFVDc1NraVFScnlTSFFGa3FXZFRLa3gxSDRFQmRGYWFtWDZraWVCTTRBdGFmYzJ6OWlTRUEydGtTZ1M?oc=5",
+      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
+      "ai_interpretation": "[스페이스X 4.7% 상승] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
+      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
+      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
+    },
+    {
       "title": "XRP 레저 대출 도입될까? 검증자 지지 늘어",
       "source": "byul.ai",
-      "time_ago": "49분 전",
+      "time_ago": "9시간 전",
       "category": "⚡ 속보",
       "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5FcGZucEZYYjFEcUpDMUhrMDhubG9MbnFmSHJFcDVzODRmNHNiZFVQbHJJdTV3dDNaX25OWkFCTllvQ2RJbmZqbkFwN005OXJ0YzJzZFdMeTA?oc=5",
       "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
       "ai_interpretation": "[XRP 레저 대출 도입될까? 검증자 지지 늘어] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "코르테바, 2026년 전망 업데이트…신제품 성장과 가격 압박",
-      "source": "byul.ai",
-      "time_ago": "12시간 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9KNWFTdmZlcGxUZGM3YVdPVU5zUHpidHkyZHNkZXZrSFBTOWNGVHNMSzNFRlhQaW1CRkpjdzV1OHN5QUd1cUhBU0hJWVRGeVY0V2hDTTlQUW0?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[코르테바, 2026년 전망 업데이트…신제품 성장과 가격 압박] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "MSCI, 인도네시아 주식 9개 종목 소형주 지수서 제외",
-      "source": "byul.ai",
-      "time_ago": "9시간 전",
-      "category": "💻 기술/AI",
-      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBmbkg0bXllLUxqejJaaEJjR2lfc3RCVWljMzFESE5DMmFtMHJYTUNzbUN1b29ZSHBINjBwMWRVcjZCTTZobUctczlNejVvMjZUeUlpbmJPZWI?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[MSCI, 인도네시아 주식 9개 종목 소형주 지수서 제외] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "UFORCE, 기업가치 60억 달러로 투자 유치해 방산 생산 확대",
-      "source": "byul.ai",
-      "time_ago": "1시간 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9mNUJycUM3Zmc3TjFsRzNESE5wLUdCc2tnNUo1cGEyX29EMGNvOURneHh1STdZWGJtNzhsV1pYSjhPQWVaeFRTckt6bFFHV3ZzczBVeUZ6MmU?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[UFORCE, 기업가치 60억 달러로 투자 유치해 방산 생산 확대] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "지멘스 2026년 4분기 매출·이익·수주 예상 상회, 연간 배당 전망 €5.50로 예상 €5.58 하회",
-      "source": "byul.ai",
-      "time_ago": "3시간 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1xdTd5UllRdG8zQlVPelFpQkhHVDhEYVN3Znpza3FZbnRvckFhdWpuRHZxUVQwVV9NNVNuQkVvenNubE43RlZIMnB3UEZkV3BYaWZmTXJIUmo?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[지멘스 2026년 4분기 매출·이익·수주 예상 상회, 연간 배당 전망 €5.50로 예상 €5.58 하회] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
-      "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
-      "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
-    },
-    {
-      "title": "영국 9월 산업생산 전월 대비 0.3% 증가, 예상치 -0.4% 상회",
-      "source": "byul.ai",
-      "time_ago": "2시간 전",
-      "category": "⚡ 속보",
-      "link": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE82WS1mSFJ2eUUxZUdKSGlrMEZQQU9yamp5Vy1jTXBtWXJ3TTBjNkZZUFVJc2lnQ2p2WjFBUGdnY1h3TmFleklFaXo2ZlZLeV8tWmFrYkZmTFI?oc=5",
-      "summary": "byul.ai에서 보도한 당일 실시간 핵심 증시 속보 기사입니다.",
-      "ai_interpretation": "[영국 9월 산업생산 전월 대비 0.3% 증가, 예상치 -0.4% 상회] 관련 이슈는 장중 관련 종목 테마 수급 및 투자 심리에 직접적인 연관을 줍니다.",
       "korea_impact": "🇰🇷 국내 연관 테마주 및 관련 산업 섹터의 수급 변동성에 유의하세요.",
       "investor_opinion": "💡 외인/기관 수급 지지선 확인 후 신중한 분할 대응 권장."
     }
